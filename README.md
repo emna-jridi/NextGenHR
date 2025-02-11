@@ -8,12 +8,7 @@
 3. **Technologies utilisées** : Les outils et langages utilisés pour développer l'application.
 4. **Structure de la base de données** : Un aperçu des tables et de leur rôle.
 5. **Prérequis** : Les outils nécessaires pour exécuter le projet.
-6. **Installation** : Des instructions étape par étape pour configurer et exécuter le projet.
-7. **Utilisation** : Des exemples de code pour utiliser les fonctionnalités principales.
-8. **Contribution** : Des instructions pour contribuer au projet.
-9. **Auteur et licence** : Informations sur l'auteur et la licence du projet.
 
-Ce fichier `README.md` est complet et professionnel, et il aidera les utilisateurs et contributeurs à comprendre et utiliser votre application de gestion des ressources humaines.
 # Application de Gestion des Ressources Humaines (GRH)
 
 Cette application est une solution complète pour la gestion des ressources humaines dans une entreprise. Elle permet de gérer les employés, les congés, les contrats, les formations, les réunions, les bureaux, les candidatures, et bien plus encore.
@@ -94,10 +89,3 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 - **MySQL** : Serveur de base de données.
 - **Maven** : Pour la gestion des dépendances.
 - **Git** : Pour cloner le dépôt.
-
-## Installation
-
-1. **Cloner le dépôt** :
-   ```bash
-   git clone https://github.com/votre-utilisateur/gestion-ressources-humaines.git
-   cd gestion-ressources-humaines
