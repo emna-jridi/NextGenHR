@@ -1,6 +1,7 @@
 package tn.esprit.models;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Teletravail {
     private int idTeletravail;
@@ -11,7 +12,6 @@ public class Teletravail {
     private String statutTT;
     private String raisonTT;
 
-    // Constructeurs
     public Teletravail() {}
 
     public Teletravail(int idEmploye, LocalDate dateDemandeTT, LocalDate dateDebutTT, LocalDate dateFinTT, String statutTT, String raisonTT) {
@@ -23,62 +23,20 @@ public class Teletravail {
         this.raisonTT = raisonTT;
     }
 
-    // Getters et Setters
-    public int getIdTeletravail() {
-        return idTeletravail;
-    }
-
-    public void setIdTeletravail(int idTeletravail) {
-        this.idTeletravail = idTeletravail;
-    }
-
-    public int getIdEmploye() {
-        return idEmploye;
-    }
-
-    public void setIdEmploye(int idEmploye) {
-        this.idEmploye = idEmploye;
-    }
-
-    public LocalDate getDateDemandeTT() {
-        return dateDemandeTT;
-    }
-
-    public void setDateDemandeTT(LocalDate dateDemandeTT) {
-        this.dateDemandeTT = dateDemandeTT;
-    }
-
-    public LocalDate getDateDebutTT() {
-        return dateDebutTT;
-    }
-
-    public void setDateDebutTT(LocalDate dateDebutTT) {
-        this.dateDebutTT = dateDebutTT;
-    }
-
-    public LocalDate getDateFinTT() {
-        return dateFinTT;
-    }
-
-    public void setDateFinTT(LocalDate dateFinTT) {
-        this.dateFinTT = dateFinTT;
-    }
-
-    public String getStatutTT() {
-        return statutTT;
-    }
-
-    public void setStatutTT(String statutTT) {
-        this.statutTT = statutTT;
-    }
-
-    public String getRaisonTT() {
-        return raisonTT;
-    }
-
-    public void setRaisonTT(String raisonTT) {
-        this.raisonTT = raisonTT;
-    }
+    public int getIdTeletravail() { return idTeletravail; }
+    public void setIdTeletravail(int idTeletravail) { this.idTeletravail = idTeletravail; }
+    public int getIdEmploye() { return idEmploye; }
+    public void setIdEmploye(int idEmploye) { this.idEmploye = idEmploye; }
+    public LocalDate getDateDemandeTT() { return dateDemandeTT; }
+    public void setDateDemandeTT(LocalDate dateDemandeTT) { this.dateDemandeTT = dateDemandeTT; }
+    public LocalDate getDateDebutTT() { return dateDebutTT; }
+    public void setDateDebutTT(LocalDate dateDebutTT) { this.dateDebutTT = dateDebutTT; }
+    public LocalDate getDateFinTT() { return dateFinTT; }
+    public void setDateFinTT(LocalDate dateFinTT) { this.dateFinTT = dateFinTT; }
+    public String getStatutTT() { return statutTT; }
+    public void setStatutTT(String statutTT) { this.statutTT = statutTT; }
+    public String getRaisonTT() { return raisonTT; }
+    public void setRaisonTT(String raisonTT) { this.raisonTT = raisonTT; }
 
     @Override
     public String toString() {
@@ -93,4 +51,16 @@ public class Teletravail {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teletravail that = (Teletravail) o;
+        return idTeletravail == that.idTeletravail;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTeletravail);
+    }
 }
