@@ -25,51 +25,75 @@ public class ServiceTeletravail {
         cnx = MyDatabase.getInstance().getCnx();
     }
 
-    // ✅ Ajouter un télétravail
     public boolean add(Teletravail teletravail) {
-        return executeTransaction(() -> executeUpdate(INSERT_SQL, teletravail.getIdEmploye(), Date.valueOf(teletravail.getDateDemandeTT()), Date.valueOf(teletravail.getDateDebutTT()), Date.valueOf(teletravail.getDateFinTT()), teletravail.getStatutTT(), teletravail.getRaisonTT()));
+        try (PreparedStatement pst = cnx.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
+            pst.setInt(1, teletravail.getIdEmploye());
+            pst.setDate(2, Date.valueOf(teletravail.getDateDemandeTT()));
+            pst.setDate(3, Date.valueOf(teletravail.getDateDebutTT()));
+            pst.setDate(4, Date.valueOf(teletravail.getDateFinTT()));
+            pst.setString(5, teletravail.getStatutTT());
+            pst.setString(6, teletravail.getRaisonTT());
+
+            int affectedRows = pst.executeUpdate();
+            if (affectedRows > 0) {
+                ResultSet rs = pst.getGeneratedKeys();
+                if (rs.next()) {
+                    teletravail.setIdTeletravail(rs.getInt(1)); // Récupérer l'ID généré
+                }
+                cache.put(teletravail.getIdTeletravail(), teletravail); // Mise à jour du cache
+                return true;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de l'ajout : " + e.getMessage(), e);
+        }
+        return false;
     }
 
-    // ✅ Mettre à jour un télétravail
     public boolean update(Teletravail teletravail) {
-        boolean result = executeTransaction(() -> executeUpdate(UPDATE_SQL, teletravail.getIdEmploye(), Date.valueOf(teletravail.getDateDemandeTT()), Date.valueOf(teletravail.getDateDebutTT()), Date.valueOf(teletravail.getDateFinTT()), teletravail.getStatutTT(), teletravail.getRaisonTT(), teletravail.getIdTeletravail()));
-        if (result) cache.put(teletravail.getIdTeletravail(), teletravail); // Mise à jour du cache
-        return result;
+        try (PreparedStatement pst = cnx.prepareStatement(UPDATE_SQL)) {
+            pst.setInt(1, teletravail.getIdEmploye());
+            pst.setDate(2, Date.valueOf(teletravail.getDateDemandeTT()));
+            pst.setDate(3, Date.valueOf(teletravail.getDateDebutTT()));
+            pst.setDate(4, Date.valueOf(teletravail.getDateFinTT()));
+            pst.setString(5, teletravail.getStatutTT());
+            pst.setString(6, teletravail.getRaisonTT());
+            pst.setInt(7, teletravail.getIdTeletravail());
+
+            int affectedRows = pst.executeUpdate();
+            if (affectedRows > 0) {
+                cache.put(teletravail.getIdTeletravail(), teletravail); // Mise à jour du cache
+                return true;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la mise à jour : " + e.getMessage(), e);
+        }
+        return false;
     }
 
-    // ✅ Supprimer un télétravail
     public boolean delete(int idTeletravail) {
-        boolean result = executeTransaction(() -> executeUpdate(DELETE_SQL, idTeletravail));
-        if (result) cache.remove(idTeletravail); // Supprimer du cache
-        return result;
+        try (PreparedStatement pst = cnx.prepareStatement(DELETE_SQL)) {
+            pst.setInt(1, idTeletravail);
+            int affectedRows = pst.executeUpdate();
+            if (affectedRows > 0) {
+                cache.remove(idTeletravail); // Suppression du cache
+                return true;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la suppression : " + e.getMessage(), e);
+        }
+        return false;
     }
 
-    // ✅ Récupérer un télétravail par ID (avec cache)
     public Teletravail getById(int id) {
         if (cache.containsKey(id)) {
-            LOGGER.log(Level.INFO, "Récupéré depuis le cache.");
             return cache.get(id);
         }
-        Teletravail teletravail = executeQuery(SELECT_BY_ID_SQL, rs -> {
-            return new Teletravail(
-                    rs.getInt("IdEmploye"),
-                    rs.getDate("DateDemandeTT").toLocalDate(),
-                    rs.getDate("DateDebutTT").toLocalDate(),
-                    rs.getDate("DateFinTT").toLocalDate(),
-                    rs.getString("StatutTT"),
-                    rs.getString("RaisonTT")
-            );
-        }, id);
-        if (teletravail != null) cache.put(id, teletravail); // Ajouter au cache
-        return teletravail;
-    }
-
-    // ✅ Récupérer tous les télétravails
-    public List<Teletravail> getAll() {
-        List<Teletravail> teletravails = new ArrayList<>();
-        try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(SELECT_ALL_SQL)) {
-            while (rs.next()) {
+        try (PreparedStatement pst = cnx.prepareStatement(SELECT_BY_ID_SQL)) {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
                 Teletravail teletravail = new Teletravail(
+                        rs.getInt("IdTeletravail"),
                         rs.getInt("IdEmploye"),
                         rs.getDate("DateDemandeTT").toLocalDate(),
                         rs.getDate("DateDebutTT").toLocalDate(),
@@ -77,71 +101,34 @@ public class ServiceTeletravail {
                         rs.getString("StatutTT"),
                         rs.getString("RaisonTT")
                 );
-                teletravail.setIdTeletravail(rs.getInt("IdTeletravail"));
-                teletravails.add(teletravail);
-                cache.put(teletravail.getIdTeletravail(), teletravail); // Mise à jour du cache
+                cache.put(id, teletravail);
+                return teletravail;
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Erreur lors de la récupération des télétravails : " + e.getMessage(), e);
-        }
-        return teletravails;
-    }
-
-    private boolean executeUpdate(String sql, Object... params) throws SQLException {
-        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
-            for (int i = 0; i < params.length; i++) {
-                pst.setObject(i + 1, params[i]);
-            }
-            return pst.executeUpdate() > 0; // ✅ Retourne vrai si une ligne est affectée
-        }
-    }
-
-    private <T> T executeQuery(String sql, ResultSetMapper<T> mapper, Object... params) {
-        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
-            for (int i = 0; i < params.length; i++) {
-                pst.setObject(i + 1, params[i]);
-            }
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    return mapper.map(rs);
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Erreur lors de l'exécution de la requête : " + e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Erreur lors de la récupération par ID : " + e.getMessage(), e);
         }
         return null;
     }
 
-    private boolean executeTransaction(TransactionAction action) {
-        try {
-            cnx.setAutoCommit(false);
-            boolean result = action.execute();
-            cnx.commit(); // ✅ Commit explicite
-            return result;
+    public List<Teletravail> getAll() {
+        List<Teletravail> teletravails = new ArrayList<>();
+        try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(SELECT_ALL_SQL)) {
+            while (rs.next()) {
+                Teletravail teletravail = new Teletravail(
+                        rs.getInt("IdTeletravail"),
+                        rs.getInt("IdEmploye"),
+                        rs.getDate("DateDemandeTT").toLocalDate(),
+                        rs.getDate("DateDebutTT").toLocalDate(),
+                        rs.getDate("DateFinTT").toLocalDate(),
+                        rs.getString("StatutTT"),
+                        rs.getString("RaisonTT")
+                );
+                teletravails.add(teletravail);
+                cache.put(teletravail.getIdTeletravail(), teletravail); // Mise à jour du cache
+            }
         } catch (SQLException e) {
-            try {
-                cnx.rollback(); // ✅ Rollback en cas d'erreur
-                LOGGER.log(Level.SEVERE, "Transaction annulée : " + e.getMessage(), e);
-            } catch (SQLException rollbackEx) {
-                LOGGER.log(Level.SEVERE, "Erreur lors du rollback : " + rollbackEx.getMessage(), rollbackEx);
-            }
-            return false;
-        } finally {
-            try {
-                cnx.setAutoCommit(true);
-            } catch (SQLException e) {
-                LOGGER.log(Level.SEVERE, "Erreur lors de la réactivation de l'auto-commit : " + e.getMessage(), e);
-            }
+            LOGGER.log(Level.SEVERE, "Erreur lors de la récupération de tous les télétravails : " + e.getMessage(), e);
         }
-    }
-
-    @FunctionalInterface
-    private interface ResultSetMapper<T> {
-        T map(ResultSet rs) throws SQLException;
-    }
-
-    @FunctionalInterface
-    private interface TransactionAction {
-        boolean execute() throws SQLException;
+        return teletravails;
     }
 }

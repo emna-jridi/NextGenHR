@@ -9,7 +9,12 @@ public class Bureau {
     private String disponibilite;
 
     // Constructeurs
-    public Bureau(int idBureau, String refBureau, int capacite, String disponibilité) {}
+    public Bureau(int idBureau, String refBureau, int capacite, String disponibilite) {
+        this.idBureau = idBureau;
+        this.refBureau = Objects.requireNonNull(refBureau, "RefBureau cannot be null");
+        this.capacite = capacite;
+        this.disponibilite = Objects.requireNonNull(disponibilite, "Disponibilite cannot be null");
+    }
 
     public Bureau(String refBureau, int capacite, String disponibilite) {
         this.refBureau = Objects.requireNonNull(refBureau, "RefBureau cannot be null");
