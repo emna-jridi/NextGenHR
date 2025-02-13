@@ -5,6 +5,7 @@ import tn.esprit.utils.MyDatabase;
 
 import java.sql.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ public class ServiceTeletravail {
     private static final String DELETE_SQL = "DELETE FROM teletravail WHERE IdTeletravail = ?";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM teletravail WHERE IdTeletravail = ?";
     private static final String SELECT_ALL_SQL = "SELECT * FROM teletravail";
+    private static final String CHECK_EMPLOYE_EXIST_SQL = "SELECT 1 FROM employés WHERE IdEmploye = ?";
 
     private final Connection cnx;
     private final Map<Integer, Teletravail> cache = new HashMap<>(); // Cache simple
@@ -25,7 +27,24 @@ public class ServiceTeletravail {
         cnx = MyDatabase.getInstance().getCnx();
     }
 
+    private boolean isEmployeExist(int idEmploye) {
+        try (PreparedStatement pst = cnx.prepareStatement(CHECK_EMPLOYE_EXIST_SQL)) {
+            pst.setInt(1, idEmploye);
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next(); // Retourne true si l'employé existe
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la vérification de l'employé : " + e.getMessage(), e);
+            return false;
+        }
+    }
+
     public boolean add(Teletravail teletravail) {
+        if (!isEmployeExist(teletravail.getIdEmploye())) {
+            LOGGER.log(Level.SEVERE, "L'employé avec ID " + teletravail.getIdEmploye() + " n'existe pas.");
+            return false;
+        }
+
         try (PreparedStatement pst = cnx.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
             pst.setInt(1, teletravail.getIdEmploye());
             pst.setDate(2, Date.valueOf(teletravail.getDateDemandeTT()));
@@ -36,9 +55,10 @@ public class ServiceTeletravail {
 
             int affectedRows = pst.executeUpdate();
             if (affectedRows > 0) {
-                ResultSet rs = pst.getGeneratedKeys();
-                if (rs.next()) {
-                    teletravail.setIdTeletravail(rs.getInt(1)); // Récupérer l'ID généré
+                try (ResultSet rs = pst.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        teletravail.setIdTeletravail(rs.getInt(1)); // Récupérer l'ID généré
+                    }
                 }
                 cache.put(teletravail.getIdTeletravail(), teletravail); // Mise à jour du cache
                 return true;
@@ -90,19 +110,20 @@ public class ServiceTeletravail {
         }
         try (PreparedStatement pst = cnx.prepareStatement(SELECT_BY_ID_SQL)) {
             pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                Teletravail teletravail = new Teletravail(
-                        rs.getInt("IdTeletravail"),
-                        rs.getInt("IdEmploye"),
-                        rs.getDate("DateDemandeTT").toLocalDate(),
-                        rs.getDate("DateDebutTT").toLocalDate(),
-                        rs.getDate("DateFinTT").toLocalDate(),
-                        rs.getString("StatutTT"),
-                        rs.getString("RaisonTT")
-                );
-                cache.put(id, teletravail);
-                return teletravail;
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    Teletravail teletravail = new Teletravail(
+                            rs.getInt("IdTeletravail"),
+                            rs.getInt("IdEmploye"),
+                            rs.getDate("DateDemandeTT").toLocalDate(),
+                            rs.getDate("DateDebutTT").toLocalDate(),
+                            rs.getDate("DateFinTT").toLocalDate(),
+                            rs.getString("StatutTT"),
+                            rs.getString("RaisonTT")
+                    );
+                    cache.put(id, teletravail);
+                    return teletravail;
+                }
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Erreur lors de la récupération par ID : " + e.getMessage(), e);

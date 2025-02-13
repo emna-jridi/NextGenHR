@@ -25,8 +25,50 @@ public class ServiceReservationBureau {
         cnx = MyDatabase.getInstance().getCnx();
     }
 
+    // Vérifier si l'employé existe dans la table employés
+    private boolean isEmployeExists(int idEmploye) {
+        String checkEmployeSQL = "SELECT COUNT(*) FROM employés WHERE IdEmploye = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(checkEmployeSQL)) {
+            pst.setInt(1, idEmploye);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true; // Employé existe
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la vérification de l'existence de l'employé", e);
+        }
+        return false; // Employé n'existe pas
+    }
+
+    // Vérifier si le bureau existe dans la table bureau
+    private boolean isBureauExists(int idBureau) {
+        String checkBureauSQL = "SELECT COUNT(*) FROM bureau WHERE IdBureau = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(checkBureauSQL)) {
+            pst.setInt(1, idBureau);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true; // Bureau existe
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la vérification de l'existence du bureau", e);
+        }
+        return false; // Bureau n'existe pas
+    }
+
     // Ajouter une réservation
     public boolean add(ReservationBureau reservation) {
+        // Vérifier si l'employé existe
+        if (!isEmployeExists(reservation.getIdEmploye())) {
+            LOGGER.log(Level.SEVERE, "L'employé avec ID " + reservation.getIdEmploye() + " n'existe pas.");
+            return false;
+        }
+
+        // Vérifier si le bureau existe
+        if (!isBureauExists(reservation.getIdBureau())) {
+            LOGGER.log(Level.SEVERE, "Le bureau avec ID " + reservation.getIdBureau() + " n'existe pas.");
+            return false;
+        }
+
         try (PreparedStatement pst = cnx.prepareStatement(INSERT_SQL)) {
             pst.setInt(1, reservation.getIdEmploye());
             pst.setInt(2, reservation.getIdBureau());
