@@ -26,6 +26,9 @@ public class Teletravail {
         this.idTeletravail = idTeletravail;
     }
 
+    public Teletravail() {
+    }
+
     // Getters et Setters
     public int getIdTeletravail() {
         return idTeletravail;
@@ -83,16 +86,40 @@ public class Teletravail {
         this.raisonTT = raisonTT;
     }
 
-    @Override
+    // Ajoutez cette variable d'instance (en dehors des attributs existants)
+    private String nomEmploye;
+
+    // Ajoutez le getter et setter correspondant
+    public String getNomEmploye() {
+        return nomEmploye;
+    }
+
+    public void setNomEmploye(String nomEmploye) {
+        this.nomEmploye = nomEmploye;
+    }
+
+    private String statsTT; // Pour stocker "Validé: X, Refusé: Y"
+
+    public String getStatsTT() {
+        return statsTT;
+    }
+
+    public void setStatsTT(String statsTT) {
+        this.statsTT = statsTT;
+    }
+
+        @Override
     public String toString() {
         return "Teletravail{" +
                 "idTeletravail=" + idTeletravail +
-                ", idEmploye=" + idEmploye +
-                ", dateDemandeTT=" + dateDemandeTT +
-                ", dateDebutTT=" + dateDebutTT +
-                ", dateFinTT=" + dateFinTT +
-                ", statutTT='" + statutTT + '\'' +
-                ", raisonTT='" + raisonTT + '\'' +
+                "| idEmploye=" + idEmploye +
+                (nomEmploye != null ? "| nomEmploye='" + nomEmploye + '\'' : "") +
+                "| dateDemandeTT=" + dateDemandeTT +
+                "| dateDebutTT=" + dateDebutTT +
+                "| dateFinTT=" + dateFinTT +
+                "| statutTT='" + statutTT + '\'' +
+                "| raisonTT='" + raisonTT + '\'' +
                 '}';
     }
+
 }

@@ -152,4 +152,127 @@ public class ServiceTeletravail {
         }
         return teletravails;
     }
+
+    public String getEmployeeName(int idEmploye) {
+        String sql = "SELECT PrenomEmploye FROM employés WHERE IdEmploye = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, idEmploye);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("PrenomEmploye");
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la récupération du nom de l'employé : " + e.getMessage(), e);
+        }
+        return "Inconnu";
+    }
+
+
+    public boolean incrementNbTTValide(int idEmploye) {
+        String sql = "UPDATE employés SET NbTTValidé = NbTTValidé + 1 WHERE IdEmploye = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, idEmploye);
+            int affectedRows = pst.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de l'incrémentation de NbTTValidé : " + e.getMessage(), e);
+        }
+        return false;
+    }
+
+    /**
+     * Incrémente le compteur NbTTRefusé pour l'employé spécifié.
+     *
+     * @param idEmploye l'identifiant de l'employé
+     * @return true si l'opération réussit, sinon false
+     */
+    public boolean incrementNbTTRefuse(int idEmploye) {
+        String sql = "UPDATE employés SET NbTTRefusé = NbTTRefusé + 1 WHERE IdEmploye = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, idEmploye);
+            int affectedRows = pst.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de l'incrémentation de NbTTRefusé : " + e.getMessage(), e);
+        }
+        return false;
+    }
+
+    /**
+     * Récupère les compteurs de télétravail validé et refusé pour l'employé spécifié.
+     *
+     * @param idEmploye l'identifiant de l'employé
+     * @return une chaîne de caractère au format "Validé: X, Refusé: Y"
+     */
+    public String getEmployeeTTStats(int idEmploye) {
+        String sql = "SELECT " +
+                "SUM(CASE WHEN StatutTT = 'Approuvé' THEN 1 ELSE 0 END) AS nbValide, " +
+                "SUM(CASE WHEN StatutTT = 'Refusé' THEN 1 ELSE 0 END) AS nbRefuse " +
+                "FROM teletravail " +
+                "WHERE IdEmploye = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, idEmploye);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    int nbValide = rs.getInt("nbValide");
+                    int nbRefuse = rs.getInt("nbRefuse");
+                    return "Validé: " + nbValide + ", Refusé: " + nbRefuse;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors du calcul des stats : " + e.getMessage(), e);
+        }
+        return "Validé: 0, Refusé: 0";
+    }
+
+
+    public Teletravail getTeletravailById(int idEmploye) {
+        Teletravail teletravail = null;
+        String sql = "SELECT * FROM teletravail WHERE IdEmploye = ?";  // Remplacez "teletravail" par le nom de votre table
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, idEmploye);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    teletravail = new Teletravail();
+                    teletravail.setIdTeletravail(rs.getInt("IdTeletravail"));  // Remplacez par les bons noms de colonnes
+                    teletravail.setIdEmploye(rs.getInt("IdEmploye"));
+                    teletravail.setRaisonTT(rs.getString("RaisonTT"));
+                    teletravail.setDateDemandeTT(rs.getDate("DateDemandeTT").toLocalDate());
+                    teletravail.setDateDebutTT(rs.getDate("DateDebutTT").toLocalDate());
+                    teletravail.setDateFinTT(rs.getDate("DateFinTT").toLocalDate());
+                    teletravail.setStatutTT(rs.getString("StatutTT"));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la récupération du télétravail : " + e.getMessage(), e);
+        }
+        return teletravail;
+    }
+
+
+    public List<Teletravail> getTeletravailByEmploye(int idEmploye) {
+        List<Teletravail> demandes = new ArrayList<>();
+        String sql = "SELECT * FROM teletravail WHERE IdEmploye = ?";  // Remplacez par le bon nom de table
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, idEmploye);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Teletravail teletravail = new Teletravail();
+                    teletravail.setIdTeletravail(rs.getInt("IdTeletravail"));
+                    teletravail.setIdEmploye(rs.getInt("IdEmploye"));
+                    teletravail.setRaisonTT(rs.getString("RaisonTT"));
+                    teletravail.setDateDemandeTT(rs.getDate("DateDemandeTT").toLocalDate());
+                    teletravail.setDateDebutTT(rs.getDate("DateDebutTT").toLocalDate());
+                    teletravail.setDateFinTT(rs.getDate("DateFinTT").toLocalDate());
+                    teletravail.setStatutTT(rs.getString("StatutTT"));
+                    demandes.add(teletravail);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la récupération des demandes : " + e.getMessage(), e);
+        }
+        return demandes;
+    }
+
 }
