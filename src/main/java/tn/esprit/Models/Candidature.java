@@ -8,13 +8,21 @@ public class Candidature {
     private String statut;
     private String cvUrl;
     private String lettreMotivation;
+    private int offreId;
+
+    public int getOffreId() {
+        return offreId;
+    }
+
+    public void setOffreId(int offreId) {
+        this.offreId = offreId;
+    }
 
 
 
 
 
 
-    private Offreemploi offre;
 
 
 
@@ -24,12 +32,12 @@ public class Candidature {
    // private Utilisateur candidat; lien maa l user
     public Candidature() {};
 
-    public Candidature(LocalDateTime dateCandidature, String statut, String cvUrl, String lettreMotivation, Offreemploi offre) {
+    public Candidature(LocalDateTime dateCandidature, String statut, String cvUrl, String lettreMotivation, int offreId) {
         this.dateCandidature = dateCandidature;
         this.statut = statut;
         this.cvUrl = cvUrl;
         this.lettreMotivation = lettreMotivation;
-        this.offre = offre;
+        this.offreId = offreId;
     }
 
     public int getId() {
@@ -72,13 +80,7 @@ public class Candidature {
         this.lettreMotivation = lettreMotivation;
     }
 
-    public Offreemploi getOffre() {
-        return offre;
-    }
 
-    public void setOffre(Offreemploi offre) {
-        this.offre = offre;
-    }
 
     @Override
     public String toString() {
@@ -87,7 +89,7 @@ public class Candidature {
                 ", statut='" + statut + '\'' +
                 ", cvUrl='" + cvUrl + '\'' +
                 ", lettreMotivation='" + lettreMotivation + '\'' +
-                ", offre=" + offre +
+                ", offreId=" + offreId +
                 '}';
     }
 }

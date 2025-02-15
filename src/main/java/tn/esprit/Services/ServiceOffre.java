@@ -1,5 +1,6 @@
 package tn.esprit.Services;
 
+import tn.esprit.Models.Candidature;
 import tn.esprit.Models.Offreemploi;
 import tn.esprit.interfaces.IService;
 import tn.esprit.utils.MyDataBase;
@@ -69,7 +70,8 @@ public class ServiceOffre implements IService<Offreemploi> {
                 offre.setDateCreation(rs.getTimestamp("dateCreation").toLocalDateTime());  // Date de création
                 offre.setDateExpiration(rs.getTimestamp("dateExpiration").toLocalDateTime());  // Date d'expiration
                 offre.setStatut(rs.getString("statut"));  // Statut de l'offre
-                offre.setCandidaturesrecues(rs.getInt("candidaturesrecues")); // Candidatures reçues (par exemple)
+                offre.setCandidaturesrecues(rs.getInt("candidaturesrecues"));
+
 
                 // Ajouter l'offre à la liste
                 offres.add(offre);
@@ -113,6 +115,11 @@ public class ServiceOffre implements IService<Offreemploi> {
         }
 
     @Override
+    public void updatee(Candidature candidature, int offreId) {  //hedhi zeyda
+
+    }
+
+    @Override
     public void delete(int id) {
 
             String qry = "DELETE FROM offreemploi WHERE id = ?";
@@ -130,7 +137,103 @@ public class ServiceOffre implements IService<Offreemploi> {
                 System.out.println("Erreur lors de la suppression de l'offre d'emploi : " + e.getMessage());
             }
         }
+
+    @Override
+    public Offreemploi getbyid(int id) {
+        String qry = "SELECT * FROM offreemploi WHERE id = ?";
+        Offreemploi offreemploi = null; // n'initializiw l candidature
+
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id); // Définir l'ID dans la requête
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) { // Vérifier si un résultat est trouvé
+                offreemploi = new Offreemploi();
+                offreemploi.setId(rs.getInt("id"));
+                offreemploi.setCandidaturesrecues(rs.getInt("candidaturesrecues"));
+                offreemploi.setTitre(rs.getString("titre"));
+                offreemploi.setDescription(rs.getString("description"));
+                offreemploi.setTitre(rs.getString("experiencerequise"));
+                offreemploi.setCompetences(rs.getString("competences"));
+                offreemploi.setLocalisation(rs.getString("localisation"));
+                offreemploi.setExperiencerequise(rs.getString("experiencerequise"));
+                offreemploi.setNiveauEtudes((rs.getString("niveauEtudes")));
+                offreemploi.setNiveaulangues((rs.getString("niveaulangues")));
+                offreemploi.setTypecontrat(rs.getString("typecontrat"));
+                offreemploi.setDateCreation(rs.getTimestamp("dateCreation").toLocalDateTime());
+                offreemploi.setDateExpiration(rs.getTimestamp("dateExpiration").toLocalDateTime());
+                offreemploi.setStatut(rs.getString("statut"));
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'offred'emploi : " + e.getMessage());
+        }
+
+        return offreemploi; // Retourne la candidature trouvée ou null si inexistante
     }
+
+
+
+
+    @Override
+    public void ajout(Candidature candidature, int offreId) {
+
+    }
+
+    @Override
+    public void delete(int id, int offreId) {
+
+    }
+
+
+    public int getNbrCandidatures(int offreId) {
+        String qry = "SELECT COUNT(*) AS nbrCandidatures FROM candidature WHERE offreId = ?";
+        int nbrCandidatures = 0;
+
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, offreId);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                nbrCandidatures = rs.getInt("nbrCandidatures");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors du calcul du nombre de candidatures : " + e.getMessage());
+        }
+
+        return nbrCandidatures;
+    }
+
+
+
+    public Offreemploi getOffreEmploiById(int offreId) {
+        String qry = "SELECT * FROM offreemploi WHERE id = ?";
+        Offreemploi offreEmploi = null;
+
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, offreId);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                offreEmploi = new Offreemploi();
+                offreEmploi.setId(rs.getInt("id"));
+                // ... set autres attributs
+
+                // Calculer et définir le nombre de candidatures
+                int nbrCandidatures = getNbrCandidatures(offreId);
+                offreEmploi.setCandidaturesrecues(nbrCandidatures);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'offre : " + e.getMessage());
+        }
+
+        return offreEmploi;
+    }
+}
+
 
 
 

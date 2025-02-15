@@ -1,6 +1,8 @@
 package tn.esprit.Models;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class Offreemploi {
 
@@ -11,11 +13,19 @@ public class Offreemploi {
 
 
 
+    private List<Candidature> candidatures;
+
+
+
    // private List<Candidature> candidatures;
+
+
 
     public int getId() {
         return id;
     }
+
+
 
     public void setId(int id) {
         this.id = id;
@@ -116,11 +126,24 @@ public class Offreemploi {
     public void setStatut(String statut) {
         this.statut = statut;
     }
+
+
+
+
+    public List<Candidature> getCandidatures() {
+        return candidatures;
+    }
+
+    public void setCandidatures(List<Candidature> candidatures) {
+        this.candidatures = candidatures;
+    }
+
+
     public Offreemploi(){};
 
 
 
-    public Offreemploi(int candidaturesrecues, String titre, String description, String experiencerequise, String niveauEtudes, String competences, String typecontrat, String localisation, String niveaulangues, LocalDateTime dateCreation, LocalDateTime dateExpiration, String statut) {
+    public Offreemploi(int candidaturesrecues, String titre, String description, String experiencerequise, String niveauEtudes, String competences, String typecontrat, String localisation, String niveaulangues, LocalDateTime dateCreation, LocalDateTime dateExpiration, String statut,List<Candidature> candidatures) {
         this.candidaturesrecues = candidaturesrecues;
         this.titre = titre;
         this.description = description;
@@ -133,6 +156,8 @@ public class Offreemploi {
         this.dateCreation = dateCreation;
         this.dateExpiration = dateExpiration;
         this.statut= statut;
+        this.candidatures = candidatures;
+
     }
     @Override
     public String toString() {
@@ -149,8 +174,23 @@ public class Offreemploi {
                 ", dateCreation=" + dateCreation +
                 ", dateExpiration=" + dateExpiration +
                 ", statut=" + statut +
+                ", candidatures=" + candidatures +
+
                 '}';
     }
+    public boolean isValid() {
+        return dateExpiration.isAfter(LocalDateTime.now());
+    }
+    public long getDaysRemaining() {
+        // Vérifie si l'offre est valide
+        if (isValid()) {
+            // Calcule la différence entre la date actuelle et la date d'expiration en jours
+            return ChronoUnit.DAYS.between(LocalDateTime.now(), dateExpiration);
+        }
+        // Retourne 0 si l'offre est expirée
+        return 0;
+    }
+
 
 
 

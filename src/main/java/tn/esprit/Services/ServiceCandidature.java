@@ -16,8 +16,8 @@ public class ServiceCandidature implements IService<Candidature> {
         cnx = MyDataBase.getInstance().getCnx();
     }
 
-
-    @Override
+//M2THODE D4AJOUT
+   @Override
     public void add(Candidature candidature) {
         String qry = "INSERT INTO candidature (dateCandidature, statut, cvUrl, lettreMotivation) VALUES (?, ?, ?, ?)";
         try {
@@ -34,6 +34,10 @@ public class ServiceCandidature implements IService<Candidature> {
         }
 
     }
+
+
+
+
 
     @Override
     public List<Candidature> getAll() {
@@ -67,25 +71,47 @@ public class ServiceCandidature implements IService<Candidature> {
 
 
 
-    @Override
-    public void update(Candidature candidature) {
-        String qry = "UPDATE candidature SET dateCandidature=?, statut=?, cvUrl=?, lettreMotivation=? WHERE id=?";
-        try {
-            // Préparer la requête SQL avec les paramètres
-            PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));  // Conversion LocalDateTime to Timestamp
-            pstm.setString(2, candidature.getStatut());
-            pstm.setString(3, candidature.getCvUrl());
-            pstm.setString(4, candidature.getLettreMotivation());
-            pstm.setInt(5, candidature.getId());  // Assurer que l'id est bien passé
 
-            // Exécution de la mise à jour
-            pstm.executeUpdate();
-            System.out.println("Candidature mise à jour avec succès !");
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la mise à jour de la candidature : " + e.getMessage());
-        }
-    }
+    @Override
+     public void update(Candidature candidature) {
+         String qry = "UPDATE candidature SET dateCandidature=?, statut=?, cvUrl=?, lettreMotivation=? WHERE id=?";
+         try {
+             // Préparer la requête SQL avec les paramètres
+             PreparedStatement pstm = cnx.prepareStatement(qry);
+             pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));  // Conversion LocalDateTime to Timestamp
+             pstm.setString(2, candidature.getStatut());
+             pstm.setString(3, candidature.getCvUrl());
+             pstm.setString(4, candidature.getLettreMotivation());
+             pstm.setInt(5, candidature.getId());  // Assurer que l'id est bien passé
+
+             // Exécution de la mise à jour
+             pstm.executeUpdate();
+             System.out.println("Candidature mise à jour avec succès !");
+         } catch (SQLException e) {
+             System.out.println("Erreur lors de la mise à jour de la candidature : " + e.getMessage());
+         }
+     }
+   @Override
+   public void updatee(Candidature candidature, int offreId) {
+       String qry = "UPDATE candidature SET dateCandidature=?, statut=?, cvUrl=?, lettreMotivation=?, offreId=? WHERE id=?";
+       try {
+           // Préparer la requête SQL avec les paramètres
+           PreparedStatement pstm = cnx.prepareStatement(qry);
+           pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));  // Conversion LocalDateTime to Timestamp
+           pstm.setString(2, candidature.getStatut());
+           pstm.setString(3, candidature.getCvUrl());
+           pstm.setString(4, candidature.getLettreMotivation());
+           pstm.setInt(5, offreId); // Ajouter l'ID de l'offre d'emploi
+           pstm.setInt(6, candidature.getId());  // Assurer que l'id est bien passé
+
+           // Exécution de la mise à jour
+           pstm.executeUpdate();
+           System.out.println("Candidature mise à jour avec succès !");
+       } catch (SQLException e) {
+           System.out.println("Erreur lors de la mise à jour de la candidature : " + e.getMessage());
+       }
+   }
+
 
 
 
@@ -105,5 +131,77 @@ public class ServiceCandidature implements IService<Candidature> {
         }
     }
 
+    @Override
+    public Candidature getbyid(int id) {
+        String qry = "SELECT * FROM candidature WHERE id = ?";
+        Candidature candidature = null; // n'initializiw l candidature
+
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id); // Définir l'ID dans la requête
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) { // Vérifier si un résultat est trouvé
+                candidature = new Candidature();
+                candidature.setId(rs.getInt("id"));
+                candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
+                candidature.setStatut(rs.getString("statut"));
+                candidature.setCvUrl(rs.getString("cvUrl"));
+                candidature.setLettreMotivation(rs.getString("lettreMotivation"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de la candidature : " + e.getMessage());
+        }
+
+        return candidature; // Retourne la candidature trouvée ou null si inexistante
+    }
+
+    @Override
+    public void ajout(Candidature candidature, int offreId) {
+
+            // Nouvelle méthode pour ajouter la candidature avec l'ID de l'offre
+            String qry = "INSERT INTO candidature (dateCandidature, statut, cvUrl, lettreMotivation, offreId) VALUES (?, ?, ?, ?, ?)";
+            try {
+                PreparedStatement pstm = cnx.prepareStatement(qry);
+                pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
+                pstm.setString(2, candidature.getStatut());
+                pstm.setString(3, candidature.getCvUrl());
+                pstm.setString(4, candidature.getLettreMotivation());
+                pstm.setInt(5, offreId); // Ajouter l'ID de l'offre d'emploi
+
+                pstm.executeUpdate();
+                System.out.println("Candidature ajoutée avec succès !");
+            } catch (SQLException e) {
+                System.out.println("Erreur lors de l'ajout de la candidature : " + e.getMessage());
+            }
+        }
+
+
+    @Override
+    public void delete(int id, int offreId) {
+        String qry = "DELETE FROM candidature WHERE id=? AND offreId=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id);  // L'ID de la candidature à supprimer
+            pstm.setInt(2, offreId);  // Vérifie aussi l'offre associée
+
+            int rowsAffected = pstm.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Candidature supprimée avec succès !");
+            } else {
+                System.out.println("Erreur : Aucun enregistrement trouvé avec cet ID et offreId.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la suppression de la candidature : " + e.getMessage());
+        }
+    }
 
 }
+
+
+
+
+
+
+
+
