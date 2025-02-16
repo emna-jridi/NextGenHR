@@ -8,7 +8,6 @@ public class Bureau {
     private int capacite;
     private String disponibilite;
 
-    // Constructeurs
     public Bureau(int idBureau, String refBureau, int capacite, String disponibilite) {
         this.idBureau = idBureau;
         this.refBureau = Objects.requireNonNull(refBureau, "RefBureau cannot be null");
@@ -22,24 +21,38 @@ public class Bureau {
         this.disponibilite = Objects.requireNonNull(disponibilite, "Disponibilite cannot be null");
     }
 
-    // Getters & Setters
-    public int getIdBureau() { return idBureau; }
-    public void setIdBureau(int idBureau) { this.idBureau = idBureau; }
+    public int getIdBureau() {
+        return idBureau;
+    }
 
-    public String getRefBureau() { return refBureau; }
+    public void setIdBureau(int idBureau) {
+        this.idBureau = idBureau;
+    }
+
+    public String getRefBureau() {
+        return refBureau;
+    }
+
     public void setRefBureau(String refBureau) {
         this.refBureau = Objects.requireNonNull(refBureau, "RefBureau cannot be null");
     }
 
-    public int getCapacite() { return capacite; }
-    public void setCapacite(int capacite) { this.capacite = capacite; }
+    public int getCapacite() {
+        return capacite;
+    }
 
-    public String getDisponibilite() { return disponibilite; }
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
+    }
+
+    public String getDisponibilite() {
+        return disponibilite;
+    }
+
     public void setDisponibilite(String disponibilite) {
         this.disponibilite = Objects.requireNonNull(disponibilite, "Disponibilite cannot be null");
     }
 
-    // toString
     @Override
     public String toString() {
         return "Bureau{" +

@@ -2,133 +2,135 @@ package tn.esprit.services;
 
 import tn.esprit.models.Bureau;
 import tn.esprit.utils.MyDatabase;
-
 import java.sql.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ServiceBureau {
-
-    private static final Logger LOGGER = Logger.getLogger(ServiceBureau.class.getName());
-    private static final String INSERT_SQL = "INSERT INTO bureau (RefBureau, Capacite, Disponibilité) VALUES (?, ?, ?)";
-    private static final String UPDATE_SQL = "UPDATE bureau SET RefBureau = ?, Capacite = ?, Disponibilité = ? WHERE IdBureau = ?";
-    private static final String DELETE_SQL = "DELETE FROM bureau WHERE IdBureau = ?";
-    private static final String SELECT_BY_ID_SQL = "SELECT * FROM bureau WHERE IdBureau = ?";
-    private static final String SELECT_ALL_SQL = "SELECT * FROM bureau";
-
     private final Connection cnx;
-    private final Map<Integer, Bureau> cache = new HashMap<>();
 
     public ServiceBureau() {
         cnx = MyDatabase.getInstance().getCnx();
     }
 
+    public boolean existsByRef(String refBureau) {
+        String sql = "SELECT COUNT(*) FROM bureau WHERE RefBureau = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setString(1, refBureau);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true; // La référence existe déjà
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean add(Bureau bureau) {
-        return executeTransaction(() -> executeUpdate(INSERT_SQL, bureau.getRefBureau(), bureau.getCapacite(), bureau.getDisponibilite()));
+        if (isValidBureau(bureau)) {
+            String sql = "INSERT INTO bureau (RefBureau, Capacite, Disponibilité) VALUES (?, ?, ?)";
+            try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+                pst.setString(1, bureau.getRefBureau());
+                pst.setInt(2, bureau.getCapacite());
+                pst.setString(3, bureau.getDisponibilite());
+                pst.executeUpdate();
+                System.out.println("Bureau ajouté avec succès !");
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public boolean update(Bureau bureau) {
-        boolean result = executeTransaction(() -> executeUpdate(UPDATE_SQL, bureau.getRefBureau(), bureau.getCapacite(), bureau.getDisponibilite(), bureau.getIdBureau()));
-        if (result) cache.put(bureau.getIdBureau(), bureau);
-        return result;
+        if (isValidBureau(bureau)) {
+            Bureau existingBureau = getById(bureau.getIdBureau());
+            if (existingBureau != null && !existingBureau.getRefBureau().equals(bureau.getRefBureau()) &&
+                    existsByRef(bureau.getRefBureau())) {
+                System.out.println("Erreur : La référence du bureau existe déjà !");
+                return false;
+            }
+
+            String sql = "UPDATE bureau SET RefBureau = ?, Capacite = ?, Disponibilité = ? WHERE IdBureau = ?";
+            try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+                pst.setString(1, bureau.getRefBureau());
+                pst.setInt(2, bureau.getCapacite());
+                pst.setString(3, bureau.getDisponibilite());
+                pst.setInt(4, bureau.getIdBureau());
+                pst.executeUpdate();
+                System.out.println("Bureau mis à jour avec succès !");
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
-    public boolean delete(int idBureau) {
-        boolean result = executeTransaction(() -> executeUpdate(DELETE_SQL, idBureau));
-        if (result) cache.remove(idBureau);
-        return result;
+    public boolean delete(int id) {
+        String sql = "DELETE FROM bureau WHERE IdBureau = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, id);
+            pst.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public Bureau getById(int id) {
-        if (cache.containsKey(id)) {
-            LOGGER.log(Level.INFO, "Récupéré depuis le cache.");
-            return cache.get(id);
-        }
-        Bureau bureau = executeQuery(SELECT_BY_ID_SQL, rs -> new Bureau(
-                rs.getInt("IdBureau"),
-                rs.getString("RefBureau"),
-                rs.getInt("Capacite"),
-                rs.getString("Disponibilité")
-        ), id);
-        if (bureau != null) cache.put(id, bureau);
-        return bureau;
-    }
-
-    public List<Bureau> getAll() {
-        List<Bureau> bureaux = new ArrayList<>();
-        try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(SELECT_ALL_SQL)) {
-            while (rs.next()) {
-                Bureau bureau = new Bureau(
+        String sql = "SELECT * FROM bureau WHERE IdBureau = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return new Bureau(
                         rs.getInt("IdBureau"),
                         rs.getString("RefBureau"),
                         rs.getInt("Capacite"),
                         rs.getString("Disponibilité")
                 );
-                bureaux.add(bureau);
-                cache.put(bureau.getIdBureau(), bureau);
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Erreur lors de la récupération des bureaux : " + e.getMessage(), e);
-        }
-        return bureaux;
-    }
-
-    private boolean executeUpdate(String sql, Object... params) throws SQLException {
-        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
-            for (int i = 0; i < params.length; i++) {
-                pst.setObject(i + 1, params[i]);
-            }
-            return pst.executeUpdate() > 0;
-        }
-    }
-
-    private <T> T executeQuery(String sql, ResultSetMapper<T> mapper, Object... params) {
-        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
-            for (int i = 0; i < params.length; i++) {
-                pst.setObject(i + 1, params[i]);
-            }
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    return mapper.map(rs);
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Erreur lors de l'exécution de la requête : " + e.getMessage(), e);
+            e.printStackTrace();
         }
         return null;
     }
 
-    private boolean executeTransaction(TransactionAction action) {
-        try {
-            cnx.setAutoCommit(false);
-            boolean result = action.execute();
-            cnx.commit();
-            return result;
+    public List<Bureau> getAll() {
+        List<Bureau> bureaux = new ArrayList<>();
+        String sql = "SELECT * FROM bureau";
+        try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                bureaux.add(new Bureau(
+                        rs.getInt("IdBureau"),
+                        rs.getString("RefBureau"),
+                        rs.getInt("Capacite"),
+                        rs.getString("Disponibilité")
+                ));
+            }
         } catch (SQLException e) {
-            try {
-                cnx.rollback();
-                LOGGER.log(Level.SEVERE, "Transaction annulée : " + e.getMessage(), e);
-            } catch (SQLException rollbackEx) {
-                LOGGER.log(Level.SEVERE, "Erreur lors du rollback : " + rollbackEx.getMessage(), rollbackEx);
-            }
-            return false;
-        } finally {
-            try {
-                cnx.setAutoCommit(true);
-            } catch (SQLException e) {
-                LOGGER.log(Level.SEVERE, "Erreur lors de la réactivation de l'auto-commit : " + e.getMessage(), e);
-            }
+            e.printStackTrace();
         }
+        return bureaux;
     }
 
-    @FunctionalInterface
-    private interface ResultSetMapper<T> {
-        T map(ResultSet rs) throws SQLException;
-    }
+    private boolean isValidBureau(Bureau bureau) {
+        // Vérification des champs obligatoires
+        if (bureau.getRefBureau() == null || bureau.getRefBureau().trim().isEmpty() ||
+                bureau.getDisponibilite() == null || bureau.getDisponibilite().trim().isEmpty()) {
+            System.out.println("Erreur : Tous les champs sont obligatoires !");
+            return false;
+        }
 
-    @FunctionalInterface
-    private interface TransactionAction {
-        boolean execute() throws SQLException;
+        // Vérification que la capacité est un nombre valide et positif
+        if (bureau.getCapacite() <= 0) {
+            System.out.println("Erreur : La capacité doit être un nombre positif !");
+            return false;
+        }
+
+        return true;
     }
 }

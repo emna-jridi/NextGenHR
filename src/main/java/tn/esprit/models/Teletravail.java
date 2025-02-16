@@ -10,8 +10,9 @@ public class Teletravail {
     private LocalDate dateFinTT;
     private String statutTT;
     private String raisonTT;
+    private String nomEmploye; // Nom de l'employé
 
-    // Constructeur
+    // Constructeurs
     public Teletravail(int idEmploye, LocalDate dateDemandeTT, LocalDate dateDebutTT, LocalDate dateFinTT, String statutTT, String raisonTT) {
         this.idEmploye = idEmploye;
         this.dateDemandeTT = dateDemandeTT;
@@ -26,8 +27,7 @@ public class Teletravail {
         this.idTeletravail = idTeletravail;
     }
 
-    public Teletravail() {
-    }
+    public Teletravail() {}
 
     // Getters et Setters
     public int getIdTeletravail() {
@@ -86,10 +86,6 @@ public class Teletravail {
         this.raisonTT = raisonTT;
     }
 
-    // Ajoutez cette variable d'instance (en dehors des attributs existants)
-    private String nomEmploye;
-
-    // Ajoutez le getter et setter correspondant
     public String getNomEmploye() {
         return nomEmploye;
     }
@@ -98,28 +94,17 @@ public class Teletravail {
         this.nomEmploye = nomEmploye;
     }
 
-    private String statsTT; // Pour stocker "Validé: X, Refusé: Y"
-
-    public String getStatsTT() {
-        return statsTT;
-    }
-
-    public void setStatsTT(String statsTT) {
-        this.statsTT = statsTT;
-    }
-
-        @Override
+    @Override
     public String toString() {
         return "Teletravail{" +
                 "idTeletravail=" + idTeletravail +
-                "| idEmploye=" + idEmploye +
-                (nomEmploye != null ? "| nomEmploye='" + nomEmploye + '\'' : "") +
-                "| dateDemandeTT=" + dateDemandeTT +
-                "| dateDebutTT=" + dateDebutTT +
-                "| dateFinTT=" + dateFinTT +
-                "| statutTT='" + statutTT + '\'' +
-                "| raisonTT='" + raisonTT + '\'' +
+                ", idEmploye=" + idEmploye +
+                ", nomEmploye='" + nomEmploye + '\'' +
+                ", dateDemandeTT=" + dateDemandeTT +
+                ", dateDebutTT=" + dateDebutTT +
+                ", dateFinTT=" + dateFinTT +
+                ", statutTT='" + statutTT + '\'' +
+                ", raisonTT='" + raisonTT + '\'' +
                 '}';
     }
-
 }

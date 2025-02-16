@@ -17,7 +17,7 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         System.out.println("Démarrage de l'application...");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/TeletravailRH.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainView.fxml"));
         try {
             Parent root = loader.load();
             System.out.println("FXML chargé avec succès.");
@@ -27,6 +27,7 @@ public class MainFX extends Application {
             primaryStage.show();
         } catch (IOException e) {
             System.out.println("Erreur lors du chargement du FXML : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

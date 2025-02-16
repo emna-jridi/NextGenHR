@@ -13,20 +13,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class TeletravailEmController implements Initializable {
-    @FXML
-    private ListView<Teletravail> IdList; // Modifié pour stocker des objets Teletravail
 
-    @FXML
-    private DatePicker Id_Date_Fin;
-
-    @FXML
-    private TextField Id_Identifiant;
-
-    @FXML
-    private TextArea Id_Raison;
-
-    @FXML
-    private DatePicker Id_date_debut;
+    @FXML private ListView<Teletravail> IdList; // Liste des demandes de télétravail
+    @FXML private DatePicker Id_Date_Fin;
+    @FXML private TextField Id_Identifiant;
+    @FXML private TextArea Id_Raison;
+    @FXML private DatePicker Id_date_debut;
 
     private ServiceTeletravail TTService;
 
@@ -34,7 +26,7 @@ public class TeletravailEmController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         TTService = new ServiceTeletravail();
 
-        // Définir comment afficher les éléments dans la ListView
+        // Définir la façon d'afficher les éléments dans la ListView
         IdList.setCellFactory(param -> new ListCell<Teletravail>() {
             @Override
             protected void updateItem(Teletravail tt, boolean empty) {
@@ -42,19 +34,20 @@ public class TeletravailEmController implements Initializable {
                 if (empty || tt == null) {
                     setText(null);
                 } else {
-                    setText("ID: " + tt.getIdTeletravail() + " | " + tt.getRaisonTT() + " (" +
-                            tt.getDateDebutTT() + " - " + tt.getDateFinTT() + ")" + "|" + tt.getStatutTT());
+                    setText(formatTeletravail(tt)); // Affichage formaté de la demande
                 }
             }
         });
 
-        // Écouteur pour détecter la sélection
+        // Ajouter un écouteur de sélection d'élément
         IdList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 remplirChamps(newValue);
             }
         });
     }
+
+    // Affiche les demandes de télétravail pour un employé donné
     @FXML
     void AfficherTT(ActionEvent event) {
         String identifiant = Id_Identifiant.getText().trim();
@@ -64,16 +57,10 @@ public class TeletravailEmController implements Initializable {
             return;
         }
 
-        int idEmploye;
-        try {
-            idEmploye = Integer.parseInt(identifiant);
-        } catch (NumberFormatException e) {
-            showAlert("Erreur", "L'identifiant doit être un nombre.");
-            return;
-        }
+        int idEmploye = parseId(identifiant);
+        if (idEmploye == -1) return;
 
         List<Teletravail> demandes = TTService.getTeletravailByEmploye(idEmploye);
-
         if (demandes.isEmpty()) {
             showAlert("Info", "Aucune demande trouvée pour cet employé.");
             IdList.getItems().clear();
@@ -82,10 +69,12 @@ public class TeletravailEmController implements Initializable {
         }
     }
 
+    // Modifier une demande de télétravail
     @FXML
     void ModifierTT(ActionEvent event) {
-        Teletravail teletravail = IdList.getSelectionModel().getSelectedItem();
+        if (!validateFields()) return;
 
+        Teletravail teletravail = IdList.getSelectionModel().getSelectedItem();
         if (teletravail == null) {
             showAlert("Erreur", "Veuillez sélectionner une demande à modifier.");
             return;
@@ -96,32 +85,21 @@ public class TeletravailEmController implements Initializable {
         teletravail.setDateDebutTT(Id_date_debut.getValue());
         teletravail.setDateFinTT(Id_Date_Fin.getValue());
 
-        boolean isUpdated = TTService.update(teletravail);
-
-        if (isUpdated) {
+        if (TTService.update(teletravail)) {
             showAlert("Succès", "Demande de télétravail modifiée avec succès.");
-            // Mettre à jour la liste
-            afficherTTbyId(new ActionEvent());
+            afficherTTbyId(new ActionEvent()); // Rafraîchir la liste
         } else {
             showAlert("Erreur", "Erreur lors de la modification de la demande.");
         }
     }
 
+    // Ajouter une nouvelle demande de télétravail
     @FXML
     void AjouterTT(ActionEvent event) {
-        if (Id_Identifiant.getText().trim().isEmpty() || Id_Raison.getText().trim().isEmpty() ||
-                Id_date_debut.getValue() == null || Id_Date_Fin.getValue() == null) {
-            showAlert("Erreur", "Veuillez remplir tous les champs.");
-            return;
-        }
+        if (!validateFields()) return;
 
-        int idEmploye;
-        try {
-            idEmploye = Integer.parseInt(Id_Identifiant.getText().trim());
-        } catch (NumberFormatException e) {
-            showAlert("Erreur", "L'identifiant doit être un nombre.");
-            return;
-        }
+        int idEmploye = parseId(Id_Identifiant.getText().trim());
+        if (idEmploye == -1) return;
 
         Teletravail teletravail = new Teletravail();
         teletravail.setIdEmploye(idEmploye);
@@ -131,9 +109,7 @@ public class TeletravailEmController implements Initializable {
         teletravail.setDateFinTT(Id_Date_Fin.getValue());
         teletravail.setStatutTT("En attente");
 
-        boolean isAdded = TTService.add(teletravail);
-
-        if (isAdded) {
+        if (TTService.add(teletravail)) {
             showAlert("Succès", "Demande de télétravail ajoutée avec succès.");
             afficherTTbyId(new ActionEvent()); // Rafraîchir la liste
         } else {
@@ -141,6 +117,7 @@ public class TeletravailEmController implements Initializable {
         }
     }
 
+    // Remplir les champs avec les données de l'objet Teletravail sélectionné
     private void remplirChamps(Teletravail teletravail) {
         Id_Identifiant.setText(String.valueOf(teletravail.getIdEmploye()));
         Id_Raison.setText(teletravail.getRaisonTT());
@@ -148,6 +125,7 @@ public class TeletravailEmController implements Initializable {
         Id_Date_Fin.setValue(teletravail.getDateFinTT());
     }
 
+    // Afficher une alerte d'information
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -156,6 +134,7 @@ public class TeletravailEmController implements Initializable {
         alert.showAndWait();
     }
 
+    // Récupérer les demandes de télétravail d'un employé par ID
     @FXML
     void afficherTTbyId(ActionEvent event) {
         String identifiant = Id_Identifiant.getText().trim();
@@ -165,39 +144,41 @@ public class TeletravailEmController implements Initializable {
             return;
         }
 
-        int idEmploye;
-        try {
-            idEmploye = Integer.parseInt(identifiant);
-        } catch (NumberFormatException e) {
-            showAlert("Erreur", "L'identifiant doit être un nombre.");
-            return;
-        }
+        int idEmploye = parseId(identifiant);
+        if (idEmploye == -1) return;
 
-        // Récupérer les demandes de télétravail
         List<Teletravail> demandes = TTService.getTeletravailByEmploye(idEmploye);
-
         if (demandes.isEmpty()) {
             showAlert("Info", "Aucune demande trouvée pour cet employé.");
             IdList.getItems().clear();
         } else {
-            IdList.getItems().setAll(demandes); // On ajoute directement les objets Teletravail
+            IdList.getItems().setAll(demandes);
         }
     }
 
-    @FXML
-    void remplirChampsDepuisListe() {
-        Teletravail selectedTeletravail = IdList.getSelectionModel().getSelectedItem();
-
-        if (selectedTeletravail == null) {
-            showAlert("Erreur", "Veuillez sélectionner une demande de télétravail.");
-            return;
+    // Fonction utilitaire pour valider les champs du formulaire
+    private boolean validateFields() {
+        if (Id_Identifiant.getText().trim().isEmpty() || Id_Raison.getText().trim().isEmpty() ||
+                Id_date_debut.getValue() == null || Id_Date_Fin.getValue() == null) {
+            showAlert("Erreur", "Veuillez remplir tous les champs.");
+            return false;
         }
-
-        // Remplir les champs avec les valeurs de l'objet sélectionné
-        Id_Identifiant.setText(String.valueOf(selectedTeletravail.getIdEmploye()));
-        Id_Raison.setText(selectedTeletravail.getRaisonTT());
-        Id_date_debut.setValue(selectedTeletravail.getDateDebutTT());
-        Id_Date_Fin.setValue(selectedTeletravail.getDateFinTT());
+        return true;
     }
 
+    // Fonction utilitaire pour parser l'identifiant de l'employé
+    private int parseId(String identifiant) {
+        try {
+            return Integer.parseInt(identifiant);
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "L'identifiant doit être un nombre.");
+            return -1;
+        }
+    }
+
+    // Retourne un format texte de l'objet Teletravail pour l'affichage dans la ListView
+    private String formatTeletravail(Teletravail tt) {
+        return "ID: " + tt.getIdTeletravail() + " | " + tt.getRaisonTT() + " (" +
+                tt.getDateDebutTT() + " - " + tt.getDateFinTT() + ")" + "|" + tt.getStatutTT();
+    }
 }

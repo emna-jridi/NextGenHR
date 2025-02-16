@@ -2,7 +2,6 @@ package tn.esprit.models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
 
 public class ReservationBureau {
 
@@ -23,19 +22,57 @@ public class ReservationBureau {
         this.statutReservation = statutReservation;
     }
 
-    // Getters & Setters
-    public int getIdReservation() { return idReservation; }
-    public void setIdReservation(int idReservation) { this.idReservation = idReservation; }
-    public int getIdEmploye() { return idEmploye; }
-    public void setIdEmploye(int idEmploye) { this.idEmploye = idEmploye; }
-    public int getIdBureau() { return idBureau; }
-    public void setIdBureau(int idBureau) { this.idBureau = idBureau; }
-    public LocalDate getDateReservation() { return dateReservation; }
-    public void setDateReservation(LocalDate dateReservation) { this.dateReservation = dateReservation; }
-    public LocalTime getDureeReservation() { return dureeReservation; }
-    public void setDureeReservation(LocalTime dureeReservation) { this.dureeReservation = dureeReservation; }
-    public String getStatutReservation() { return statutReservation; }
-    public void setStatutReservation(String statutReservation) { this.statutReservation = statutReservation; }
+    public ReservationBureau(int idReservation, int idEmploye, int idBureau, LocalDate dateReservation, LocalTime dureeReservation, String statutReservation) {
+
+    }
+
+    public int getIdReservation() {
+        return idReservation;
+    }
+
+    public void setIdReservation(int idReservation) {
+        this.idReservation = idReservation;
+    }
+
+    public int getIdEmploye() {
+        return idEmploye;
+    }
+
+    public void setIdEmploye(int idEmploye) {
+        this.idEmploye = idEmploye;
+    }
+
+    public int getIdBureau() {
+        return idBureau;
+    }
+
+    public void setIdBureau(int idBureau) {
+        this.idBureau = idBureau;
+    }
+
+    public LocalDate getDateReservation() {
+        return dateReservation;
+    }
+
+    public void setDateReservation(LocalDate dateReservation) {
+        this.dateReservation = dateReservation;
+    }
+
+    public LocalTime getDureeReservation() {
+        return dureeReservation;
+    }
+
+    public void setDureeReservation(LocalTime dureeReservation) {
+        this.dureeReservation = dureeReservation;
+    }
+
+    public String getStatutReservation() {
+        return statutReservation;
+    }
+
+    public void setStatutReservation(String statutReservation) {
+        this.statutReservation = statutReservation;
+    }
 
     @Override
     public String toString() {

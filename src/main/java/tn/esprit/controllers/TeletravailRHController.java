@@ -18,13 +18,7 @@ import java.util.Set;
 public class TeletravailRHController implements javafx.fxml.Initializable {
 
     @FXML
-    private Button IDApprouverTT;
-    @FXML
-    private Button IDRefuserTT;
-    @FXML
-    private Button IDSupprimerTT;
-    @FXML
-    private Button IDafficherTT;
+    private Button IDApprouverTT, IDRefuserTT, IDSupprimerTT, IDafficherTT;
     @FXML
     private ComboBox<String> IDchoiceEmploye;
     @FXML
@@ -38,7 +32,7 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
     }
 
     /**
-     * Met à jour le ComboBox en affichant uniquement les employés ayant des demandes de télétravail.
+     * Met à jour le ComboBox avec les employés ayant des demandes de télétravail "En attente".
      */
     private void updateChoiceBox() {
         List<Teletravail> teletravails = TT.getAll();
@@ -46,11 +40,9 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
 
         Set<String> employeeEntries = new HashSet<>();
         for (Teletravail teletravail : teletravails) {
-            // Vérifier que l'employé a une demande en attente de validation
             if ("En attente".equals(teletravail.getStatutTT())) {
                 String employeeName = TT.getEmployeeName(teletravail.getIdEmploye());
-                String entry = employeeName + " - " + teletravail.getIdTeletravail(); // Affichage du nom et de l'ID du télétravail
-
+                String entry = employeeName + " - " + teletravail.getIdTeletravail();
                 if (!employeeEntries.contains(entry)) {
                     employeeEntries.add(entry);
                     IDchoiceEmploye.getItems().add(entry);
@@ -68,38 +60,30 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
         affichageid.getItems().clear();
 
         if (selected == null || selected.trim().isEmpty()) {
-            showAlert("Erreur", "Veuillez sélectionner un employé dans le ComboBox.");
+            showAlert("Erreur", "Veuillez sélectionner un employé.");
             return;
         }
 
-        // Extraire l'ID du télétravail à partir de la chaîne du ComboBox
         int teletravailId = extractTeletravailId(selected);
         if (teletravailId == -1) {
             showAlert("Erreur", "Format de sélection invalide.");
             return;
         }
 
-        // Récupérer toutes les demandes de télétravail pour l'employé sélectionné
         List<Teletravail> allTeletravails = TT.getAll();
         boolean found = false;
         for (Teletravail t : allTeletravails) {
-            // Si l'employé a une demande et correspond à l'ID sélectionné
             if (t.getIdTeletravail() == teletravailId && "En attente".equals(t.getStatutTT())) {
                 String stats = TT.getEmployeeTTStats(t.getIdEmploye());
-                String info = "ID: " + t.getIdTeletravail() +
-                        " | Employé: " + t.getNomEmploye() + " (" + stats + ")" +
-                        " | Date Demande: " + t.getDateDemandeTT() +
-                        " | Début: " + t.getDateDebutTT() +
-                        " | Fin: " + t.getDateFinTT() +
-                        " | Statut: " + t.getStatutTT() +
-                        " | Raison: " + t.getRaisonTT();
+                String info = String.format("ID: %d | Employé: %s (%s) | Date Demande: %s | Début: %s | Fin: %s | Statut: %s | Raison: %s",
+                        t.getIdTeletravail(), t.getNomEmploye(), stats, t.getDateDemandeTT(), t.getDateDebutTT(), t.getDateFinTT(), t.getStatutTT(), t.getRaisonTT());
                 affichageid.getItems().add(info);
                 found = true;
             }
         }
 
         if (!found) {
-            affichageid.getItems().add("Aucune demande trouvée pour l'employé sélectionné.");
+            affichageid.getItems().add("Aucune demande trouvée pour cet employé.");
         }
     }
 
@@ -108,30 +92,7 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
      */
     @FXML
     void ApprouverTT(ActionEvent event) {
-        String selected = IDchoiceEmploye.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showAlert("Erreur", "Veuillez sélectionner une demande à approuver.");
-            return;
-        }
-        int teletravailId = extractTeletravailId(selected);
-        if (teletravailId == -1) {
-            showAlert("Erreur", "Format de sélection invalide.");
-            return;
-        }
-        Teletravail selectedDemande = TT.getById(teletravailId);
-        if (selectedDemande != null) {
-            selectedDemande.setStatutTT("Approuvé");
-            if (TT.update(selectedDemande)) {
-                TT.incrementNbTTValide(selectedDemande.getIdEmploye());
-                affichageid.getItems().removeIf(item -> item.contains("ID: " + teletravailId + ","));
-                showAlert("Succès", "La demande a été approuvée.");
-            } else {
-                showAlert("Erreur", "La demande n'a pas pu être approuvée.");
-            }
-            updateChoiceBox();
-        } else {
-            showAlert("Erreur", "La demande sélectionnée n'existe pas.");
-        }
+        processTeletravailAction(event, "Approuvé");
     }
 
     /**
@@ -139,30 +100,7 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
      */
     @FXML
     void RefuserTT(ActionEvent event) {
-        String selected = IDchoiceEmploye.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showAlert("Erreur", "Veuillez sélectionner une demande à refuser.");
-            return;
-        }
-        int teletravailId = extractTeletravailId(selected);
-        if (teletravailId == -1) {
-            showAlert("Erreur", "Format de sélection invalide.");
-            return;
-        }
-        Teletravail selectedDemande = TT.getById(teletravailId);
-        if (selectedDemande != null) {
-            selectedDemande.setStatutTT("Refusé");
-            if (TT.update(selectedDemande)) {
-                TT.incrementNbTTRefuse(selectedDemande.getIdEmploye());
-                affichageid.getItems().removeIf(item -> item.contains("ID: " + teletravailId + ","));
-                showAlert("Succès", "La demande a été refusée.");
-            } else {
-                showAlert("Erreur", "La demande n'a pas pu être refusée.");
-            }
-            updateChoiceBox();
-        } else {
-            showAlert("Erreur", "La demande sélectionnée n'existe pas.");
-        }
+        processTeletravailAction(event, "Refusé");
     }
 
     /**
@@ -175,18 +113,55 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
             showAlert("Erreur", "Veuillez sélectionner une demande à supprimer.");
             return;
         }
+
         int teletravailId = extractTeletravailId(selected);
         if (teletravailId == -1) {
             showAlert("Erreur", "Format de sélection invalide.");
             return;
         }
+
+        Teletravail selectedDemande = TT.getById(teletravailId);
+        if (selectedDemande != null && TT.delete(selectedDemande.getIdTeletravail())) {
+            affichageid.getItems().removeIf(item -> item.contains("ID: " + teletravailId));
+            showAlert("Succès", "La demande a été supprimée.");
+        } else {
+            showAlert("Erreur", "La demande n'a pas pu être supprimée.");
+        }
+
+        updateChoiceBox();
+    }
+
+    /**
+     * Traite l'action de validation (approuver/refuser) d'une demande.
+     * @param event L'événement déclencheur
+     * @param statut Le statut à appliquer ("Approuvé" ou "Refusé")
+     */
+    private void processTeletravailAction(ActionEvent event, String statut) {
+        String selected = IDchoiceEmploye.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Erreur", "Veuillez sélectionner une demande.");
+            return;
+        }
+
+        int teletravailId = extractTeletravailId(selected);
+        if (teletravailId == -1) {
+            showAlert("Erreur", "Format de sélection invalide.");
+            return;
+        }
+
         Teletravail selectedDemande = TT.getById(teletravailId);
         if (selectedDemande != null) {
-            if (TT.delete(selectedDemande.getIdTeletravail())) {
-                affichageid.getItems().removeIf(item -> item.contains("ID: " + teletravailId + ","));
-                showAlert("Succès", "La demande a été supprimée.");
+            selectedDemande.setStatutTT(statut);
+            if (TT.update(selectedDemande)) {
+                if ("Approuvé".equals(statut)) {
+                    TT.incrementNbTTValide(selectedDemande.getIdEmploye());
+                } else {
+                    TT.incrementNbTTRefuse(selectedDemande.getIdEmploye());
+                }
+                affichageid.getItems().removeIf(item -> item.contains("ID: " + teletravailId));
+                showAlert("Succès", "La demande a été " + statut.toLowerCase() + ".");
             } else {
-                showAlert("Erreur", "La demande n'a pas pu être supprimée.");
+                showAlert("Erreur", "La demande n'a pas pu être " + statut.toLowerCase() + ".");
             }
             updateChoiceBox();
         } else {
@@ -195,16 +170,12 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
     }
 
     /**
-     * Extrait l'identifiant de la demande à partir de la chaîne du ComboBox.
-     * Le format attendu est "Nom de l'employé - idTeletravail".
-     *
-     * @param selected la chaîne sélectionnée
-     * @return l'identifiant sous forme d'entier ou -1 en cas d'erreur
+     * Extrait l'identifiant du télétravail à partir de la chaîne de texte sélectionnée.
      */
     private int extractTeletravailId(String selected) {
         try {
-            String[] parts = selected.split(" - "); // Le format attendu est "Nom - ID"
-            return Integer.parseInt(parts[1]); // Récupérer l'ID du télétravail
+            String[] parts = selected.split(" - ");
+            return Integer.parseInt(parts[1]);
         } catch (Exception e) {
             return -1;
         }
@@ -212,9 +183,6 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
 
     /**
      * Affiche une alerte d'information.
-     *
-     * @param title   le titre de l'alerte
-     * @param message le message à afficher
      */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
