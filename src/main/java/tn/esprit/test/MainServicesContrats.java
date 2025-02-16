@@ -1,9 +1,9 @@
-package org.example.test;
+package tn.esprit.test;
 
-import org.example.models.Contrat;
-import org.example.models.Service;
-import org.example.services.ServiceContrat;
-import org.example.services.ServiceService;
+import tn.esprit.models.Contrat;
+import tn.esprit.models.Service;
+import tn.esprit.services.ServiceContrat;
+import tn.esprit.services.ServiceService;
 
 import java.util.Date;
 import java.util.List;

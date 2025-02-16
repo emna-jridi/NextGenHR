@@ -1,4 +1,4 @@
-package org.example.models;
+package tn.esprit.models;
 
 import java.util.Date;
 

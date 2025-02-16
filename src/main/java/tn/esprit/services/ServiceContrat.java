@@ -1,9 +1,9 @@
-package org.example.services;
+package tn.esprit.services;
 
-import org.example.interfaces.IServices;
-import org.example.models.Contrat;
-import org.example.models.Service;
-import org.example.utils.MyDatabase;
+import tn.esprit.interfaces.IServices;
+import tn.esprit.models.Contrat;
+import tn.esprit.models.Service;
+import tn.esprit.utils.MyDatabase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
