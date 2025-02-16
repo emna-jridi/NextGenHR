@@ -8,21 +8,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceFormation implements IService<Formation>
-{
-    private Connection cnx ;
+public class ServiceFormation implements IService<Formation> {
+    private Connection cnx;
 
-    public ServiceFormation(){
+    public ServiceFormation() {
         cnx = MyDatabase.getInstance().getCnx();
     }
 
     @Override
     public void add(Formation formation) {
-        String qry ="INSERT INTO `formation`( `NomFormation`, `ThemeFormation`, `date`) VALUES (?,?,?)";
+        String qry = "INSERT INTO `formation`( `NomFormation`, `ThemeFormation`, `date`) VALUES (?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setString(1,formation.getNomFormation());
-pstm.setString(2,formation.getThemeFormation());
+            pstm.setString(1, formation.getNomFormation());
+            pstm.setString(2, formation.getThemeFormation());
             pstm.setDate(3, formation.getDateFormation());
             pstm.executeUpdate();
 
@@ -35,12 +34,12 @@ pstm.setString(2,formation.getThemeFormation());
     @Override
     public List<Formation> getAll() {
         List<Formation> formations = new ArrayList<>();
-            String qry ="SELECT * FROM `formation`";
+        String qry = "SELECT * FROM `formation`";
         try {
             Statement stm = cnx.createStatement();
             ResultSet rs = stm.executeQuery(qry);
 
-            while (rs.next()){
+            while (rs.next()) {
 
                 Formation f = new Formation();
                 f.setNomFormation(rs.getString("NomFormation"));
@@ -54,18 +53,20 @@ pstm.setString(2,formation.getThemeFormation());
 
 
         }
-return formations;
+        return formations;
     }
 
     @Override
     public void update(Formation formation) {
-        String qry = "UPDATE `formation` SET `IdFormation`=?,`NomFormation`=?,`ThemeFormation`=?,`date`=? WHERE `idFormation` = ?";
+
+        String qry = "UPDATE `formation` SET `NomFormation`=?,`ThemeFormation`=?,`date`=? WHERE `idFormation` = ?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setInt(1, formation.getIdFormation());
-            pstm.setString(2, formation.getNomFormation());
-            pstm.setString(3, formation.getThemeFormation());
-            pstm.setDate(4, formation.getDateFormation());
+
+            pstm.setString(1, formation.getNomFormation());
+            pstm.setString(2, formation.getThemeFormation());
+            pstm.setDate(3, formation.getDateFormation());
+            pstm.setInt(4, formation.getIdFormation());
             pstm.executeUpdate();
 
         } catch (SQLException e) {
@@ -77,7 +78,7 @@ return formations;
 
     @Override
     public void delete(Formation formation) {
-String qry = "DELETE FROM `formation` WHERE `idFormation` = ?";
+        String qry = "DELETE FROM `formation` WHERE `idFormation` = ?";
 
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
@@ -87,6 +88,28 @@ String qry = "DELETE FROM `formation` WHERE `idFormation` = ?";
             System.out.println(e.getMessage());
 
         }
-
     }
+
+    public Formation getById(int id) {
+        String qry = "SELECT * FROM `formation` WHERE `IdFormation`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement   (qry);
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                Formation f = new Formation();
+                f.setNomFormation(rs.getString("NomFormation"));
+                f.setThemeFormation(rs.getString("ThemeFormation"));
+                f.setDateFormation(rs.getDate("date"));
+                f.setIdFormation(rs.getInt("idFormation"));
+                return f;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return null;
+    }
+
 }
+

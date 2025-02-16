@@ -6,7 +6,8 @@ public class Formation {
 private int idFormation ;
 private String nomFormation , themeFormation ;
 private Date dateFormation ;
-public Formation() {}
+   // private List<Employee> employees;
+    public Formation() {}
     public Formation( int idFormation,String nomFormation, String themeFormation, Date dateFormation) {
         this.nomFormation = nomFormation;
         this.themeFormation = themeFormation;
@@ -52,15 +53,21 @@ public Formation() {}
     public void setDateFormation(Date dateFormation) {
         this.dateFormation = dateFormation;
     }
+//    public List<Employee> getEmployees() {
+//        return employees;
+//    }
+//
+//    public void setEmployees(List<Employee> employees) {
+//        this.employees = employees;
+//    }
 
 
     @Override
     public String toString() {
         return "Formation{" +
-                "idFormation=" + idFormation +
                 ", nomFormation='" + nomFormation + '\'' +
                 ", themeFormation='" + themeFormation + '\'' +
                 ", dateFormation=" + dateFormation +
-                '}';
+                '}' + "\n";
     }
 }

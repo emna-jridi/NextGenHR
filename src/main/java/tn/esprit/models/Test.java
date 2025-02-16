@@ -1,6 +1,5 @@
 package tn.esprit.models;
 
-import java.sql.Time;
 import java.sql.Date;
 
 public class Test {
@@ -81,12 +80,11 @@ private String time;
     @Override
     public String toString() {
         return "Test{" +
-                "idTest=" + idTest +
                 ", score=" + score +
                 ", idEmploye=" + idEmploye +
                 ", date=" + date +
                 ", time=" + time +
                 ", typeTest=" + typeTest +
-                '}';
+                '}'+ "\n";
     }
 }
