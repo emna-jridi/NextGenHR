@@ -2,7 +2,10 @@ package org.example.models;
 
 import java.util.Date;
 
+
+
 public class Service {
+
     private int idService;
     private String nomService;
     private String descriptionService;
@@ -12,6 +15,8 @@ public class Service {
     private String statusService;
     private int idContrat;
 
+
+    //Constructeurs
     public Service() {
     }
 
@@ -35,6 +40,8 @@ public class Service {
         this.statusService = statusService;
         this.idContrat = idContrat;
     }
+
+
 
     // Getters and Setters
     public int getIdService() {
@@ -101,6 +108,9 @@ public class Service {
         this.idContrat = idContrat;
     }
 
+
+
+    //méthode toString
     @Override
     public String toString() {
         return "Service{" +

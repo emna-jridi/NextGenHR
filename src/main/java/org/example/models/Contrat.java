@@ -1,8 +1,11 @@
 package org.example.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Contrat {
+
     private int idContrat;
     private String typeContrat;
     private Date dateDebutContrat;
@@ -11,14 +14,17 @@ public class Contrat {
     private int montantContrat;
     private String nomClient;
     private String emailClient;
-    private int idService;
+    //private int idService;
+    private List<Service> services;
+
 
     // Constructeurs
+
     public Contrat() {
     }
 
     public Contrat(int idContrat, String typeContrat, Date dateDebutContrat, Date dateFinContrat,
-                   String statusContrat, int montantContrat, String nomClient, String emailClient, int idService) {
+                   String statusContrat, int montantContrat, String nomClient, String emailClient) {
         this.idContrat = idContrat;
         this.typeContrat = typeContrat;
         this.dateDebutContrat = dateDebutContrat;
@@ -27,11 +33,12 @@ public class Contrat {
         this.montantContrat = montantContrat;
         this.nomClient = nomClient;
         this.emailClient = emailClient;
-        this.idService = idService;
+        //this.idService = idService;
+        //this.services = new ArrayList<>();
     }
 
     public Contrat(String typeContrat, Date dateDebutContrat, Date dateFinContrat,
-                   String statusContrat, int montantContrat, String nomClient, String emailClient, int idService) {
+                   String statusContrat, int montantContrat, String nomClient, String emailClient) {
         this.typeContrat = typeContrat;
         this.dateDebutContrat = dateDebutContrat;
         this.dateFinContrat = dateFinContrat;
@@ -39,8 +46,11 @@ public class Contrat {
         this.montantContrat = montantContrat;
         this.nomClient = nomClient;
         this.emailClient = emailClient;
-        this.idService = idService;
+        //this.idService = idService;
+        //this.services = new ArrayList<>();
     }
+
+
 
     // Getters et Setters
     public int getIdContrat() {
@@ -107,14 +117,28 @@ public class Contrat {
         this.emailClient = emailClient;
     }
 
-    public int getIdService() {
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+
+    /*public int getIdService() {
         return idService;
     }
 
     public void setIdService(int idService) {
         this.idService = idService;
-    }
+    }*/
 
+
+
+
+    //méthode toString
     @Override
     public String toString() {
         return "Contrat{" +
@@ -126,7 +150,8 @@ public class Contrat {
                 ", montantContrat=" + montantContrat +
                 ", nomClient='" + nomClient + '\'' +
                 ", emailClient='" + emailClient + '\'' +
-                ", idService=" + idService +
+                ", services=" + services +
+                //", idService=" + idService +
                 '}';
     }
 }
