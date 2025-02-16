@@ -1,9 +1,6 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.Date;
-
-
 
 public class conge { // Class name starts with uppercase 'C'
 

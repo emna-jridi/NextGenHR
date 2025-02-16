@@ -7,7 +7,6 @@ import services.ServiceReunion;
 import utils.DBConnection;
 
 import java.time.LocalDate;
-
 public class Main {
     public static void main(String[] args) {
         // Vérifier la connexion à la base de données
