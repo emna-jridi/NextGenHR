@@ -1,9 +1,9 @@
 package entities;
-
 import java.time.LocalDate;
 
 public class User {
 
+    // ✅ Énumération pour le rôle
     // ✅ Énumération pour le rôle
     public enum Role {
         RESPONSABLE_RH("ResponsableRH"),
@@ -36,18 +36,16 @@ public class User {
     private String adresseUser;
     private String telephoneUser;
     private String emailUser;
-    private String password;   // 🔥 Ajout de l'attribut password
     private Role role;
-
+    private String password;
     // ✅ Constructeur par défaut
     public User() {
         this.role = Role.EMPLOYE; // Par défaut = Employé
     }
 
-    // ✅ Constructeur complet avec password
+    // ✅ Constructeur complet
     public User(int idUser, String nomUser, String prenomUser, LocalDate dateNaissanceUser,
-                String adresseUser, String telephoneUser, String emailUser,
-                String password, Role role) {
+                String adresseUser, String telephoneUser, String emailUser, Role role) {
         this.idUser = idUser;
         this.nomUser = nomUser;
         this.prenomUser = prenomUser;
@@ -55,13 +53,12 @@ public class User {
         this.adresseUser = adresseUser;
         this.telephoneUser = telephoneUser;
         this.emailUser = emailUser;
-        this.password = password;   // 🔥 Initialisation du password
         this.role = role;
     }
 
-    // ✅ Constructeur sans rôle (par défaut = Employé) avec password
+    // ✅ Constructeur sans rôle (par défaut = Employé)
     public User(int idUser, String nomUser, String prenomUser, LocalDate dateNaissanceUser,
-                String adresseUser, String telephoneUser, String emailUser, String password) {
+                String adresseUser, String telephoneUser, String emailUser) {
         this.idUser = idUser;
         this.nomUser = nomUser;
         this.prenomUser = prenomUser;
@@ -69,7 +66,6 @@ public class User {
         this.adresseUser = adresseUser;
         this.telephoneUser = telephoneUser;
         this.emailUser = emailUser;
-        this.password = password;   // 🔥 Initialisation du password
         this.role = Role.EMPLOYE;
     }
 
@@ -137,7 +133,6 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-
     public String getPassword() {
         return password;
     }
@@ -146,7 +141,7 @@ public class User {
         this.password = password;
     }
 
-    // ✅ toString() sécurisé
+
     @Override
     public String toString() {
         return "User{" +
@@ -157,8 +152,9 @@ public class User {
                 ", adresseUser='" + adresseUser + '\'' +
                 ", telephoneUser='" + telephoneUser + '\'' +
                 ", emailUser='" + emailUser + '\'' +
-                ", password='****'" +  // 🔒 Masqué pour des raisons de sécurité
+                ", password='****'" +  // Sécurité : Ne pas afficher le vrai mot de passe
                 ", role=" + role.getDbValue() +
                 '}';
     }
+
 }
