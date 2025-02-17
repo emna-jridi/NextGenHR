@@ -1,62 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
+
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="tn.esprit.controllers.SallesController"
-      spacing="15" style="-fx-padding: 20;">
+<AnchorPane prefHeight="468.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.SallesController">
+    <VBox spacing="15" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
+        <!-- En-tête -->
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Gestion des Salles" />
 
-    <!-- En-tête -->
-    <Label text="Réservation de Salle" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <!-- Filtres pour afficher les salles -->
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <VBox spacing="5" />
+        </HBox>
 
-    <!-- Filtres -->
-    <HBox spacing="15" alignment="CENTER_LEFT">
-        <VBox spacing="5">
-            <Label text="Date"/>
-            <DatePicker fx:id="datePicker"/>
-        </VBox>
-
-        <VBox spacing="5">
-            <Label text="Heure"/>
-            <ComboBox fx:id="timeSlotCombo"/>
-        </VBox>
-
-        <VBox spacing="5">
-            <Label text="Type de salle"/>
-            <ComboBox fx:id="roomTypeCombo"/>
-        </VBox>
-    </HBox>
-
-    <!-- Liste des salles -->
-    <TableView fx:id="roomTable" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="refColumn" text="Référence" prefWidth="100"/>
-            <TableColumn fx:id="capacityColumn" text="Capacité" prefWidth="100"/>
-            <TableColumn fx:id="typeColumn" text="Type" prefWidth="150"/>
-            <TableColumn fx:id="statusColumn" text="Statut" prefWidth="100"/>
-        </columns>
-    </TableView>
-
-    <!-- Formulaire de réservation -->
-    <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #f5f5f5; -fx-background-radius: 5;">
-        <Label text="Détails de la réservation" style="-fx-font-weight: bold;"/>
-
-        <GridPane hgap="10" vgap="10">
-            <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS"/>
-                <ColumnConstraints hgrow="ALWAYS"/>
-            </columnConstraints>
-
-            <TextField fx:id="meetingTitleField" GridPane.columnSpan="2"/>
-            <TextArea fx:id="meetingDescField" prefRowCount="3" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
-
-            <HBox spacing="10" alignment="CENTER_RIGHT" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                <Button fx:id="reserveButton" text="Réserver" disable="true"/>
+        <!-- Liste des salles -->
+        <TableView fx:id="tableSalle" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="columnRefSalle" prefWidth="100" text="Référence" />
+                <TableColumn fx:id="columnCapacite" prefWidth="100" text="Capacité" />
+                <TableColumn fx:id="columnTypeSalle" prefWidth="150" text="Type" />
+                <TableColumn fx:id="columnDisponibilite" prefWidth="100" text="Statut" />
+            </columns>
+        </TableView>
+      <VBox>
+         <children>
+            <HBox>
+               <children>
+                     <Button fx:id="btnAfficher" onAction="#AfficherSalle" prefHeight="25.0" prefWidth="196.0" text="Afficher Salles" />
+                     <Button fx:id="btnSupprimer" onAction="#SupprimerSalle" prefHeight="25.0" prefWidth="216.0" text="Supprimer Salle" textAlignment="RIGHT">
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
             </HBox>
-        </GridPane>
+         </children>
+      </VBox>
     </VBox>
 
-    <Label fx:id="statusLabel" style="-fx-text-fill: #666;"/>
-</VBox>
+     <!-- Formulaire de gestion de salle -->
+     <VBox layoutX="481.0" layoutY="142.0" prefHeight="204.0" prefWidth="435.0" spacing="10" style="-fx-padding: 10; -fx-background-color: #f5f5f5; -fx-background-radius: 5;">
+         <Label style="-fx-font-weight: bold;" text="Détails de la salle" />
+
+         <GridPane hgap="10" vgap="10">
+             <columnConstraints>
+                 <ColumnConstraints hgrow="ALWAYS" />
+                 <ColumnConstraints hgrow="ALWAYS" />
+             </columnConstraints>
+      
+                <TextField fx:id="ReferenceSalle" promptText="Référence de la salle" GridPane.columnSpan="2" />
+             <TextField fx:id="CapacitéId" promptText="Capacité de la salle" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+
+             <ChoiceBox fx:id="TypeSalle" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+
+             <HBox alignment="CENTER_RIGHT" spacing="10" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                 <CheckBox fx:id="checkBoxDisponible" text="Disponible" />
+                 <CheckBox fx:id="checkBoxIndisponible" text="Indisponible" />
+             </HBox>
+
+             <HBox alignment="CENTER_RIGHT" spacing="10" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+         </GridPane>
+     </VBox>
+      <Button fx:id="btnModifier" layoutX="704.0" layoutY="352.0" onAction="#ModifierSalle" prefHeight="25.0" prefWidth="195.0" text="Modifier Salle" />
+      <Button fx:id="btnAjouter" layoutX="492.0" layoutY="352.0" onAction="#AjouterSalle" prefHeight="25.0" prefWidth="195.0" text="Ajouter Salle" />
+</AnchorPane>

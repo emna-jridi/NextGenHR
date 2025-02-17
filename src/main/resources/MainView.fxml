@@ -17,6 +17,9 @@
         <Button onAction="#showSalle" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Salles" />
         <Button onAction="#showTeletravailRH" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="💼 Télétravail RH" />
         <Button onAction="#showTeletravailEm" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="💼 Télétravail Employé" />
+        <Button onAction="#showReservationRH" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Afficher les reservations" />
+        <Button onAction="#showReserationSalle" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Réserver une salle" />
+
 
     </VBox>
 

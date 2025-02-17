@@ -36,6 +36,16 @@ public class MainViewController {
         switchView("/TeletravailEm.fxml");
     }
 
+    @FXML
+    private void showReservationRH() {
+        switchView("/ReservationRH.fxml");
+    }
+
+    @FXML
+    private void showReserationSalle() {
+        switchView("/ReservationSalle.fxml");
+    }
+
 
     private void switchView(String fxmlPath) {
         try {

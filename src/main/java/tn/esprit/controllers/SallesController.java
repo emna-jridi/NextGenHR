@@ -1,3 +1,4 @@
+
 package tn.esprit.controllers;
 
 import javafx.collections.FXCollections;
@@ -31,14 +32,24 @@ public class SallesController {
     public SallesController() {
         serviceSalle = new ServiceSalle();
     }
-
-    @FXML
+@FXML
     public void initialize() {
+        // Configure la colonne de la table
         configureTableColumns();
+
+        // Initialiser la liste des salles
         salleList = FXCollections.observableArrayList();
         tableSalle.setItems(salleList);
+
+        // Ajouter le listener de sélection
         addSelectionListener();
+
+        // Configurer les cases à cocher
         configureCheckBoxes();
+
+        // Ajouter les types de salle au ChoiceBox
+        ObservableList<String> roomTypes = FXCollections.observableArrayList("Formation", "Réunion", "Détente", "Jeu", "Conférence");
+        TypeSalle.setItems(roomTypes);  // Ajout des types dans le ChoiceBox
     }
 
     private void configureTableColumns() {

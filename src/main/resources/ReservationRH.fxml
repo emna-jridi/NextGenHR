@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Alert?>
+<?import javafx.scene.control.Alert.AlertType?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.RhController">
+    <children>
+        <TableView fx:id="reservationsTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="500.0">
+            <columns>
+                <TableColumn fx:id="columnNomEmploye" text="Identifiant Employé" />
+                <TableColumn fx:id="columnSalle" text="Salle" />
+                <TableColumn fx:id="columnDateReservation" text="Date Réservation" />
+                <TableColumn fx:id="columnStatut" text="Statut" />
+            </columns>
+        </TableView>
+        <TableView fx:id="sallesOccupeesTable" layoutX="14.0" layoutY="270.0" prefHeight="200.0" prefWidth="500.0">
+            <columns>
+                <TableColumn fx:id="columnRefSalle" text="Référence Salle" />
+                <TableColumn fx:id="columnCapacite" text="Capacité" />
+                <TableColumn fx:id="columnTypeSalle" text="Type Salle" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

@@ -138,4 +138,24 @@ public class ServiceSalle {
 
         return true;
     }
+
+
+    // Ajouter la méthode getIdByRef
+    public int getIdByRef(String refSalle) {
+        int idSalle = -1;
+        String query = "SELECT idSalle FROM Salle WHERE refSalle = ?";
+
+        try (PreparedStatement stmt = cnx.prepareStatement(query)) {
+            stmt.setString(1, refSalle);  // Remplace le paramètre de la requête avec la référence de la salle
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                idSalle = rs.getInt("idSalle");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idSalle;
+    }
 }
