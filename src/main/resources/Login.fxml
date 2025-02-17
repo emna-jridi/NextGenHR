@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.LoginController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox alignment="CENTER" spacing="15" layoutX="100" layoutY="50">
+        <Label text="Connexion" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+        <TextField fx:id="emailField" promptText="Email" prefWidth="300" />
+        <PasswordField fx:id="passwordField" promptText="Mot de passe" prefWidth="300" />
+
+        <Button text="Se connecter" onAction="#handleLogin" />
+
+        <Label fx:id="errorLabel" textFill="red" />
+
+        <Hyperlink text="Pas encore de compte ? S'inscrire" onAction="#goToSignUp" />
+    </VBox>
+
+</AnchorPane>
