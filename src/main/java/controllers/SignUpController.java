@@ -86,7 +86,7 @@ public class SignUpController {
         user.setAdresseUser(adresse);
         user.setTelephoneUser(telephone);
         user.setEmailUser(email);
-        user.setPassword(password); // Ajoute un champ Password à ton entité User
+        user.setPassword(password);
         user.setRole(role);
 
         // 7. Ajout dans la base de données via le Service

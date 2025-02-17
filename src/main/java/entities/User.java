@@ -3,7 +3,9 @@ import java.time.LocalDate;
 
 public class User {
 
-    // ✅ Énumération pour le rôle
+    public User(int i, String doe, String john, LocalDate of, String s, String number, String mail, String password123, Role role) {
+    }
+
     // ✅ Énumération pour le rôle
     public enum Role {
         RESPONSABLE_RH("ResponsableRH"),
@@ -54,6 +56,7 @@ public class User {
         this.telephoneUser = telephoneUser;
         this.emailUser = emailUser;
         this.role = role;
+        this.password = password;
     }
 
     // ✅ Constructeur sans rôle (par défaut = Employé)
@@ -67,6 +70,7 @@ public class User {
         this.telephoneUser = telephoneUser;
         this.emailUser = emailUser;
         this.role = Role.EMPLOYE;
+        this.password = password;
     }
 
     // ✅ Getters et Setters
