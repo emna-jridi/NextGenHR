@@ -3,27 +3,32 @@ package tn.esprit.models;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class ReservationBureau {
+public class ReservationSalle {
 
     private int idReservation;
     private int idEmploye;
-    private int idBureau;
+    private int idSalle;
     private LocalDate dateReservation;
     private LocalTime dureeReservation;
     private String statutReservation;
 
-    public ReservationBureau() {}
+    public ReservationSalle() {}
 
-    public ReservationBureau(int idEmploye, int idBureau, LocalDate dateReservation, LocalTime dureeReservation, String statutReservation) {
+    public ReservationSalle(int idEmploye, int idSalle, LocalDate dateReservation, LocalTime dureeReservation, String statutReservation) {
         this.idEmploye = idEmploye;
-        this.idBureau = idBureau;
+        this.idSalle = idSalle;
         this.dateReservation = dateReservation;
         this.dureeReservation = dureeReservation;
         this.statutReservation = statutReservation;
     }
 
-    public ReservationBureau(int idReservation, int idEmploye, int idBureau, LocalDate dateReservation, LocalTime dureeReservation, String statutReservation) {
-
+    public ReservationSalle(int idReservation, int idEmploye, int idSalle, LocalDate dateReservation, LocalTime dureeReservation, String statutReservation) {
+        this.idReservation = idReservation;
+        this.idEmploye = idEmploye;
+        this.idSalle = idSalle;
+        this.dateReservation = dateReservation;
+        this.dureeReservation = dureeReservation;
+        this.statutReservation = statutReservation;
     }
 
     public int getIdReservation() {
@@ -42,12 +47,12 @@ public class ReservationBureau {
         this.idEmploye = idEmploye;
     }
 
-    public int getIdBureau() {
-        return idBureau;
+    public int getIdSalle() {
+        return idSalle;
     }
 
-    public void setIdBureau(int idBureau) {
-        this.idBureau = idBureau;
+    public void setIdSalle(int idSalle) {
+        this.idSalle = idSalle;
     }
 
     public LocalDate getDateReservation() {
@@ -76,10 +81,10 @@ public class ReservationBureau {
 
     @Override
     public String toString() {
-        return "ReservationBureau{" +
+        return "ReservationSalle{" +
                 "idReservation=" + idReservation +
                 ", idEmploye=" + idEmploye +
-                ", idBureau=" + idBureau +
+                ", idSalle=" + idSalle +
                 ", dateReservation=" + dateReservation +
                 ", dureeReservation=" + dureeReservation +
                 ", statutReservation='" + statutReservation + '\'' +

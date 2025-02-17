@@ -11,14 +11,14 @@ public class main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ServiceTeletravail serviceTeletravail = new ServiceTeletravail();
-        ServiceReservationBureau serviceReservationBureau = new ServiceReservationBureau();
-        ServiceBureau serviceBureau = new ServiceBureau();
+        ServiceReservationSalle serviceReservationSalle = new ServiceReservationSalle();
+        ServiceSalle serviceSalle = new ServiceSalle();
 
         while (true) {
             System.out.println("\nMENU TEST CRUD");
             System.out.println("1. Gestion des Télétravails");
             System.out.println("2. Gestion des Réservations de Bureau");
-            System.out.println("3. Gestion des Bureaux");
+            System.out.println("3. Gestion des Salles");
             System.out.println("4. Quitter");
             System.out.print("Choisissez une option : ");
             int choix = scanner.nextInt();
@@ -29,10 +29,10 @@ public class main {
                     menuTeletravail(scanner, serviceTeletravail);
                     break;
                 case 2:
-                    menuReservationBureau(scanner, serviceReservationBureau);
+                    menuReservationSalle(scanner, serviceReservationSalle);
                     break;
                 case 3:
-                    menuBureau(scanner, serviceBureau);
+                    menuSalle(scanner, serviceSalle);
                     break;
                 case 4:
                     System.out.println("Fermeture du programme.");
@@ -105,7 +105,7 @@ public class main {
     }
 
     // Menu pour gérer les réservations de bureaux
-    private static void menuReservationBureau(Scanner scanner, ServiceReservationBureau service) {
+    private static void menuReservationSalle(Scanner scanner, ServiceReservationSalle service) {
         System.out.println("\nGestion des Réservations");
         System.out.println("1. Ajouter");
         System.out.println("2. Consulter par ID");
@@ -117,7 +117,7 @@ public class main {
 
         switch (choix) {
             case 1:
-                ReservationBureau reservation = new ReservationBureau(3, 1, LocalDate.of(2025, 2, 12), LocalTime.of(2, 0), "Approuvé");
+                ReservationSalle reservation = new ReservationSalle(3, 1, LocalDate.of(2025, 2, 12), LocalTime.of(2, 0), "Approuvé");
                 if (service.add(reservation)) {
                     System.out.println("Ajout réussi.");
                 } else {
@@ -127,7 +127,7 @@ public class main {
             case 2:
                 System.out.print("ID : ");
                 int idR = scanner.nextInt();
-                ReservationBureau reservationFound = service.getById(idR);
+                ReservationSalle reservationFound = service.getById(idR);
                 if (reservationFound != null) {
                     System.out.println(reservationFound);
                 } else {
@@ -137,7 +137,7 @@ public class main {
             case 3:
                 System.out.print("ID : ");
                 int idUpdate = scanner.nextInt();
-                ReservationBureau rb = service.getById(idUpdate);
+                ReservationSalle rb = service.getById(idUpdate);
                 if (rb != null) {
                     rb.setStatutReservation("Annulé");
                     if (service.update(rb)) {
@@ -163,9 +163,9 @@ public class main {
         }
     }
 
-    // Menu pour gérer les bureaux
-    private static void menuBureau(Scanner scanner, ServiceBureau service) {
-        System.out.println("\nGestion des Bureaux");
+    // Menu pour gérer les salles
+    private static void menuSalle(Scanner scanner, ServiceSalle service) {
+        System.out.println("\nGestion des Salles");
         System.out.println("1. Ajouter");
         System.out.println("2. Afficher tous");
         System.out.println("3. Modifier");
@@ -176,34 +176,34 @@ public class main {
 
         switch (choix) {
             case 1:
-                Bureau bureau = new Bureau("105", 10, "Disponible");
-                if (service.add(bureau)) {
+                Salle nouvelleSalle = new Salle("105", 10, "Réunion", "Disponible"); // Ajout du type de salle
+                if (service.add(nouvelleSalle)) {
                     System.out.println("Ajout réussi.");
                 } else {
                     System.out.println("Echec de l'ajout.");
                 }
                 break;
             case 2:
-                List<Bureau> bureaux = service.getAll();
-                if (!bureaux.isEmpty()) {
-                    bureaux.forEach(System.out::println);
+                List<Salle> salles = service.getAll();
+                if (!salles.isEmpty()) {
+                    salles.forEach(System.out::println);
                 } else {
-                    System.out.println("Aucun bureau trouvé.");
+                    System.out.println("Aucune salle trouvée.");
                 }
                 break;
             case 3:
                 System.out.print("ID : ");
                 int idUpdate = scanner.nextInt();
-                Bureau bureauUpdate = service.getById(idUpdate);
-                if (bureauUpdate != null) {
-                    bureauUpdate.setCapacite(12);
-                    if (service.update(bureauUpdate)) {
+                Salle salleUpdate = service.getById(idUpdate);
+                if (salleUpdate != null) {
+                    salleUpdate.setCapacite(12);
+                    if (service.update(salleUpdate)) {
                         System.out.println("Mise à jour réussie.");
                     } else {
                         System.out.println("Echec de la mise à jour.");
                     }
                 } else {
-                    System.out.println("Bureau introuvable.");
+                    System.out.println("Salle introuvable.");
                 }
                 break;
             case 4:
@@ -212,7 +212,7 @@ public class main {
                 if (service.delete(idDelete)) {
                     System.out.println("Suppression réussie.");
                 } else {
-                    System.out.println("Impossible de supprimer ce bureau.");
+                    System.out.println("Impossible de supprimer cette salle.");
                 }
                 break;
             default:

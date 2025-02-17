@@ -3,7 +3,6 @@ package tn.esprit.controllers;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -24,14 +23,19 @@ public class MainViewController {
     }
 
     @FXML
-    private void showBureau() {
-        switchView("/Bureau.fxml");
+    private void showSalle() {
+        switchView("/Salle.fxml");
     }
 
     @FXML
     private void showTeletravailRH() {
         switchView("/TeletravailRH.fxml");
     }
+    @FXML
+    private void showTeletravailEm() {
+        switchView("/TeletravailEm.fxml");
+    }
+
 
     private void switchView(String fxmlPath) {
         try {
