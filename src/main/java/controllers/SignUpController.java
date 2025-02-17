@@ -2,6 +2,7 @@ package controllers;
 
 import entities.User;
 import entities.User.Role;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import services.ServiceUser;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 public class SignUpController {
 
@@ -41,15 +43,33 @@ public class SignUpController {
     // 🔥 Instance du Service pour le CRUD
     private final ServiceUser serviceUser = new ServiceUser();
 
+    /**
+     * Méthode pour gérer la sélection des CheckBox
+     */
+    @FXML
+    private void handleCheckboxSelection(ActionEvent event) {
+        CheckBox source = (CheckBox) event.getSource();
+
+        // Si Employé est sélectionné, désélectionner RH et vice versa
+        if (source.equals(checkboxEmploye)) {
+            checkboxRH.setSelected(false);
+        } else if (source.equals(checkboxRH)) {
+            checkboxEmploye.setSelected(false);
+        }
+    }
+
+    /**
+     * Méthode pour gérer l'inscription
+     */
     @FXML
     private void handleSignUp() {
         // 1. Récupérer les données
-        String nom = nomField.getText();
-        String prenom = prenomField.getText();
+        String nom = nomField.getText().trim();
+        String prenom = prenomField.getText().trim();
         LocalDate dateNaissance = dateNaissanceField.getValue();
-        String adresse = adresseField.getText();
-        String telephone = telephoneField.getText();
-        String email = emailField.getText();
+        String adresse = adresseField.getText().trim();
+        String telephone = telephoneField.getText().trim();
+        String email = emailField.getText().trim();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
@@ -66,19 +86,28 @@ public class SignUpController {
             return;
         }
 
-        // 4. Vérification des rôles
+        // 4. Validation de l'email
+        if (!isValidEmail(email)) {
+            errorLabel.setText("Email invalide !");
+            return;
+        }
+
+        // 5. Validation du téléphone
+        if (!isValidPhone(telephone)) {
+            errorLabel.setText("Téléphone invalide !");
+            return;
+        }
+
+        // 6. Vérification des rôles
         if (!checkboxEmploye.isSelected() && !checkboxRH.isSelected()) {
             errorLabel.setText("Veuillez sélectionner au moins un rôle !");
             return;
         }
 
-        // 5. Détermination du rôle
-        Role role = Role.EMPLOYE; // Par défaut
-        if (checkboxRH.isSelected()) {
-            role = Role.RESPONSABLE_RH;
-        }
+        // 7. Détermination du rôle
+        Role role = checkboxEmploye.isSelected() ? Role.EMPLOYE : Role.RESPONSABLE_RH;
 
-        // 6. Création de l'utilisateur
+        // 8. Création de l'utilisateur
         User user = new User();
         user.setNomUser(nom);
         user.setPrenomUser(prenom);
@@ -89,14 +118,33 @@ public class SignUpController {
         user.setPassword(password);
         user.setRole(role);
 
-        // 7. Ajout dans la base de données via le Service
+        // 9. Ajout dans la base de données via le Service
         serviceUser.add(user);
 
-        // 8. Confirmation et redirection
+        // 10. Confirmation et redirection
         errorLabel.setText("Inscription réussie !");
         goToLogin();
     }
 
+    /**
+     * Validation de l'email avec une expression régulière
+     */
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return Pattern.compile(emailRegex).matcher(email).matches();
+    }
+
+    /**
+     * Validation du téléphone (Exemple : Numéro à 10 chiffres)
+     */
+    private boolean isValidPhone(String phone) {
+        String phoneRegex = "^\\d{10}$";
+        return Pattern.compile(phoneRegex).matcher(phone).matches();
+    }
+
+    /**
+     * Redirection vers la page de connexion
+     */
     @FXML
     private void goToLogin() {
         try {
