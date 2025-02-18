@@ -2,17 +2,22 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.UserController">
 
+    <!-- Barre de recherche en haut -->
     <top>
-        <HBox spacing="10" padding="10">
-            <Label text="Rechercher :"/>
-            <TextField fx:id="txtRecherche" promptText="Nom, Prénom ou Email"/>
-            <Button text="Ajouter Utilisateur" onAction="#ajouterUtilisateur"/>
+        <HBox spacing="10">
+            <children>
+                <Label text="Rechercher :"/>
+                <TextField fx:id="txtRecherche" promptText="Nom, Prénom ou Email"/>
+                <Button text="Ajouter Utilisateur" onAction="#ajouterUtilisateur"/>
+            </children>
         </HBox>
     </top>
 
+    <!-- Tableau d'utilisateurs au centre -->
     <center>
         <TableView fx:id="tableViewUsers">
             <columns>
@@ -24,7 +29,5 @@
             </columns>
         </TableView>
     </center>
-
-
 
 </BorderPane>

@@ -112,19 +112,19 @@ public class LoginController {
     @FXML
     private void goToDashboard() {
         try {
-            // Charger le fichier FXML du Dashboard
+            System.out.println("🔄 Redirection vers le Dashboard..."); // Débug
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard.fxml"));
             Parent root = loader.load();
-
-            // Obtenir la fenêtre actuelle et changer la scène
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Dashboard"); // Optionnel : Changer le titre de la fenêtre
+            stage.setTitle("Dashboard");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
 }
+
+
+
