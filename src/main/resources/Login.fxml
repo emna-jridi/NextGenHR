@@ -2,18 +2,22 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.VBox?> <!-- Ajout de VBox -->
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.LoginController"
             prefHeight="400.0" prefWidth="600.0">
 
-    <VBox alignment="CENTER" spacing="15" layoutX="100" layoutY="50">
+    <!-- Centrage du contenu dans l'AnchorPane -->
+    <VBox alignment="CENTER" spacing="15">
         <Label text="Connexion" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
         <TextField fx:id="emailField" promptText="Email" prefWidth="300" />
         <PasswordField fx:id="passwordField" promptText="Mot de passe" prefWidth="300" />
 
+        <!-- Utilisation de handleLogin() pour la connexion -->
         <Button text="Se connecter" onAction="#handleLogin" />
 
         <Label fx:id="errorLabel" textFill="red" />

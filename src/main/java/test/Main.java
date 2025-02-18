@@ -8,6 +8,11 @@ import entities.User.Role;
 import java.time.LocalDate;
 import java.util.List;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 public class Main {
     public static void main(String[] args) {
         // ✅ Vérification de la connexion à la base de données
@@ -142,5 +147,26 @@ public class Main {
     // Méthode pour vérifier la validité du numéro de téléphone (10 chiffres)
     public static boolean isValidPhoneNumber(String phoneNumber) {
         return phoneNumber != null && phoneNumber.matches("\\d{10}");
+    }
+
+
+    public void start(Stage primaryStage) {
+        try {
+            // Charger le fichier FXML
+            Parent root = FXMLLoader.load(getClass().getResource("/views/dashboard.fxml"));
+
+            // Définir le titre de la fenêtre
+            primaryStage.setTitle("Gestion des Utilisateurs");
+
+            // Définir la scène et ses dimensions
+            Scene scene = new Scene(root, 1000, 600);
+            primaryStage.setScene(scene);
+
+            // Afficher la fenêtre
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

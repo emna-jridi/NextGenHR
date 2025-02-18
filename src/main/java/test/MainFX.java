@@ -10,10 +10,14 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/SignUp.fxml"));
+            // Charger le fichier Login.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+            Parent root = loader.load();
+
+            // Configurer la scène
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Inscription");
+            primaryStage.setTitle("Connexion");
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

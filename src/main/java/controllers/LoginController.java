@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import utils.DBConnection;
 
-
 import java.io.IOException;
 
 public class LoginController {
@@ -36,7 +35,6 @@ public class LoginController {
         emailField.textProperty().addListener((observable, oldValue, newValue) -> errorLabel.setText(""));
         passwordField.textProperty().addListener((observable, oldValue, newValue) -> errorLabel.setText(""));
     }
-
 
     @FXML
     private void handleLogin() {
@@ -62,8 +60,17 @@ public class LoginController {
             ResultSet rs = pstm.executeQuery();
 
             if (rs.next()) { // Si un utilisateur est trouvé
-                System.out.println("✅ Connexion réussie !");
-                goToHome(); // Navigation vers la page principale
+                String role = rs.getString("Role"); // Récupère le rôle de l'utilisateur
+                System.out.println("✅ Connexion réussie ! Rôle : " + role);
+
+                // Redirection selon le rôle
+                if (role.equalsIgnoreCase("ResponsableRH")) {
+                    goToDashboard(); // Redirection vers le dashboard
+                } else if (role.equalsIgnoreCase("Employe")) {
+                    goToHome(); // Redirection vers la Home Page
+                } else {
+                    errorLabel.setText("❌ Rôle non reconnu !");
+                }
             } else {
                 errorLabel.setText("❌ Email ou mot de passe incorrect !");
             }
@@ -72,7 +79,9 @@ public class LoginController {
             errorLabel.setText("❌ Une erreur est survenue !");
         }
     }
-    // Méthode pour naviguer vers Home.fxml après connexion réussie
+
+    // Méthode pour naviguer vers Home.fxml pour l'employé
+    @FXML
     private void goToHome() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home.fxml"));
@@ -84,6 +93,8 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
+    // Méthode pour naviguer vers SignUp.fxml
     @FXML
     private void goToSignUp() {
         try {
@@ -96,5 +107,24 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
+    // Méthode pour naviguer vers dashboard.fxml pour responsable-rh
+    @FXML
+    private void goToDashboard() {
+        try {
+            // Charger le fichier FXML du Dashboard
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard.fxml"));
+            Parent root = loader.load();
+
+            // Obtenir la fenêtre actuelle et changer la scène
+            Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Dashboard"); // Optionnel : Changer le titre de la fenêtre
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

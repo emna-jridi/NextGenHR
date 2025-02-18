@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.UserController">
+
+    <top>
+        <HBox spacing="10" padding="10">
+            <Label text="Rechercher :"/>
+            <TextField fx:id="txtRecherche" promptText="Nom, Prénom ou Email"/>
+            <Button text="Ajouter Utilisateur" onAction="#ajouterUtilisateur"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tableViewUsers">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colNom" text="Nom" prefWidth="100"/>
+                <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="100"/>
+                <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
+                <TableColumn fx:id="colRole" text="Rôle" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+
+
+
+</BorderPane>
