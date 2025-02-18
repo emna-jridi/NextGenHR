@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import tn.esprit.models.Contrat;
 import tn.esprit.services.ServiceContrat;
@@ -17,6 +18,7 @@ import tn.esprit.services.ServiceContrat;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ListContrats {
 
@@ -32,7 +34,6 @@ public class ListContrats {
     private TableColumn<Contrat, String> colDateFin;
     @FXML
     private TableColumn<Contrat, String> colStatut;
-
     @FXML
     private TableColumn<Contrat, Integer> colMontant;
     @FXML
@@ -43,6 +44,15 @@ public class ListContrats {
     private Button btnModifier;
     @FXML
     private Button btnSupprimer;
+    @FXML
+    private TextField searchField; // Search bar TextField
+
+    @FXML
+    private CheckBox chkFiltrerActifs; // Case à cocher pour filtrer les contrats actifs
+    @FXML
+    private CheckBox chkTriMontantAsc; // Case à cocher pour trier par montant ascendant
+    @FXML
+    private CheckBox chkTriMontantDesc; // Case à cocher pour trier par montant descendant
 
     private final ServiceContrat contratService = new ServiceContrat();
     private ObservableList<Contrat> contratList;
@@ -65,9 +75,8 @@ public class ListContrats {
     private void loadContrats() {
         List<Contrat> contrats = contratService.getAll();
         for (Contrat contrat : contrats) {
-            // Assurez-vous que chaque contrat a un statut, sinon, vous pouvez lui assigner un statut par défaut
             if (contrat.getStatusContrat() == null) {
-                contrat.setStatusContrat("Actif");  // Statut par défaut si non défini
+                contrat.setStatusContrat("Actif");  // Default status
             }
         }
         contratList = FXCollections.observableArrayList(contrats);
@@ -94,7 +103,6 @@ public class ListContrats {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            // Rafraîchir la liste après modification
             loadContrats();
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,24 +129,19 @@ public class ListContrats {
         }
     }
 
-
-
     @FXML
     private void ajouterContrat(ActionEvent event) {
         try {
-            // Charger le fichier FXML de la page AjouterContrat
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterContrat.fxml"));
             Parent root = loader.load();
 
-            // Créer une nouvelle scène avec la page AjouterContrat
             Stage stage = new Stage();
             stage.setTitle("Ajouter un Contrat");
             stage.setScene(new Scene(root));
             stage.show();
 
-            // Passer le contrôleur ListContrats à AjouterContrat
             AjouterContrat ajouterContratController = loader.getController();
-            ajouterContratController.setOnContratAdded(() -> loadContrats()); // Callback pour actualiser la liste
+            ajouterContratController.setOnContratAdded(() -> loadContrats());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,7 +149,55 @@ public class ListContrats {
         }
     }
 
+    @FXML
+    private void handleSearch(KeyEvent event) {
+        String searchText = searchField.getText();
+        List<Contrat> filteredContrats = contratService.searchByClientName(searchText);
+        updateTableView(filteredContrats);
+    }
 
+    @FXML
+    private void filtrerContrats(ActionEvent event) {
+        List<Contrat> contrats = contratService.getAll();
+
+        // Appliquer le filtrage "Contrats Actifs"
+        if (chkFiltrerActifs.isSelected()) {
+            contrats = contrats.stream()
+                    .filter(contrat -> "Actif".equals(contrat.getStatusContrat()))
+                    .collect(Collectors.toList());
+        }
+
+        // Appliquer le tri par montant
+        if (chkTriMontantAsc.isSelected()) {
+            contrats.sort((c1, c2) -> Integer.compare(c1.getMontantContrat(), c2.getMontantContrat()));
+        } else if (chkTriMontantDesc.isSelected()) {
+            contrats.sort((c1, c2) -> Integer.compare(c2.getMontantContrat(), c1.getMontantContrat()));
+        }
+
+        // Mettre à jour la table avec les contrats filtrés et triés
+        updateTableView(contrats);
+    }
+
+    @FXML
+    private void handleTriMontantAsc(ActionEvent event) {
+        if (chkTriMontantAsc.isSelected()) {
+            chkTriMontantDesc.setSelected(false); // Décocher la case tri descendant
+        }
+        filtrerContrats(null); // Appeler la méthode de filtrage et de tri
+    }
+
+    @FXML
+    private void handleTriMontantDesc(ActionEvent event) {
+        if (chkTriMontantDesc.isSelected()) {
+            chkTriMontantAsc.setSelected(false); // Décocher la case tri ascendant
+        }
+        filtrerContrats(null); // Appeler la méthode de filtrage et de tri
+    }
+
+    private void updateTableView(List<Contrat> contrats) {
+        ObservableList<Contrat> observableContrats = FXCollections.observableArrayList(contrats);
+        tableView.setItems(observableContrats);
+    }
 
     private void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
