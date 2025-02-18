@@ -40,10 +40,11 @@ public class ServiceService implements IServices<Service> {
             return false;
         }
 
-        if (service.getDateDebutService().after(service.getDateFinService())) {
+        if (service.getDateDebutService().isAfter(service.getDateFinService())) {
             System.out.println("Erreur : La date de début ne peut pas être après la date de fin. !");
             return false;
         }
+
 
         if (service.getStatusService() == null || service.getStatusService().trim().isEmpty()) {
             System.out.println("Erreur : Le statut de service est obligatoire");
@@ -55,10 +56,10 @@ public class ServiceService implements IServices<Service> {
             return false;
         }
 
-        if (service.getIdContrat() <= 0) {
+        /*if (service.getIdContrat() <= 0) {
             System.out.println("Erreur : L'id du contrat doit étre un nombre positif !");
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -74,17 +75,17 @@ public class ServiceService implements IServices<Service> {
             return;
         }
 
-        String qry = "INSERT INTO services (NomService, DescriptionService, TypeService, DateDebutService, DateFinService, StatusService, IdContrat) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String qry = "INSERT INTO services (NomService, DescriptionService, TypeService, DateDebutService, DateFinService, StatusService) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, service.getNomService());
             pstm.setString(2, service.getDescriptionService());
             pstm.setString(3, service.getTypeService());
-            pstm.setDate(4, new java.sql.Date(service.getDateDebutService().getTime()));
-            pstm.setDate(5, new java.sql.Date(service.getDateFinService().getTime()));
+            pstm.setDate(4, java.sql.Date.valueOf(service.getDateDebutService()));
+            pstm.setDate(5, java.sql.Date.valueOf(service.getDateFinService()));
             pstm.setString(6, service.getStatusService());
-            pstm.setInt(7, service.getIdContrat());
+            //pstm.setInt(7, service.getIdContrat());
 
             pstm.executeUpdate();
 
@@ -115,10 +116,10 @@ public class ServiceService implements IServices<Service> {
                 s.setNomService(rs.getString("NomService"));
                 s.setDescriptionService(rs.getString("DescriptionService"));
                 s.setTypeService(rs.getString("TypeService"));
-                s.setDateDebutService(rs.getDate("DateDebutService"));
-                s.setDateFinService(rs.getDate("DateFinService"));
+                s.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
+                s.setDateFinService(rs.getDate("DateFinService").toLocalDate());
                 s.setStatusService(rs.getString("StatusService"));
-                s.setIdContrat(rs.getInt("IdContrat"));
+                //s.setIdContrat(rs.getInt("IdContrat"));
 
                 services.add(s);
             }
@@ -138,7 +139,7 @@ public class ServiceService implements IServices<Service> {
             return;
         }*/
 
-        String qry = "UPDATE services SET NomService = ?, DescriptionService = ?, TypeService = ?, DateDebutService = ?, DateFinService = ?, StatusService = ?, IdContrat = ? WHERE IdService = ?";
+        String qry = "UPDATE services SET NomService = ?, DescriptionService = ?, TypeService = ?, DateDebutService = ?, DateFinService = ?, StatusService = ? WHERE IdService = ?";
 
         try {
 
@@ -146,11 +147,11 @@ public class ServiceService implements IServices<Service> {
             pstm.setString(1, service.getNomService());
             pstm.setString(2, service.getDescriptionService());
             pstm.setString(3, service.getTypeService());
-            pstm.setDate(4, new java.sql.Date(service.getDateDebutService().getTime()));
-            pstm.setDate(5, new java.sql.Date(service.getDateFinService().getTime()));
+            pstm.setDate(4, java.sql.Date.valueOf(service.getDateDebutService()));
+            pstm.setDate(5, java.sql.Date.valueOf(service.getDateFinService()));
             pstm.setString(6, service.getStatusService());
-            pstm.setInt(7, service.getIdContrat());
-            pstm.setInt(8, service.getIdService());
+            //pstm.setInt(7, service.getIdContrat());
+            pstm.setInt(7, service.getIdService());
 
             pstm.executeUpdate();
 
@@ -203,10 +204,10 @@ public class ServiceService implements IServices<Service> {
                 service.setNomService(rs.getString("NomService"));
                 service.setDescriptionService(rs.getString("DescriptionService"));
                 service.setTypeService(rs.getString("TypeService"));
-                service.setDateDebutService(rs.getDate("DateDebutService"));
-                service.setDateFinService(rs.getDate("DateFinService"));
+                service.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
+                service.setDateFinService(rs.getDate("DateFinService").toLocalDate());
                 service.setStatusService(rs.getString("StatusService"));
-                service.setIdContrat(rs.getInt("IdContrat"));
+                //service.setIdContrat(rs.getInt("IdContrat"));
                 return service;
             }
         } catch (SQLException e) {
@@ -238,10 +239,10 @@ public class ServiceService implements IServices<Service> {
                 service.setNomService(rs.getString("NomService"));
                 service.setDescriptionService(rs.getString("DescriptionService"));
                 service.setTypeService(rs.getString("TypeService"));
-                service.setDateDebutService(rs.getDate("DateDebutService"));
-                service.setDateFinService(rs.getDate("DateFinService"));
+                service.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
+                service.setDateFinService(rs.getDate("DateFinService").toLocalDate());
                 service.setStatusService(rs.getString("StatusService"));
-                service.setIdContrat(rs.getInt("IdContrat"));
+                //service.setIdContrat(rs.getInt("IdContrat"));
                 services.add(service);
             }
         } catch (SQLException e) {
@@ -271,10 +272,10 @@ public class ServiceService implements IServices<Service> {
                 s.setNomService(rs.getString("NomService"));
                 s.setDescriptionService(rs.getString("DescriptionService"));
                 s.setTypeService(rs.getString("TypeService"));
-                s.setDateDebutService(rs.getDate("DateDebutService"));
-                s.setDateFinService(rs.getDate("DateFinService"));
+                s.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
+                s.setDateFinService(rs.getDate("DateFinService").toLocalDate());
                 s.setStatusService(rs.getString("StatusService"));
-                s.setIdContrat(rs.getInt("IdContrat"));
+                //s.setIdContrat(rs.getInt("IdContrat"));
 
                 services.add(s);
             }
@@ -305,10 +306,10 @@ public class ServiceService implements IServices<Service> {
                 s.setNomService(rs.getString("NomService"));
                 s.setDescriptionService(rs.getString("DescriptionService"));
                 s.setTypeService(rs.getString("TypeService"));
-                s.setDateDebutService(rs.getDate("DateDebutService"));
-                s.setDateFinService(rs.getDate("DateFinService"));
+                s.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
+                s.setDateFinService(rs.getDate("DateFinService").toLocalDate());
                 s.setStatusService(rs.getString("StatusService"));
-                s.setIdContrat(rs.getInt("IdContrat"));
+                //s.setIdContrat(rs.getInt("IdContrat"));
 
                 activeServices.add(s);
             }

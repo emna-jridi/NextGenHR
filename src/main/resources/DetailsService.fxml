@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.DetailsService">
+
+    <children>
+        <!-- Titre -->
+        <Label layoutX="20.0" layoutY="20.0" text="Détails du Service" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+        <!-- Affichage des Détails du Service -->
+        <VBox layoutX="20.0" layoutY="60.0" spacing="10.0">
+            <!-- Nom du Service -->
+            <HBox spacing="10.0">
+                <Text text="Nom du Service: " style="-fx-font-weight: bold;"/>
+                <Label fx:id="labelNomService"/>
+            </HBox>
+
+            <!-- Description -->
+            <HBox spacing="10.0">
+                <Text text="Description: " style="-fx-font-weight: bold;"/>
+                <Label fx:id="labelDescriptionService"/>
+            </HBox>
+
+            <!-- Type de Service -->
+            <HBox spacing="10.0">
+                <Text text="Type de Service: " style="-fx-font-weight: bold;"/>
+                <Label fx:id="labelTypeService"/>
+            </HBox>
+
+            <!-- Dates -->
+            <HBox spacing="10.0">
+                <Text text="Date Début: " style="-fx-font-weight: bold;"/>
+                <Label fx:id="labelDateDebut"/>
+            </HBox>
+            <HBox spacing="10.0">
+                <Text text="Date Fin: " style="-fx-font-weight: bold;"/>
+                <Label fx:id="labelDateFin"/>
+            </HBox>
+
+            <!-- Statut -->
+            <HBox spacing="10.0">
+                <Text text="Statut: " style="-fx-font-weight: bold;"/>
+                <Label fx:id="labelStatutService"/>
+            </HBox>
+        </VBox>
+
+        <!-- Bouton Retour -->
+        <Button layoutX="20.0" layoutY="400.0" text="Retour" onAction="#retour"/>
+    </children>
+</AnchorPane>

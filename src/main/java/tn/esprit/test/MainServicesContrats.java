@@ -5,6 +5,7 @@ import tn.esprit.models.Service;
 import tn.esprit.services.ServiceContrat;
 import tn.esprit.services.ServiceService;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class MainServicesContrats {
         Contrat contrat = new Contrat();
 
         // Add contrat
-        //serviceContrat.add(new Contrat("Apprentissage", new Date(2025 - 1900, 2 - 1, 16), new Date(2026 - 1900, 2 - 1, 16), "Actif", 1000, "Jean Dupont", "jean.dupont@gmail.com"));
+        //serviceContrat.add(new Contrat("Apprent", LocalDate.of(2025, 2, 18), LocalDate.of(2026, 2, 18), "Actif", 1000, "Jean Dupont", "jean.dupont@gmail.com"));
 
 
         // Retrieve contrats
@@ -41,8 +42,8 @@ public class MainServicesContrats {
         // Update contrat
         /*contrat.setIdContrat(6);
         contrat.setTypeContrat("stage3");
-        contrat.setDateDebutContrat(new Date(2025 - 1900, 3 - 1, 17));
-        contrat.setDateFinContrat(new Date(2026 - 1900, 3 - 1, 17));
+        contrat.setDateDebutContrat(LocalDate.of(2025, 2, 19));
+        contrat.setDateFinContrat(LocalDate.of(2025, 2, 19));
         contrat.setStatusContrat("Inactif");
         contrat.setMontantContrat(600);
         contrat.setNomClient("alaa");
@@ -57,7 +58,7 @@ public class MainServicesContrats {
 
 
         // Delete contrat
-        //serviceContrat.delete(7);
+        //serviceContrat.delete(9);
 
 
 
@@ -160,7 +161,7 @@ public class MainServicesContrats {
         Service service = new Service();
 
         // ajouter service
-        //serviceService.add(new Service("Sécurité informatique1", "Audit, prévention et gestion des risques en matière de cybersécurité.", "IT", new Date(2025 - 1900, 2 - 1, 15), new Date(2025 - 1900, 5 - 1, 15), "Actif", 1));
+        //serviceService.add(new Service("Sécurité informatique5", "Audit, prévention et gestion des risques en matière de cybersécurité.", "IT", LocalDate.of(2025, 2, 18), LocalDate.of(2025, 2, 18), "Inactif"));
 
 
         // Retrieve services
@@ -172,14 +173,14 @@ public class MainServicesContrats {
 
 
         // Update service
-        /*service.setIdService(7);
+        /*service.setIdService(8);
         service.setNomService("Sécurité informatique2");
         service.setDescriptionService("Audit, prévention et gestion des risques en matièr...");
         service.setTypeService("IT");
-        service.setDateDebutService(new Date(2027 - 1900, 2 - 1, 16));
-        service.setDateFinService(new Date(2028 - 1900, 2 - 1, 15));
+        service.setDateDebutService(LocalDate.of(2025, 2, 20));
+        service.setDateFinService(LocalDate.of(2025, 2, 20));
         service.setStatusService("Inactif");
-        service.setIdContrat(4);
+        //service.setIdContrat(4);
         serviceService.update(service);*/
 
 
@@ -189,7 +190,7 @@ public class MainServicesContrats {
 
 
         // Delete service
-        //serviceService.delete(7);
+        //serviceService.delete(8);
 
 
 

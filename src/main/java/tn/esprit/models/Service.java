@@ -1,5 +1,6 @@
 package tn.esprit.models;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -10,17 +11,17 @@ public class Service {
     private String nomService;
     private String descriptionService;
     private String typeService;
-    private Date dateDebutService;
-    private Date dateFinService;
+    private LocalDate dateDebutService;
+    private LocalDate dateFinService;
     private String statusService;
-    private int idContrat;
+    //private int idContrat;
 
 
     //Constructeurs
     public Service() {
     }
 
-    public Service(int idService, String nomService, String descriptionService, String typeService, Date dateDebutService, Date dateFinService, String statusService, int idContrat) {
+    public Service(int idService, String nomService, String descriptionService, String typeService, LocalDate dateDebutService, LocalDate dateFinService, String statusService) {
         this.idService = idService;
         this.nomService = nomService;
         this.descriptionService = descriptionService;
@@ -28,17 +29,17 @@ public class Service {
         this.dateDebutService = dateDebutService;
         this.dateFinService = dateFinService;
         this.statusService = statusService;
-        this.idContrat = idContrat;
+        //this.idContrat = idContrat;
     }
 
-    public Service(String nomService, String descriptionService, String typeService, Date dateDebutService, Date dateFinService, String statusService, int idContrat) {
+    public Service(String nomService, String descriptionService, String typeService, LocalDate dateDebutService, LocalDate dateFinService, String statusService) {
         this.nomService = nomService;
         this.descriptionService = descriptionService;
         this.typeService = typeService;
         this.dateDebutService = dateDebutService;
         this.dateFinService = dateFinService;
         this.statusService = statusService;
-        this.idContrat = idContrat;
+        //this.idContrat = idContrat;
     }
 
 
@@ -76,19 +77,19 @@ public class Service {
         this.typeService = typeService;
     }
 
-    public Date getDateDebutService() {
+    public LocalDate getDateDebutService() {
         return dateDebutService;
     }
 
-    public void setDateDebutService(Date dateDebutService) {
+    public void setDateDebutService(LocalDate dateDebutService) {
         this.dateDebutService = dateDebutService;
     }
 
-    public Date getDateFinService() {
+    public LocalDate getDateFinService() {
         return dateFinService;
     }
 
-    public void setDateFinService(Date dateFinService) {
+    public void setDateFinService(LocalDate dateFinService) {
         this.dateFinService = dateFinService;
     }
 
@@ -100,13 +101,13 @@ public class Service {
         this.statusService = statusService;
     }
 
-    public int getIdContrat() {
+    /*public int getIdContrat() {
         return idContrat;
     }
 
     public void setIdContrat(int idContrat) {
         this.idContrat = idContrat;
-    }
+    }*/
 
 
 
@@ -121,7 +122,7 @@ public class Service {
                 ", dateDebutService=" + dateDebutService +
                 ", dateFinService=" + dateFinService +
                 ", statusService='" + statusService + '\'' +
-                ", idContrat=" + idContrat +
+                //", idContrat=" + idContrat +
                 '}';
     }
 }

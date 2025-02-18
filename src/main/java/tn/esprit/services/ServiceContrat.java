@@ -29,10 +29,11 @@ public class ServiceContrat implements IServices<Contrat> {
             System.out.println("Erreur : Les dates de début et de fin du contrat sont obligatoires !");
             return false;
         }
-        if (contrat.getDateFinContrat().before(contrat.getDateDebutContrat())) {
+        if (contrat.getDateFinContrat().isBefore(contrat.getDateDebutContrat())) {
             System.out.println("Erreur : La date de fin doit être après la date de début !");
             return false;
         }
+
         if (contrat.getMontantContrat() < 0) {
             System.out.println("Erreur : Le montant doit être positif !");
             return false;
@@ -71,8 +72,8 @@ public class ServiceContrat implements IServices<Contrat> {
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, contrat.getTypeContrat());
-            pstm.setDate(2, new java.sql.Date(contrat.getDateDebutContrat().getTime()));
-            pstm.setDate(3, new java.sql.Date(contrat.getDateFinContrat().getTime()));
+            pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
+            pstm.setDate(3, java.sql.Date.valueOf(contrat.getDateFinContrat()));
             pstm.setString(4, contrat.getStatusContrat());
             pstm.setInt(5, contrat.getMontantContrat());
             pstm.setString(6, contrat.getNomClient());
@@ -105,8 +106,8 @@ public class ServiceContrat implements IServices<Contrat> {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
                 c.setTypeContrat(rs.getString("typeContrat"));
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat"));
-                c.setDateFinContrat(rs.getDate("dateFinContrat"));
+                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
+                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
                 c.setMontantContrat(rs.getInt("montantContrat"));
                 c.setNomClient(rs.getString("nomClient"));
@@ -185,8 +186,8 @@ public class ServiceContrat implements IServices<Contrat> {
 
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, contrat.getTypeContrat());
-            pstm.setDate(2, new java.sql.Date(contrat.getDateDebutContrat().getTime()));
-            pstm.setDate(3, new java.sql.Date(contrat.getDateFinContrat().getTime()));
+            pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
+            pstm.setDate(3, java.sql.Date.valueOf(contrat.getDateFinContrat()));
             pstm.setString(4, contrat.getStatusContrat());
             pstm.setInt(5, contrat.getMontantContrat());
             pstm.setString(6, contrat.getNomClient());
@@ -247,8 +248,8 @@ public class ServiceContrat implements IServices<Contrat> {
                 Contrat contrat = new Contrat();
                 contrat.setIdContrat(rs.getInt("idContrat"));
                 contrat.setTypeContrat(rs.getString("typeContrat"));
-                contrat.setDateDebutContrat(rs.getDate("dateDebutContrat"));
-                contrat.setDateFinContrat(rs.getDate("dateFinContrat"));
+                contrat.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
+                contrat.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 contrat.setStatusContrat(rs.getString("statusContrat"));
                 contrat.setMontantContrat(rs.getInt("montantContrat"));
                 contrat.setNomClient(rs.getString("nomClient"));
@@ -285,8 +286,8 @@ public class ServiceContrat implements IServices<Contrat> {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
                 c.setTypeContrat(rs.getString("typeContrat"));
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat"));
-                c.setDateFinContrat(rs.getDate("dateFinContrat"));
+                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
+                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
                 c.setMontantContrat(rs.getInt("montantContrat"));
                 c.setNomClient(rs.getString("nomClient"));
@@ -322,8 +323,8 @@ public class ServiceContrat implements IServices<Contrat> {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
                 c.setTypeContrat(rs.getString("typeContrat"));
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat"));
-                c.setDateFinContrat(rs.getDate("dateFinContrat"));
+                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
+                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
                 c.setMontantContrat(rs.getInt("montantContrat"));
                 c.setNomClient(rs.getString("nomClient"));
@@ -358,8 +359,8 @@ public class ServiceContrat implements IServices<Contrat> {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
                 c.setTypeContrat(rs.getString("typeContrat"));
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat"));
-                c.setDateFinContrat(rs.getDate("dateFinContrat"));
+                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
+                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
                 c.setMontantContrat(rs.getInt("montantContrat"));
                 c.setNomClient(rs.getString("nomClient"));
@@ -417,8 +418,8 @@ public class ServiceContrat implements IServices<Contrat> {
                     Contrat c = new Contrat();
                     c.setIdContrat(rs.getInt("idContrat"));
                     c.setTypeContrat(rs.getString("typeContrat"));
-                    c.setDateDebutContrat(rs.getDate("dateDebutContrat"));
-                    c.setDateFinContrat(rs.getDate("dateFinContrat"));
+                    c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
+                    c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                     c.setStatusContrat(rs.getString("statusContrat"));
                     c.setMontantContrat(rs.getInt("montantContrat"));
                     c.setNomClient(rs.getString("nomClient"));
@@ -517,8 +518,8 @@ public class ServiceContrat implements IServices<Contrat> {
                 service.setNomService(rs.getString("nomService"));
                 service.setDescriptionService(rs.getString("descriptionService"));
                 service.setTypeService(rs.getString("typeService"));
-                service.setDateDebutService(rs.getDate("dateDebutService"));
-                service.setDateFinService(rs.getDate("dateFinService"));
+                service.setDateDebutService(rs.getDate("dateDebutService").toLocalDate());
+                service.setDateFinService(rs.getDate("dateFinService").toLocalDate());
                 service.setStatusService(rs.getString("statusService"));
 
                 services.add(service);

@@ -1,5 +1,6 @@
 package tn.esprit.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,8 +9,8 @@ public class Contrat {
 
     private int idContrat;
     private String typeContrat;
-    private Date dateDebutContrat;
-    private Date dateFinContrat;
+    private LocalDate dateDebutContrat;
+    private LocalDate dateFinContrat;
     private String statusContrat;
     private int montantContrat;
     private String nomClient;
@@ -23,7 +24,7 @@ public class Contrat {
     public Contrat() {
     }
 
-    public Contrat(int idContrat, String typeContrat, Date dateDebutContrat, Date dateFinContrat,
+    public Contrat(int idContrat, String typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
                    String statusContrat, int montantContrat, String nomClient, String emailClient) {
         this.idContrat = idContrat;
         this.typeContrat = typeContrat;
@@ -37,7 +38,7 @@ public class Contrat {
         //this.services = new ArrayList<>();
     }
 
-    public Contrat(String typeContrat, Date dateDebutContrat, Date dateFinContrat,
+    public Contrat(String typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
                    String statusContrat, int montantContrat, String nomClient, String emailClient) {
         this.typeContrat = typeContrat;
         this.dateDebutContrat = dateDebutContrat;
@@ -69,19 +70,19 @@ public class Contrat {
         this.typeContrat = typeContrat;
     }
 
-    public Date getDateDebutContrat() {
+    public LocalDate getDateDebutContrat() {
         return dateDebutContrat;
     }
 
-    public void setDateDebutContrat(Date dateDebutContrat) {
+    public void setDateDebutContrat(LocalDate dateDebutContrat) {
         this.dateDebutContrat = dateDebutContrat;
     }
 
-    public Date getDateFinContrat() {
+    public LocalDate getDateFinContrat() {
         return dateFinContrat;
     }
 
-    public void setDateFinContrat(Date dateFinContrat) {
+    public void setDateFinContrat(LocalDate dateFinContrat) {
         this.dateFinContrat = dateFinContrat;
     }
 

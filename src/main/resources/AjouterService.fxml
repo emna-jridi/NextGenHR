@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="713.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterService">
+
+    <children>
+        <!-- Titre -->
+        <Label layoutX="341.0" layoutY="24.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Service" />
+
+        <!-- Nom du Service -->
+        <Label layoutX="122.0" layoutY="82.0" text="Nom du Service:" />
+        <TextField fx:id="nomService" layoutX="339.0" layoutY="78.0" prefWidth="200.0" />
+
+        <!-- Description du Service -->
+        <Label layoutX="134.0" layoutY="135.0" text="Description:" />
+        <TextArea fx:id="descriptionService" layoutX="343.0" layoutY="129.0" prefHeight="100.0" prefWidth="200.0" />
+
+        <!-- Type du Service -->
+        <Label layoutX="134.0" layoutY="260.0" text="Type de Service:" />
+        <TextField fx:id="typeService" layoutX="343.0" layoutY="256.0" prefWidth="200.0" />
+
+        <!-- Date Début du Service -->
+        <Label layoutX="145.0" layoutY="309.0" text="Date Début:" />
+        <DatePicker fx:id="dateDebutService" layoutX="364.0" layoutY="305.0" />
+
+        <!-- Date Fin du Service -->
+        <Label layoutX="153.0" layoutY="361.0" text="Date Fin:" />
+        <DatePicker fx:id="dateFinService" layoutX="364.0" layoutY="357.0" />
+
+        <!-- Statut du Service (Actif/Inactif) -->
+        <Label layoutX="145.0" layoutY="418.0" text="Statut du Service:" />
+        <RadioButton fx:id="radioActif" layoutX="392.0" layoutY="418.0" selected="true" text="Actif" />
+        <RadioButton fx:id="radioInactif" layoutX="467.0" layoutY="418.0" text="Inactif" />
+
+        <!-- Bouton Ajouter -->
+        <Button layoutX="404.0" layoutY="477.0" onAction="#ajouterService" text="Ajouter Service" />
+    </children>
+</AnchorPane>
