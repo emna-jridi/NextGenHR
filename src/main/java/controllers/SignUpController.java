@@ -138,7 +138,7 @@ public class SignUpController {
      * Validation du téléphone (Exemple : Numéro à 10 chiffres)
      */
     private boolean isValidPhone(String phone) {
-        String phoneRegex = "^\\d{10}$";
+        String phoneRegex = "^\\d{8}$";
         return Pattern.compile(phoneRegex).matcher(phone).matches();
     }
 

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -23,5 +22,8 @@
 
         <Button text="S'inscrire" onAction="#handleSignUp" />
         <Hyperlink text="Déjà un compte ? Se connecter" onAction="#goToLogin" />
+
+        <!-- 🔥 Ajout du label pour afficher les messages d'erreur -->
+        <Label fx:id="errorLabel" textFill="red" />
     </VBox>
 </AnchorPane>

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +9,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import test.Main;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
+import utils.DBConnection;
+
+
 import java.io.IOException;
 
 public class LoginController {
@@ -28,10 +37,14 @@ public class LoginController {
         passwordField.textProperty().addListener((observable, oldValue, newValue) -> errorLabel.setText(""));
     }
 
+
     @FXML
     private void handleLogin() {
+        final Logger logger = Logger.getLogger(Main.class.getName());
         String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
+
+        logger.info("Tentative de connexion avec l'email : " + email);
 
         // Vérification des champs vides
         if (email.isEmpty() || password.isEmpty()) {
@@ -39,15 +52,26 @@ public class LoginController {
             return;
         }
 
-        // Validation des identifiants
-        if (email.equals("admin@example.com") && password.equals("admin123")) {
-            System.out.println("Connexion réussie !");
-            goToHome(); // Navigation vers une autre page après connexion
-        } else {
-            errorLabel.setText("Email ou mot de passe incorrect !");
+        String qry = "SELECT * FROM user WHERE EmailUser = ? AND Password = ?";
+        Connection con = DBConnection.getInstance().getCon();
+        try {
+            PreparedStatement pstm = con.prepareStatement(qry);
+            pstm.setString(1, email);
+            pstm.setString(2, password);
+
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) { // Si un utilisateur est trouvé
+                System.out.println("✅ Connexion réussie !");
+                goToHome(); // Navigation vers la page principale
+            } else {
+                errorLabel.setText("❌ Email ou mot de passe incorrect !");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Erreur lors de la connexion : " + e.getMessage());
+            errorLabel.setText("❌ Une erreur est survenue !");
         }
     }
-
     // Méthode pour naviguer vers Home.fxml après connexion réussie
     private void goToHome() {
         try {
