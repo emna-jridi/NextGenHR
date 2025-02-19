@@ -4,6 +4,12 @@ import tn.esprit.models.Salle;
 import tn.esprit.utils.MyDatabase;
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ServiceSalle {
     private final Connection cnx;
@@ -157,5 +163,48 @@ public class ServiceSalle {
         }
 
         return idSalle;
+    }
+
+    public List<Salle> getAllSortedByReference() {
+        List<Salle> salles = getAll();
+        return salles.stream()
+                .sorted(Comparator.comparing(Salle::getRefSalle))
+                .collect(Collectors.toList());
+    }
+
+    public void exportToExcel(String filePath) {
+        List<Salle> salles = getAll();
+
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Salles");
+
+            // Créer l'en-tête
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("ID");
+            headerRow.createCell(1).setCellValue("Référence");
+            headerRow.createCell(2).setCellValue("Capacité");
+            headerRow.createCell(3).setCellValue("Type de Salle");
+            headerRow.createCell(4).setCellValue("Disponibilité");
+
+            // Remplir les données
+            int rowNum = 1;
+            for (Salle salle : salles) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(salle.getIdSalle());
+                row.createCell(1).setCellValue(salle.getRefSalle());
+                row.createCell(2).setCellValue(salle.getCapacite());
+                row.createCell(3).setCellValue(salle.getTypeSalle());
+                row.createCell(4).setCellValue(salle.getDisponibilite());
+            }
+
+            // Écrire le fichier
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+            }
+
+            System.out.println("Fichier Excel exporté avec succès !");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

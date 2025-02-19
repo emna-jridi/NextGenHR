@@ -181,4 +181,10 @@ public class TeletravailEmController implements Initializable {
         return "ID: " + tt.getIdTeletravail() + " | " + tt.getRaisonTT() + " (" +
                 tt.getDateDebutTT() + " - " + tt.getDateFinTT() + ")" + "|" + tt.getStatutTT();
     }
+    @FXML
+    void trierParId(ActionEvent event) {
+        List<Teletravail> demandesTriees = TTService.getAllSortedById();
+        IdList.getItems().clear();
+        IdList.getItems().addAll(demandesTriees);
+    }
 }

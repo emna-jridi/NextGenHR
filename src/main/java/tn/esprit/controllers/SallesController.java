@@ -7,9 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import tn.esprit.models.Salle;
 import tn.esprit.services.ServiceSalle;
 
+import java.io.File;
 import java.util.List;
 
 public class SallesController {
@@ -209,5 +211,25 @@ public class SallesController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    void trierSalles(ActionEvent event) {
+        List<Salle> sallesTriees = serviceSalle.getAllSortedByReference();
+        salleList.clear();
+        salleList.addAll(sallesTriees);
+    }
+
+    @FXML
+    void exporterSalles(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le fichier Excel");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            serviceSalle.exportToExcel(file.getAbsolutePath());
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Les salles ont été exportées avec succès !");
+        }
     }
 }

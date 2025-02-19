@@ -13,10 +13,10 @@
      <TextField fx:id="idEmployeField" layoutX="380.0" layoutY="125.0" />
 
      <Label layoutX="380.0" layoutY="162.0" text="Salle :" />
-     <ChoiceBox fx:id="salleChoiceBox" layoutX="380.0" layoutY="179.0" />
+     <ChoiceBox fx:id="salleChoiceBox" layoutX="380.0" layoutY="179.0" prefHeight="25.0" prefWidth="149.0" />
 
      <Label layoutX="378.0" layoutY="218.0" text="Date de réservation :" />
-     <DatePicker fx:id="datePicker" layoutX="378.0" layoutY="235.0" />
+     <DatePicker fx:id="datePicker" layoutX="378.0" layoutY="235.0" prefHeight="25.0" prefWidth="149.0" />
 
      <Button layoutX="419.0" layoutY="335.0" onAction="#reserverSalle" text="Réserver" />
      <TextField fx:id="dureeField" layoutX="380.0" layoutY="297.0" />

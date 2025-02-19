@@ -13,7 +13,4 @@ public interface IService<T> {
     boolean update(T t);
 
     boolean delete(T t);
-
-    Teletravail getById(int id);
-
 }

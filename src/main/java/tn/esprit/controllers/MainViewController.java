@@ -46,6 +46,38 @@ public class MainViewController {
         switchView("/ReservationSalle.fxml");
     }
 
+    @FXML
+    private void showConge() {
+        switchView("/con_form.fxml");
+    }
+
+    @FXML
+    private void showReunion() {
+        switchView("/reunion.fxml");
+    }
+
+    @FXML
+    private void showContrat() {
+        switchView("/ListeContrats.fxml");
+    }
+
+    @FXML
+    private void showServices() {
+        switchView("/ListeServices.fxml");
+    }
+
+    @FXML
+    private void showCandidature() {
+        switchView("/Candidature.fxml");
+    }
+
+    @FXML
+    private void showOffreEmploi() {
+        switchView("/AjouterOffre.fxml");
+    }
+
+
+
 
     private void switchView(String fxmlPath) {
         try {

@@ -6,6 +6,7 @@ import tn.esprit.utils.MyDatabase;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ServiceTeletravail {
 
@@ -27,7 +28,12 @@ public class ServiceTeletravail {
         }
         return false;
     }
-
+    public List<Teletravail> getAllSortedById() {
+        List<Teletravail> teletravails = getAll();
+        return teletravails.stream()
+                .sorted(Comparator.comparingInt(Teletravail::getIdTeletravail))
+                .collect(Collectors.toList());
+    }
     public boolean add(Teletravail teletravail) {
         if (!employeExists(teletravail.getIdEmploye())) {
             System.out.println("L'employé n'existe pas.");

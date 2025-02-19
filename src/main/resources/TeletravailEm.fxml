@@ -17,5 +17,6 @@
       <Button fx:id="IDmodifier" layoutX="252.0" layoutY="347.0" mnemonicParsing="false" onAction="#ModifierTT" prefHeight="25.0" prefWidth="248.0" text="Modifier" />
       <ListView fx:id="IdList" layoutX="252.0" layoutY="35.0" prefHeight="295.0" prefWidth="523.0" />
       <Button layoutX="527.0" layoutY="347.0" mnemonicParsing="false" onAction="#AfficherTT" prefHeight="25.0" prefWidth="248.0" text="Afficher" />
+      <Button layoutX="527.0" layoutY="380.0" mnemonicParsing="false" onAction="#trierParId" prefHeight="25.0" prefWidth="248.0" text="Trier par ID" />
    </children>
 </AnchorPane>
