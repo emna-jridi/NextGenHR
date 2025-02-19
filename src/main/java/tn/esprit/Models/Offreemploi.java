@@ -2,6 +2,7 @@ package tn.esprit.Models;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 public class Offreemploi {
@@ -17,7 +18,7 @@ public class Offreemploi {
 
 
 
-   // private List<Candidature> candidatures;
+
 
 
 
@@ -131,10 +132,12 @@ public class Offreemploi {
 
 
     public List<Candidature> getCandidatures() {
+
         return candidatures;
     }
 
     public void setCandidatures(List<Candidature> candidatures) {
+
         this.candidatures = candidatures;
     }
 
@@ -178,7 +181,7 @@ public class Offreemploi {
 
                 '}';
     }
-    public boolean isValid() {
+  /* public boolean isValid() {
         return dateExpiration.isAfter(LocalDateTime.now());
     }
     public long getDaysRemaining() {
@@ -189,7 +192,7 @@ public class Offreemploi {
         }
         // Retourne 0 si l'offre est expirée
         return 0;
-    }
+    }*/
 
 
 

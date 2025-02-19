@@ -44,44 +44,30 @@ public class ServiceOffre implements IService<Offreemploi> {
     @Override
     public List<Offreemploi> getAll() {
         String qry = "SELECT * FROM offreemploi";
-
-        // Liste pour stocker les résultats
         List<Offreemploi> offres = new ArrayList<>();
-
         try {
-            // Créer une déclaration SQL
             Statement stm = cnx.createStatement();
-
-            // Exécuter la requête et récupérer les résultats
             ResultSet rs = stm.executeQuery(qry);
-
-            // Parcourir les résultats et remplir la liste
             while (rs.next()) {
                 Offreemploi offre = new Offreemploi();
-                offre.setId(rs.getInt("id"));  // L'ID de l'offre
-                offre.setTitre(rs.getString("titre"));  // Titre de l'offre
-                offre.setDescription(rs.getString("description"));  // Description de l'offre
-                offre.setExperiencerequise(rs.getString("experiencerequise"));  // Expérience requise
-                offre.setNiveauEtudes(rs.getString("niveauEtudes"));  // Niveau d'études requis
-                offre.setCompetences(rs.getString("competences"));  // Compétences requises
-                offre.setTypecontrat(rs.getString("typecontrat"));  // Type de contrat
-                offre.setLocalisation(rs.getString("localisation"));  // Localisation
-                offre.setNiveaulangues(rs.getString("niveaulangues"));  // Niveau des langues
-                offre.setDateCreation(rs.getTimestamp("dateCreation").toLocalDateTime());  // Date de création
-                offre.setDateExpiration(rs.getTimestamp("dateExpiration").toLocalDateTime());  // Date d'expiration
-                offre.setStatut(rs.getString("statut"));  // Statut de l'offre
+                offre.setId(rs.getInt("id"));
+                offre.setTitre(rs.getString("titre"));
+                offre.setDescription(rs.getString("description"));
+                offre.setExperiencerequise(rs.getString("experiencerequise"));
+                offre.setNiveauEtudes(rs.getString("niveauEtudes"));
+                offre.setCompetences(rs.getString("competences"));
+                offre.setTypecontrat(rs.getString("typecontrat"));
+                offre.setLocalisation(rs.getString("localisation"));
+                offre.setNiveaulangues(rs.getString("niveaulangues"));
+                offre.setDateCreation(rs.getTimestamp("dateCreation").toLocalDateTime());
+                offre.setDateExpiration(rs.getTimestamp("dateExpiration").toLocalDateTime());
+                offre.setStatut(rs.getString("statut"));
                 offre.setCandidaturesrecues(rs.getInt("candidaturesrecues"));
-
-
-                // Ajouter l'offre à la liste
                 offres.add(offre);
             }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
-        // Retourner la liste des offres
         return offres;
     }
 
@@ -90,7 +76,6 @@ public class ServiceOffre implements IService<Offreemploi> {
 
             String qry = "UPDATE offreemploi SET titre=?, description=?, experiencerequise=?, niveauEtudes=?, competences=?, typecontrat=?, localisation=?, niveaulangues=?, dateCreation=?, dateExpiration=?, statut=?, candidaturesrecues=? WHERE id=?";
             try {
-                // Préparer la requête SQL avec les paramètres
                 PreparedStatement pstm = cnx.prepareStatement(qry);
                 pstm.setString(1, offreEmploi.getTitre());
                 pstm.setString(2, offreEmploi.getDescription());
@@ -104,9 +89,7 @@ public class ServiceOffre implements IService<Offreemploi> {
                 pstm.setTimestamp(10, Timestamp.valueOf(offreEmploi.getDateExpiration()));
                 pstm.setString(11, offreEmploi.getStatut());
                 pstm.setInt(12, offreEmploi.getCandidaturesrecues());
-                pstm.setInt(13, offreEmploi.getId()); // Assurer que l'id est bien passé
-
-                // Exécution de la mise à jour
+                pstm.setInt(13, offreEmploi.getId());
                 pstm.executeUpdate();
                 System.out.println("Offre d'emploi mise à jour avec succès !");
             } catch (SQLException e) {
@@ -114,18 +97,14 @@ public class ServiceOffre implements IService<Offreemploi> {
             }
         }
 
-    @Override
-    public void updatee(Candidature candidature, int offreId) {  //hedhi zeyda
 
-    }
 
     @Override
     public void delete(int id) {
-
             String qry = "DELETE FROM offreemploi WHERE id = ?";
             try {
                 PreparedStatement pstm = cnx.prepareStatement(qry);
-                pstm.setInt(1, id); // On passe l'id de l'offre à supprimer
+                pstm.setInt(1, id);
 
                 int rowsAffected = pstm.executeUpdate();
                 if (rowsAffected > 0) {
@@ -141,14 +120,12 @@ public class ServiceOffre implements IService<Offreemploi> {
     @Override
     public Offreemploi getbyid(int id) {
         String qry = "SELECT * FROM offreemploi WHERE id = ?";
-        Offreemploi offreemploi = null; // n'initializiw l candidature
-
+        Offreemploi offreemploi = null;
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setInt(1, id); // Définir l'ID dans la requête
+            pstm.setInt(1, id);
             ResultSet rs = pstm.executeQuery();
-
-            if (rs.next()) { // Vérifier si un résultat est trouvé
+            if (rs.next()) {
                 offreemploi = new Offreemploi();
                 offreemploi.setId(rs.getInt("id"));
                 offreemploi.setCandidaturesrecues(rs.getInt("candidaturesrecues"));
@@ -169,40 +146,28 @@ public class ServiceOffre implements IService<Offreemploi> {
         } catch (SQLException e) {
             System.out.println("Erreur lors de la récupération de l'offred'emploi : " + e.getMessage());
         }
-
-        return offreemploi; // Retourne la candidature trouvée ou null si inexistante
+        return offreemploi;
     }
 
 
 
 
-    @Override
-    public void ajout(Candidature candidature, int offreId) {
 
-    }
-
-    @Override
-    public void delete(int id, int offreId) {
-
-    }
 
 
     public int getNbrCandidatures(int offreId) {
         String qry = "SELECT COUNT(*) AS nbrCandidatures FROM candidature WHERE offreId = ?";
         int nbrCandidatures = 0;
-
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, offreId);
             ResultSet rs = pstm.executeQuery();
-
             if (rs.next()) {
                 nbrCandidatures = rs.getInt("nbrCandidatures");
             }
         } catch (SQLException e) {
             System.out.println("Erreur lors du calcul du nombre de candidatures : " + e.getMessage());
         }
-
         return nbrCandidatures;
     }
 
@@ -211,27 +176,34 @@ public class ServiceOffre implements IService<Offreemploi> {
     public Offreemploi getOffreEmploiById(int offreId) {
         String qry = "SELECT * FROM offreemploi WHERE id = ?";
         Offreemploi offreEmploi = null;
-
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, offreId);
             ResultSet rs = pstm.executeQuery();
-
             if (rs.next()) {
                 offreEmploi = new Offreemploi();
                 offreEmploi.setId(rs.getInt("id"));
-                // ... set autres attributs
-
-                // Calculer et définir le nombre de candidatures
                 int nbrCandidatures = getNbrCandidatures(offreId);
                 offreEmploi.setCandidaturesrecues(nbrCandidatures);
             }
         } catch (SQLException e) {
             System.out.println("Erreur lors de la récupération de l'offre : " + e.getMessage());
         }
-
         return offreEmploi;
     }
+
+
+
+
+
+    @Override
+    public void ajouter(Candidature candidature) {
+
+    }
+
+
+    @Override
+    public void updatee(Candidature candidature, Offreemploi offre){};
 }
 
 

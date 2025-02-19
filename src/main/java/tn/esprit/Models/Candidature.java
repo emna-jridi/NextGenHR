@@ -8,36 +8,30 @@ public class Candidature {
     private String statut;
     private String cvUrl;
     private String lettreMotivation;
-    private int offreId;
+    private String Nom;
+    private String prenom;
+    private String email;
+    private String telephone;
 
-    public int getOffreId() {
-        return offreId;
-    }
-
-    public void setOffreId(int offreId) {
-        this.offreId = offreId;
-    }
+    private Offreemploi offreemploi;
 
 
 
 
 
-
-
-
-
-
-
-
-   // private Utilisateur candidat; lien maa l user
+    // private Utilisateur candidat; lien maa l user
     public Candidature() {};
 
-    public Candidature(LocalDateTime dateCandidature, String statut, String cvUrl, String lettreMotivation, int offreId) {
+    public Candidature(LocalDateTime dateCandidature, String statut, String cvUrl, String lettreMotivation, Offreemploi offreemploi, String nom, String prenom, String email, String telephone) {
         this.dateCandidature = dateCandidature;
         this.statut = statut;
         this.cvUrl = cvUrl;
         this.lettreMotivation = lettreMotivation;
-        this.offreId = offreId;
+       this.offreemploi =offreemploi;
+        this.Nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.telephone = telephone;
     }
 
     public int getId() {
@@ -77,19 +71,65 @@ public class Candidature {
     }
 
     public void setLettreMotivation(String lettreMotivation) {
+
         this.lettreMotivation = lettreMotivation;
     }
 
 
 
+    public String getNom() {
+        return Nom;
+    }
+
+    public void setNom(String nom) {
+        Nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+
+    public Offreemploi getOffreemploi() {
+        return offreemploi;
+    }
+
+    public void setOffreemploi(Offreemploi offreemploi) {
+        this.offreemploi = offreemploi;
+    }
+
     @Override
     public String toString() {
-        return "Candidature{" +
+        return "CandidatureController{" +
                 "dateCandidature=" + dateCandidature +
                 ", statut='" + statut + '\'' +
                 ", cvUrl='" + cvUrl + '\'' +
                 ", lettreMotivation='" + lettreMotivation + '\'' +
-                ", offreId=" + offreId +
+                ", offre=" + offreemploi +
+                ",Nom="+ Nom +
+                ",prenom=" + prenom +
+                ", email=" + email +
+                ", telephone=" + telephone +
                 '}';
     }
 }

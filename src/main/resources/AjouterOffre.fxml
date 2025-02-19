@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="698.0" prefWidth="937.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.AjouterOffreController">
+   <children>
+      <Label layoutX="41.0" layoutY="36.0" prefHeight="26.0" prefWidth="57.0" text="Titre" />
+      <Label layoutX="23.0" layoutY="126.0" text="Description" />
+      <Label layoutX="10.0" layoutY="165.0" text="Experience Requise" />
+      <Label layoutX="16.0" layoutY="205.0" text="Niveau Etudes" />
+      <Label layoutX="18.0" layoutY="250.0" text="Compétences" />
+      <Label layoutX="22.0" layoutY="295.0" text="Type Contrat" />
+      <Label layoutX="23.0" layoutY="340.0" text="Localisation" />
+      <Label layoutX="15.0" layoutY="388.0" text="Niveau Langues" />
+      <Label layoutX="12.0" layoutY="432.0" text="Date de création" />
+      <Label layoutX="8.0" layoutY="476.0" text="Date d'expiration" />
+      <Label layoutX="25.0" layoutY="518.0" text="Statut" />
+      <TextField fx:id="txtTitre" layoutX="110.0" layoutY="37.0" />
+      <TextField fx:id="txtdescription" layoutX="110.0" layoutY="122.0" />
+      <TextField fx:id="txtexperience" layoutX="139.0" layoutY="161.0" />
+      <TextField fx:id="txtniveauetudes" layoutX="110.0" layoutY="201.0" />
+      <TextField fx:id="txtcompetences" layoutX="110.0" layoutY="246.0" />
+      <TextField fx:id="txttypecontrat" layoutX="117.0" layoutY="291.0" />
+      <TextField fx:id="txtstatut" layoutX="100.0" layoutY="514.0" />
+      <TextField fx:id="txtnivlangues" layoutX="115.0" layoutY="384.0" />
+      <TextField fx:id="txtlocalisation" layoutX="117.0" layoutY="336.0" />
+      <Button layoutX="82.0" layoutY="588.0" mnemonicParsing="false" onAction="#ajouteroffre" text="Ajouter" />
+      <Label layoutX="23.0" layoutY="78.0" text="candidatures" />
+      <TextField fx:id="txtcandidatures" layoutX="110.0" layoutY="74.0" />
+      <DatePicker fx:id="txtDateCreation" layoutX="117.0" layoutY="428.0" />
+      <DatePicker fx:id="DateExpiration" layoutX="117.0" layoutY="472.0" />
+      <ListView fx:id="listOffre" layoutX="304.0" layoutY="52.0" prefHeight="486.0" prefWidth="503.0" />
+      <Button layoutX="498.0" layoutY="588.0" mnemonicParsing="false" onAction="#Afficher" text="Afficher" />
+      <Button layoutX="839.0" layoutY="246.0" mnemonicParsing="false" onAction="#Modifier" text="Modifier" />
+      <Button layoutX="834.0" layoutY="201.0" mnemonicParsing="false" onAction="#Delete" text="Supprimer" />
+   </children>
+</AnchorPane>

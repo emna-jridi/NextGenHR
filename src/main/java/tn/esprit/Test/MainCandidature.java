@@ -33,9 +33,9 @@ public class MainCandidature {
 
 
         //Affichage du nombre de jours restants avant expiration
-        offreemploi.setDateExpiration(LocalDateTime.of(2025, 2, 28, 23, 59, 59, 0));
+     /*   offreemploi.setDateExpiration(LocalDateTime.of(2025, 2, 28, 23, 59, 59, 0));
         System.out.println("Jours restants avant expiration : " + offreemploi.getDaysRemaining());
-        System.out.println(serviceOffre.getAll());
+        System.out.println(serviceOffre.getAll());*/
 
 
         //UPDATE
@@ -92,7 +92,7 @@ offreemploi = serviceOffre.getbyid(idRechercheOFFRE);
         //TAWA NEMCHIW LEL CANDIDATURE
 
 
-        Candidature candidature = new Candidature();
+       /* Candidature candidature = new Candidature();
 
 
         offreemploi.setId(7);
@@ -100,7 +100,7 @@ offreemploi = serviceOffre.getbyid(idRechercheOFFRE);
         candidature.setStatut("test test 1212");
         candidature.setCvUrl("http://exemple.com/cv.pdf");
         candidature.setLettreMotivation("Motivation pour ce poste nekdheb...");
-        serviceCandidature.ajout(candidature, offreemploi.getId());
+        serviceCandidature.ajout(candidature, offreemploi.getId());*/
 
 
 
@@ -115,7 +115,7 @@ offreemploi = serviceOffre.getbyid(idRechercheOFFRE);
         candidature.setLettreMotivation("path/to/lettreMotivation.pdf");
         serviceCandidature.add(candidature);*/
 
-        List<Candidature> candidatures = serviceCandidature.getAll();
+       /*List<Candidature> candidatures = serviceCandidature.getAll();
         for (Candidature c : candidatures) {
             System.out.println("ID: " + c.getId());
             System.out.println("Date de candidature: " + c.getDateCandidature());
@@ -124,7 +124,7 @@ offreemploi = serviceOffre.getbyid(idRechercheOFFRE);
             System.out.println("Lettre de motivation: " + c.getLettreMotivation());
             System.out.println("-------------------------------------");
 
-        }
+        }*/
 
 
 //Lmise a jour
@@ -151,9 +151,9 @@ offreemploi = serviceOffre.getbyid(idRechercheOFFRE);
 
 
         // ID de l'offre associée
-        int idCandidature = 25; // ID de la candidature à supprimer
+        /*int idCandidature = 25; // ID de la candidature à supprimer
         int offreId = 7;
-        serviceCandidature.delete(idCandidature, offreId);
+        serviceCandidature.delete(idCandidature, offreId);*/
 
 
 
@@ -163,7 +163,7 @@ offreemploi = serviceOffre.getbyid(idRechercheOFFRE);
         candidature = serviceCandidature.getbyid(idRechercheCandid);
 
         if (candidature != null) {
-            System.out.println("Candidature trouvée :");
+            System.out.println("CandidatureController trouvée :");
             System.out.println("ID : " + candidature.getId());
             System.out.println("Date de candidature : " + candidature.getDateCandidature());
             System.out.println("Statut : " + candidature.getStatut());
