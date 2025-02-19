@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 import tn.esprit.models.Contrat;
 import tn.esprit.services.ServiceContrat;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class AjouterContrat {
 
     @FXML
@@ -66,10 +69,46 @@ public class AjouterContrat {
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
 
         // Validation des champs
-        if (type.isEmpty() || montantStr.isEmpty() || nom.isEmpty() || email.isEmpty() || dateDebutContrat.getValue() == null || dateFinContrat.getValue() == null) {
-            showAlert("Erreur", "Tous les champs doivent être remplis.");
+        if (type.isEmpty()) {
+            showAlert("Erreur", "Le type du contrat est obligatoire.");
             return;
         }
+
+        if (montantStr.isEmpty()) {
+            showAlert("Erreur", "Le montant du contrat est obligatoire.");
+            return;
+        }
+
+        if (nom.isEmpty()) {
+            showAlert("Erreur", "Le nom du client est obligatoire.");
+            return;
+        }
+
+        if (email.isEmpty()) {
+            showAlert("Erreur", "L'email du client est obligatoire.");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showAlert("Erreur", "L'email est au format incorrect.");
+            return;
+        }
+
+        if (dateDebutContrat.getValue() == null) {
+            showAlert("Erreur", "La date de début du contrat est obligatoire.");
+            return;
+        }
+
+        if (dateFinContrat.getValue() == null) {
+            showAlert("Erreur", "La date de fin du contrat est obligatoire.");
+            return;
+        }
+
+        if (dateDebutContrat.getValue().isAfter(dateFinContrat.getValue())) {
+            showAlert("Erreur", "La date de début ne peut pas être après la date de fin.");
+            return;
+        }
+
 
         // Conversion du montant en entier
         int montant = 0;
@@ -96,6 +135,16 @@ public class AjouterContrat {
 
         // Fermer la fenêtre après ajout
         closeWindow();
+    }
+
+
+
+    private boolean isValidEmail(String email) {
+        // Expression régulière pour valider un email au format standard
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches(); // Retourne true si l'email correspond au pattern
     }
 
     private void showAlert(String title, String message) {

@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import tn.esprit.models.Service;
 import tn.esprit.services.ServiceService;
@@ -42,6 +43,14 @@ public class ListServices {
     @FXML
     private Button btnSupprimer;
 
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private CheckBox chkFiltrerType;
+    @FXML
+    private CheckBox chkTriServicesActifs;
+
     private final ServiceService serviceService = new ServiceService();
     private ObservableList<Service> serviceList;
 
@@ -57,6 +66,10 @@ public class ListServices {
         colStatut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatusService()));
 
         loadServices();
+
+        // Gérer les changements dans les cases à cocher
+        chkFiltrerType.setOnAction(this::filtrerTypeService);
+        chkTriServicesActifs.setOnAction(this::filterActiveServices);
     }
 
     private void loadServices() {
@@ -135,11 +148,43 @@ public class ListServices {
         }
     }
 
+    @FXML
+    private void handleSearch(KeyEvent event) {
+        String searchText = searchField.getText();
+        List<Service> filteredServices = serviceService.getServicesByName(searchText);
+        updateTableView(filteredServices);
+    }
+
+    private void updateTableView(List<Service> services) {
+        ObservableList<Service> observableServices = FXCollections.observableArrayList(services);
+        tableView.setItems(observableServices);
+    }
+
     private void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void filtrerTypeService(ActionEvent event) {
+        if (chkFiltrerType.isSelected()) {
+            List<Service> servicesTriesParType = serviceService.sortServicesByType();
+            updateTableView(servicesTriesParType);
+        } else {
+            loadServices();  // Réinitialiser la vue avec tous les services
+        }
+    }
+
+    @FXML
+    private void filterActiveServices(ActionEvent event) {
+        if (chkTriServicesActifs.isSelected()) {
+            List<Service> servicesActifs = serviceService.filterActiveServices();
+            updateTableView(servicesActifs);
+        } else {
+            loadServices();  // Réinitialiser la vue avec tous les services
+        }
     }
 }

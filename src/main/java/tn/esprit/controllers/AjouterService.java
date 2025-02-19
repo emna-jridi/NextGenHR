@@ -63,10 +63,37 @@ public class AjouterService {
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
 
         // Validation des champs
-        if (nom.isEmpty() || description.isEmpty() || type.isEmpty() || dateDebut == null || dateFin == null) {
-            showAlert("Erreur", "Tous les champs doivent être remplis.");
+        if (nom.isEmpty()) {
+            showAlert("Erreur", "Le nom du service est obligatoire.");
             return;
         }
+
+        if (description.isEmpty()) {
+            showAlert("Erreur", "La description du service est obligatoire.");
+            return;
+        }
+
+        if (type.isEmpty()) {
+            showAlert("Erreur", "Le type du service est obligatoire.");
+            return;
+        }
+
+        if (dateDebut == null) {
+            showAlert("Erreur", "La date de début du service est obligatoire.");
+            return;
+        }
+
+        if (dateFin == null) {
+            showAlert("Erreur", "La date de fin du service est obligatoire.");
+            return;
+        }
+
+        if (dateDebut.isAfter(dateFin)) {
+            showAlert("Erreur", "La date de début ne peut pas être après la date de fin.");
+            return;
+        }
+
+
 
         // Création d'un nouvel objet Service
         Service service = new Service(nom, description, type, dateDebut, dateFin, status);
