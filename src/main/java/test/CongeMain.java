@@ -22,12 +22,13 @@ public class CongeMain extends Application {
 
             DBConnection db = DBConnection.getInstance();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/con_form.fxml"));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reunion.fxml"));
 
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
-            stage.setTitle("Gestion Conge");
+            stage.setTitle("Gestion reunion");
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

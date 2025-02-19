@@ -38,6 +38,7 @@ public class CongeController {
     public void initialize() {
         // Initialize the ComboBox with types of leave
         typeCon.getItems().addAll("Congé annuel", "Congé obligatoire", "Congé spécial", "Congé de maternité ou parental");
+
     }
 
     @FXML
@@ -58,6 +59,7 @@ public class CongeController {
 
         if (alert.getResult() == ButtonType.YES) {
             serviceConge.delete(id);
+            clearForm();
             System.out.println("Congé supprimé avec succès !");
             handleAfficherAction(); // Rafraîchir la liste après suppression
         }
@@ -100,6 +102,8 @@ public class CongeController {
         if (alert.getResult() == ButtonType.YES) {
             conge updatedConge = new conge(selectedCongeId, typeConge, dateDebut, dateFin, statusText);
             serviceConge.update(updatedConge, selectedCongeId);
+            clearForm();
+
             System.out.println("Congé modifié avec succès !");
             handleAfficherAction(); // Rafraîchir la liste
             clearForm(); // Réinitialiser les champs
@@ -129,32 +133,52 @@ public class CongeController {
 
     @FXML
     private void handelSubmitAction() {
-        // Get values from the UI components
-        String typeConge = typeCon.getValue(); // Get selected type of leave
-        LocalDate dateDebut = datedep.getValue(); // Get selected start date
-        LocalDate dateFin = datefin.getValue(); // Get selected end date
-        String statusText = status.getText(); // Get status text
+        String typeConge = typeCon.getValue();
+        LocalDate dateDebut = datedep.getValue();
+        LocalDate dateFin = datefin.getValue();
+        String statusText = status.getText().trim();
 
-        // Validate input fields
-        if (typeConge == null || dateDebut == null || dateFin == null || statusText.isEmpty()) {
-            System.out.println("Please fill all fields!");
+        // Validation des champs
+        if (!validateInputs(typeConge, dateDebut, dateFin, statusText)) {
             return;
         }
 
-        // Create a new conge object
         conge newConge = new conge();
         newConge.setType_conge(typeConge);
         newConge.setDate_debut(dateDebut);
         newConge.setDate_fin(dateFin);
         newConge.setStatus(statusText);
 
-        // Add the new conge to the database
         serviceConge.add(newConge);
-
-        // Clear the form after submission
         clearForm();
+        System.out.println("Congé ajouté avec succès !");
+    }
 
-        System.out.println("Congé added successfully!");
+    private boolean validateInputs(String typeConge, LocalDate dateDebut, LocalDate dateFin, String statusText) {
+        if (typeConge == null || dateDebut == null || dateFin == null || statusText.isEmpty()) {
+            showAlert("Erreur", "Tous les champs doivent être remplis !");
+            return false;
+        }
+
+        if (dateDebut.isAfter(dateFin)) {
+            showAlert("Erreur", "La date de début ne peut pas être après la date de fin !");
+            return false;
+        }
+
+        if (statusText.lines().count() > 3) {
+            showAlert("Erreur", "Le statut ne doit pas dépasser 3 lignes !");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void clearForm() {
