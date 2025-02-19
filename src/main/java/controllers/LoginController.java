@@ -67,7 +67,7 @@ public class LoginController {
                 if (role.equalsIgnoreCase("ResponsableRH")) {
                     goToDashboard(); // Redirection vers le dashboard
                 } else if (role.equalsIgnoreCase("Employe")) {
-                    goToHome(); // Redirection vers la Home Page
+                   goToHome(); // Redirection vers la Home Page
                 } else {
                     errorLabel.setText("❌ Rôle non reconnu !");
                 }
@@ -81,17 +81,17 @@ public class LoginController {
     }
 
     // Méthode pour naviguer vers Home.fxml pour l'employé
-    @FXML
+   @FXML
     private void goToHome() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home.fxml"));
-            Parent root = loader.load();
+       try {
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home.fxml"));
+           Parent root = loader.load();
             Stage stage = (Stage) emailField.getScene().getWindow(); // Récupère la fenêtre actuelle
-            stage.setScene(new Scene(root)); // Change la scène
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+          stage.setScene(new Scene(root)); // Change la scène
+           stage.show();
+  } catch (IOException e) {
+           e.printStackTrace();
+     }
     }
 
     // Méthode pour naviguer vers SignUp.fxml

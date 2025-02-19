@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.UserController">
 
-    <!-- Barre de recherche en haut -->
-    <top>
-        <HBox spacing="10">
-            <children>
-                <Label text="Rechercher :"/>
-                <TextField fx:id="txtRecherche" promptText="Nom, Prénom ou Email"/>
-                <Button text="Ajouter Utilisateur" onAction="#ajouterUtilisateur"/>
-            </children>
-        </HBox>
-    </top>
-
-    <!-- Tableau d'utilisateurs au centre -->
-    <center>
-        <TableView fx:id="tableViewUsers">
-            <columns>
-                <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
-                <TableColumn fx:id="colNom" text="Nom" prefWidth="100"/>
-                <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="100"/>
-                <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
-                <TableColumn fx:id="colRole" text="Rôle" prefWidth="100"/>
-            </columns>
-        </TableView>
-    </center>
-
-</BorderPane>
+<AnchorPane prefHeight="633.0" prefWidth="1438.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserController">
+   <children>
+      <AnchorPane prefHeight="591.0" prefWidth="806.0">
+         <children>
+            <BorderPane>
+            
+                <!-- Liste des utilisateurs centré au milieu -->
+                <center>
+                    <VBox alignment="CENTER" prefWidth="1438.0">
+                     <AnchorPane prefHeight="66.0" prefWidth="1438.0" style="-fx-background-color: #154e9c;">
+                        <children>
+                              <Label layoutX="26.0" layoutY="24.0" text="Rechercher :" textFill="WHITE" />
+                              <TextField fx:id="txtRecherche" layoutX="129.0" layoutY="20.0" promptText="Nom, Prénom ou Email" />
+                        </children>
+                     </AnchorPane>
+                        <ListView fx:id="listViewUsers" maxWidth="971.0" prefHeight="510.0" prefWidth="971.0" />
+                    </VBox>
+                </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+      <Button layoutX="621.0" layoutY="591.0" onAction="#supprimerUtilisateur" style="-fx-background-color: #a90d06;" text="Supprimer Utilisateur" textFill="WHITE" />
+   </children>
+</AnchorPane>
