@@ -35,22 +35,22 @@ public class ModifierService {
     private ToggleGroup statusGroup;
 
     public ModifierService() {
-        serviceService = new ServiceService(); // Initialisation du service
+        serviceService = new ServiceService();
     }
 
     @FXML
     public void initialize() {
-        // Création du ToggleGroup pour le statut
+
         statusGroup = new ToggleGroup();
         statusActif.setToggleGroup(statusGroup);
         statusInactif.setToggleGroup(statusGroup);
     }
 
-    // Méthode pour passer les données du service à la fenêtre
+
     public void setService(Service service) {
         this.serviceToModify = service;
 
-        // Pré-remplir les champs avec les données du service
+
         idServiceField.setText(String.valueOf(service.getIdService()));
         nomServiceField.setText(service.getNomService());
         descriptionServiceField.setText(service.getDescriptionService());
@@ -58,7 +58,7 @@ public class ModifierService {
         dateDebutField.setValue(service.getDateDebutService());
         dateFinField.setValue(service.getDateFinService());
 
-        // Sélectionner le statut correspondant
+
         if ("Actif".equals(service.getStatusService())) {
             statusActif.setSelected(true);
         } else {
@@ -66,11 +66,11 @@ public class ModifierService {
         }
     }
 
-    // Méthode pour sauvegarder les modifications
+
     @FXML
     private void handleSave() {
         try {
-            // Vérification des entrées utilisateur
+
             String nomService = nomServiceField.getText();
             String descriptionService = descriptionServiceField.getText();
             String typeService = typeServiceField.getText();
@@ -78,7 +78,7 @@ public class ModifierService {
             LocalDate dateFin = dateFinField.getValue();
             String statusService = statusActif.isSelected() ? "Actif" : "Inactif";
 
-            // Validation des champs
+
             if (nomService.isEmpty() || descriptionService.isEmpty() || typeService.isEmpty()) {
                 System.out.println("Erreur : Tous les champs doivent être remplis !");
                 return;
@@ -94,7 +94,7 @@ public class ModifierService {
                 return;
             }
 
-            // Mise à jour du service
+
             serviceToModify.setNomService(nomService);
             serviceToModify.setDescriptionService(descriptionService);
             serviceToModify.setTypeService(typeService);
@@ -102,11 +102,11 @@ public class ModifierService {
             serviceToModify.setDateFinService(dateFin);
             serviceToModify.setStatusService(statusService);
 
-            // Mise à jour dans le service
+
             serviceService.update(serviceToModify);
             System.out.println("Service mis à jour avec succès !");
 
-            // Fermer la fenêtre après sauvegarde
+
             ((Stage) nomServiceField.getScene().getWindow()).close();
 
         } catch (DateTimeParseException e) {

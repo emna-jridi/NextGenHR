@@ -41,34 +41,34 @@ public class AjouterContrat {
 
     private ServiceContrat serviceContrat = new ServiceContrat();
 
-    // Callback à appeler après l'ajout d'un contrat
+
     private Runnable onContratAdded;
 
-    // Méthode pour définir le callback
+
     public void setOnContratAdded(Runnable onContratAdded) {
         this.onContratAdded = onContratAdded;
     }
 
     @FXML
     void initialize() {
-        // Initialisation du ToggleGroup
-        statusGroup = new ToggleGroup(); // Créez le groupe de boutons radio
-        radioActif.setToggleGroup(statusGroup);  // Associez les boutons radio au groupe
+
+        statusGroup = new ToggleGroup();
+        radioActif.setToggleGroup(statusGroup);
         radioInactif.setToggleGroup(statusGroup);
     }
 
     @FXML
     void ajouter(ActionEvent event) {
-        // Récupération des données du formulaire
+
         String type = typeContrat.getText();
         String montantStr = montantContrat.getText();
         String nom = nomClient.getText();
         String email = emailClient.getText();
 
-        // Vérification du statut du contrat
+
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
 
-        // Validation des champs
+
         if (type.isEmpty()) {
             showAlert("Erreur", "Le type du contrat est obligatoire.");
             return;
@@ -110,7 +110,7 @@ public class AjouterContrat {
         }
 
 
-        // Conversion du montant en entier
+
         int montant = 0;
         try {
             montant = Integer.parseInt(montantStr);
@@ -119,32 +119,32 @@ public class AjouterContrat {
             return;
         }
 
-        // Création d'un nouveau contrat
+
         Contrat contrat = new Contrat(type, dateDebutContrat.getValue(), dateFinContrat.getValue(), status, montant, nom, email);
 
-        // Appel de la méthode pour ajouter le contrat
+
         serviceContrat.add(contrat);
 
-        // Si le callback est défini, on l'appelle pour rafraîchir la liste
+
         if (onContratAdded != null) {
             onContratAdded.run();
         }
 
-        // Affichage d'un message de succès
+
         showAlert("Succès", "Le contrat a été ajouté avec succès.");
 
-        // Fermer la fenêtre après ajout
+
         closeWindow();
     }
 
 
 
     private boolean isValidEmail(String email) {
-        // Expression régulière pour valider un email au format standard
+
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
-        return matcher.matches(); // Retourne true si l'email correspond au pattern
+        return matcher.matches();
     }
 
     private void showAlert(String title, String message) {
@@ -156,7 +156,7 @@ public class AjouterContrat {
     }
 
     private void closeWindow() {
-        // Fermer la fenêtre courante
+
         ((Stage) typeContrat.getScene().getWindow()).close();
     }
 }

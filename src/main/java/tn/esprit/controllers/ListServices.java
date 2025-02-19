@@ -56,7 +56,7 @@ public class ListServices {
 
     @FXML
     public void initialize() {
-        // Liaison des colonnes avec les propriétés de Service
+
         colId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIdService()).asObject());
         colNom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomService()));
         colDescription.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescriptionService()));
@@ -67,7 +67,7 @@ public class ListServices {
 
         loadServices();
 
-        // Gérer les changements dans les cases à cocher
+
         chkFiltrerType.setOnAction(this::filtrerTypeService);
         chkTriServicesActifs.setOnAction(this::filterActiveServices);
     }
@@ -98,7 +98,7 @@ public class ListServices {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            // Rafraîchir la liste après modification
+
             loadServices();
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,19 +128,19 @@ public class ListServices {
     @FXML
     private void ajouterService(ActionEvent event) {
         try {
-            // Charger le fichier FXML de la page AjouterService
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterService.fxml"));
             Parent root = loader.load();
 
-            // Créer une nouvelle scène avec la page AjouterService
+
             Stage stage = new Stage();
             stage.setTitle("Ajouter un Service");
             stage.setScene(new Scene(root));
             stage.show();
 
-            // Passer le contrôleur ListServices à AjouterService
+
             AjouterService ajouterServiceController = loader.getController();
-            ajouterServiceController.setOnServiceAdded(this::loadServices); // Callback pour actualiser la liste
+            ajouterServiceController.setOnServiceAdded(this::loadServices);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,7 +174,7 @@ public class ListServices {
             List<Service> servicesTriesParType = serviceService.sortServicesByType();
             updateTableView(servicesTriesParType);
         } else {
-            loadServices();  // Réinitialiser la vue avec tous les services
+            loadServices();
         }
     }
 
@@ -184,7 +184,7 @@ public class ListServices {
             List<Service> servicesActifs = serviceService.filterActiveServices();
             updateTableView(servicesActifs);
         } else {
-            loadServices();  // Réinitialiser la vue avec tous les services
+            loadServices();
         }
     }
 }

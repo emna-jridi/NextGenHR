@@ -40,23 +40,23 @@ public class ModifierContrat {
 
     private ToggleGroup statusGroup;
     public ModifierContrat() {
-        contratService = new ServiceContrat(); // Initialisation du service
+        contratService = new ServiceContrat();
     }
 
     @FXML
     public void initialize() {
-        // Création du ToggleGroup pour le statut
+
         statusGroup = new ToggleGroup();
         statusActif.setToggleGroup(statusGroup);
         statusInactif.setToggleGroup(statusGroup);
     }
 
 
-    // Méthode pour passer les données du contrat à la fenêtre
+
     public void setContrat(Contrat contrat) {
         this.contratToModify = contrat;
 
-        // Pré-remplir les champs avec les données du contrat
+
         idContratField.setText(String.valueOf(contrat.getIdContrat()));
         typeContratField.setText(contrat.getTypeContrat());
         dateDebutField.setValue(contrat.getDateDebutContrat());
@@ -65,7 +65,7 @@ public class ModifierContrat {
         nomClientField.setText(contrat.getNomClient());
         emailClientField.setText(contrat.getEmailClient());
 
-        // Sélectionner le statut correspondant
+
         if ("Actif".equals(contrat.getStatusContrat())) {
             statusActif.setSelected(true);
         } else {
@@ -74,11 +74,11 @@ public class ModifierContrat {
 
     }
 
-    // Méthode pour sauvegarder les modifications
+
     @FXML
     private void handleSave() {
         try {
-            // Vérification des entrées utilisateur
+
             String typeContrat = typeContratField.getText();
             LocalDate dateDebut = dateDebutField.getValue();
             LocalDate dateFin = dateFinField.getValue();
@@ -87,7 +87,7 @@ public class ModifierContrat {
             String nomClient = nomClientField.getText();
             String emailClient = emailClientField.getText();
 
-            // Validation basique des champs
+
             if (typeContrat.isEmpty() || nomClient.isEmpty() || emailClient.isEmpty()) {
                 System.out.println("Erreur : Tous les champs doivent être remplis !");
                 return;
@@ -103,7 +103,7 @@ public class ModifierContrat {
                 return;
             }
 
-            // Mise à jour du contrat
+
             contratToModify.setTypeContrat(typeContrat);
             contratToModify.setDateDebutContrat(dateDebut);
             contratToModify.setDateFinContrat(dateFin);
@@ -112,11 +112,11 @@ public class ModifierContrat {
             contratToModify.setNomClient(nomClient);
             contratToModify.setEmailClient(emailClient);
 
-            // Mise à jour dans le service
+
             contratService.update(contratToModify);
             System.out.println("Contrat mis à jour avec succès !");
 
-            // Fermer la fenêtre après sauvegarde
+
             ((Stage) montantField.getScene().getWindow()).close();
 
         } catch (DateTimeParseException e) {
