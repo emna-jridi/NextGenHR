@@ -1,84 +1,97 @@
 package controllers;
 
 import entities.User;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import services.ServiceUser;
+import utils.SessionManager;
 
-public class ProfileController {
+import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
+
+public class ProfileController implements Initializable {
 
     @FXML
     private TextField txtNom;
-
     @FXML
     private TextField txtPrenom;
-
-    @FXML
-    private DatePicker dateNaissance;
-
     @FXML
     private TextField txtEmail;
-
     @FXML
     private TextField txtTelephone;
-
     @FXML
     private PasswordField txtMotDePasse;
-// 🔥 Utilisation d'un PasswordField au lieu d'un TextField
-
+    @FXML
+    private DatePicker dateNaissance;
     @FXML
     private Button btnMettreAJour;
 
-    private ServiceUser serviceUser;
-    private User utilisateurConnecte; // L'utilisateur actuellement connecté
+    private final ServiceUser userService = new ServiceUser();
+    private User loggedInUser;
 
-    public ProfileController() {
-        this.serviceUser = new ServiceUser();
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loggedInUser = SessionManager.getInstance().getLoggedInUser();
+        if (loggedInUser != null) {
+            loadUserData();
+        }
     }
 
-    @FXML
-    private void initialize() {
-        // 🔥 Charger les vraies données de l'utilisateur connecté
-        chargerDonneesUtilisateur();
-    }
+    private void loadUserData() {
+        txtNom.setText(loggedInUser.getNomUser());
+        txtPrenom.setText(loggedInUser.getPrenomUser());
+        txtEmail.setText(loggedInUser.getEmailUser());
+        txtTelephone.setText(loggedInUser.getTelephoneUser());
+        txtMotDePasse.setText(loggedInUser.getPassword());
 
-    private void chargerDonneesUtilisateur() {
-        int userId = 1; // 🔥 Remplace par l'ID de l'utilisateur connecté (peut être récupéré d'une session)
-        utilisateurConnecte = serviceUser.getById(userId);
-
-        if (utilisateurConnecte != null) {
-            txtNom.setText(utilisateurConnecte.getNomUser());
-            txtPrenom.setText(utilisateurConnecte.getPrenomUser());
-            dateNaissance.setValue(utilisateurConnecte.getDateNaissanceUser());
-            txtEmail.setText(utilisateurConnecte.getEmailUser());
-            txtTelephone.setText(utilisateurConnecte.getTelephoneUser());
-            txtMotDePasse.setText(utilisateurConnecte.getPassword()); // ⚠️ Idéalement, ne pas afficher en clair
-        } else {
-            System.out.println("❌ Erreur : Impossible de récupérer l'utilisateur !");
+        if (loggedInUser.getDateNaissanceUser() != null) {
+            dateNaissance.setValue(loggedInUser.getDateNaissanceUser());
         }
     }
 
     @FXML
-    private void mettreAJourUtilisateur() {
-        if (utilisateurConnecte != null) {
-            utilisateurConnecte.setNomUser(txtNom.getText());
-            utilisateurConnecte.setPrenomUser(txtPrenom.getText());
-            utilisateurConnecte.setDateNaissanceUser(dateNaissance.getValue());
-            utilisateurConnecte.setEmailUser(txtEmail.getText());
-            utilisateurConnecte.setTelephoneUser(txtTelephone.getText());
-            utilisateurConnecte.setPassword(txtMotDePasse.getText()); // 🔥 Stocker le mot de passe hashé idéalement
+    private void mettreAJourUtilisateur(ActionEvent event) {
+        if (loggedInUser != null) {
+            loggedInUser.setNomUser(txtNom.getText());
+            loggedInUser.setPrenomUser(txtPrenom.getText());
+            loggedInUser.setEmailUser(txtEmail.getText());
+            loggedInUser.setPassword(txtMotDePasse.getText());
 
-            // 🔥 Mettre à jour dans la base de données
-            serviceUser.update(utilisateurConnecte);
+            try {
+                loggedInUser.setTelephoneUser(txtTelephone.getText());
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le téléphone doit être un nombre valide.");
+                return;
+            }
 
-            // 🔔 Affichage de la confirmation
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Mise à Jour");
-            alert.setHeaderText(null);
-            alert.setContentText("Les informations ont été mises à jour avec succès !");
-            alert.showAndWait();
-        } else {
-            System.out.println("❌ Erreur : Aucune donnée utilisateur trouvée !");
+            LocalDate selectedDate = dateNaissance.getValue();
+            if (selectedDate != null) {
+                loggedInUser.setDateNaissanceUser(selectedDate);
+            }
+
+            userService.update(loggedInUser);
+            showAlert(Alert.AlertType.INFORMATION, "Mise à jour réussie", "Les informations ont été mises à jour avec succès.");
         }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

@@ -27,5 +27,8 @@
                 </VBox>
             </center>
         </BorderPane>
+
+        <!-- Bouton de déconnexion -->
+        <Button fx:id="btnLogout" layoutX="650.0" layoutY="600.0" text="Déconnexion" style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-background-radius: 5px; -fx-font-size: 14px;" onAction="#handleLogout"/>
     </children>
 </AnchorPane>

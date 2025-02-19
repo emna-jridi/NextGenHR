@@ -22,6 +22,7 @@ public class ServiceUser {
         }
     }
 
+
     /**
      * ✅ Méthode pour ajouter un utilisateur avec le rôle et le mot de passe
      */

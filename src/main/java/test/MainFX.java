@@ -11,7 +11,7 @@ public class MainFX extends Application {
     public void start(Stage primaryStage) {
         try {
             // Charger le fichier Login.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SignUp.fxml"));
             Parent root = loader.load();
 
             // Configurer la scène

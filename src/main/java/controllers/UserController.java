@@ -9,6 +9,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import services.ServiceUser;
 
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import java.io.IOException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,5 +83,20 @@ public class UserController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        try {
+            // Charger la page de login
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+            Scene loginScene = new Scene(loader.load());
+
+            // Récupérer la fenêtre actuelle et changer la scène
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(loginScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

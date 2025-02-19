@@ -8,6 +8,14 @@ import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
 
 import javafx.scene.Parent;
+import javafx.event.ActionEvent;
+
+import javafx.scene.Node;
+
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 
 import java.io.IOException;
@@ -51,6 +59,21 @@ public class HomeController {
             contentArea.getChildren().add(profileView);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        try {
+            // Charger la page de connexion
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml")); // Assure-toi que le chemin est correct
+            Parent root = loader.load();
+
+            // Obtenir la scène actuelle et la remplacer par la page de connexion
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Gérer l'erreur correctement dans un vrai projet
         }
     }
 }
