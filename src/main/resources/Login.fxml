@@ -3,26 +3,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.layout.VBox?> <!-- Ajout de VBox -->
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.LoginController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0"
+            style="-fx-background-color: #E3EDF9; -fx-padding: 20px;">
 
-    <!-- Centrage du contenu dans l'AnchorPane -->
-    <VBox alignment="CENTER" spacing="15">
-        <Label text="Connexion" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+    <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #FFFFFF; -fx-border-color: #253D90; -fx-border-radius: 10px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);">
+        <Label text="Connexion" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #121C3E;" />
 
-        <TextField fx:id="emailField" promptText="Email" prefWidth="300" />
-        <PasswordField fx:id="passwordField" promptText="Mot de passe" prefWidth="300" />
+        <TextField fx:id="emailField" promptText="Email" prefWidth="300" style="-fx-background-radius: 5px; -fx-padding: 5px;" />
+        <PasswordField fx:id="passwordField" promptText="Mot de passe" prefWidth="300" style="-fx-background-radius: 5px; -fx-padding: 5px;" />
 
-        <!-- Utilisation de handleLogin() pour la connexion -->
-        <Button text="Se connecter" onAction="#handleLogin" />
+        <Button text="Se connecter" onAction="#handleLogin" style="-fx-background-color: #253D90; -fx-text-fill: white; -fx-background-radius: 5px; -fx-font-size: 14px;" />
 
-        <Label fx:id="errorLabel" textFill="red" />
+        <Label fx:id="errorLabel" textFill="red" style="-fx-font-size: 12px;" />
 
-        <Hyperlink text="Pas encore de compte ? S'inscrire" onAction="#goToSignUp" />
+        <Hyperlink text="Pas encore de compte ? S'inscrire" onAction="#goToSignUp" style="-fx-text-fill: #3F861E; -fx-font-size: 14px;" />
     </VBox>
 
 </AnchorPane>

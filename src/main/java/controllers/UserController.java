@@ -1,30 +1,22 @@
 package controllers;
 
 import entities.User;
-import entities.User.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import services.ServiceUser;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserController {
     @FXML
-    private ListView<User> listViewUsers; // Liste des utilisateurs (ListView)
+    private ListView<User> listViewUsers;
     @FXML
     private TextField txtRecherche;
-    @FXML
-    private Button btnSupprimer; // Bouton de suppression
 
     private final ServiceUser serviceUser = new ServiceUser();
     private ObservableList<User> userList;
@@ -32,18 +24,24 @@ public class UserController {
     @FXML
     public void initialize() {
         loadUsers();
-
         txtRecherche.textProperty().addListener((observable, oldValue, newValue) -> filtrerUtilisateurs(newValue));
 
-        // Utilisation d'un CellFactory pour personnaliser l'affichage des utilisateurs dans la ListView
         listViewUsers.setCellFactory(lv -> new ListCell<User>() {
             @Override
             protected void updateItem(User user, boolean empty) {
                 super.updateItem(user, empty);
                 if (empty || user == null) {
                     setText(null);
+                    setGraphic(null);
                 } else {
-                    setText(user.getNomUser() + " " + user.getPrenomUser() + " (" + user.getEmailUser() + ")");
+                    HBox cellLayout = new HBox(20);
+                    Text userInfo = new Text(user.getIdUser() + " - " + user.getNomUser() + " " + user.getPrenomUser() + " (" + user.getEmailUser() + ") - " + user.getRole());
+                    Button btnDelete = new Button("Supprimer");
+                    btnDelete.setStyle("-fx-background-color: #a90d06; -fx-text-fill: white;");
+                    btnDelete.setOnAction(e -> supprimerUtilisateur(user));
+
+                    cellLayout.getChildren().addAll(userInfo, btnDelete);
+                    setGraphic(cellLayout);
                 }
             }
         });
@@ -64,19 +62,11 @@ public class UserController {
         listViewUsers.setItems(FXCollections.observableArrayList(filteredList));
     }
 
-    @FXML
-    private void supprimerUtilisateur(ActionEvent event) {
-        User selectedUser = listViewUsers.getSelectionModel().getSelectedItem();
-        if (selectedUser != null) {
-            // Supprimer l'utilisateur de la base de données
-            serviceUser.delete(selectedUser.getIdUser());
-
-            // Mettre à jour la liste après la suppression
+    private void supprimerUtilisateur(User user) {
+        if (user != null) {
+            serviceUser.delete(user.getIdUser());
             loadUsers();
-
             showAlert("Suppression", "Utilisateur supprimé avec succès.");
-        } else {
-            showAlert("Sélection requise", "Veuillez sélectionner un utilisateur à supprimer.");
         }
     }
 

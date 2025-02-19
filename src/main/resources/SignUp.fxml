@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="controllers.SignUpController">
-    <VBox alignment="CENTER" prefHeight="450" prefWidth="400" spacing="10">
-        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Inscription" />
-        <TextField fx:id="nomField" promptText="veuillez inserez votre nom " />
-        <TextField fx:id="prenomField" promptText="Prénom" />
-        <DatePicker fx:id="dateNaissanceField" promptText="Date de naissance" />
-        <TextField fx:id="adresseField" promptText="Adresse" />
-        <TextField fx:id="telephoneField" promptText="Téléphone" />
-        <TextField fx:id="emailField" promptText="Email" />
-        <PasswordField fx:id="passwordField" promptText="Mot de passe" />
-        <PasswordField fx:id="confirmPasswordField" promptText="Confirmer le mot de passe" />
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SignUpController" style="-fx-background-color: #F4F7FC;">
+    <VBox alignment="CENTER" spacing="15" prefWidth="400" prefHeight="500" layoutX="312" layoutY="50"
+          style="-fx-background-color: #FFFFFF; -fx-border-color: #253D90; -fx-border-width: 2px; -fx-border-radius: 10px; -fx-padding: 20px;">
+        <Label text="Inscription" style="-fx-font-size: 22px; -fx-text-fill: #253D90; -fx-font-weight: bold;" />
+        <TextField fx:id="nomField" promptText="Nom" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <TextField fx:id="prenomField" promptText="Prénom" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <DatePicker fx:id="dateNaissanceField" promptText="Date de naissance" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <TextField fx:id="adresseField" promptText="Adresse" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <TextField fx:id="telephoneField" promptText="Téléphone" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <TextField fx:id="emailField" promptText="Email" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <PasswordField fx:id="passwordField" promptText="Mot de passe" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <PasswordField fx:id="confirmPasswordField" promptText="Confirmer le mot de passe" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
 
         <HBox spacing="10">
-            <Label text="Rôle :" />
+            <Label text="Rôle :" style="-fx-text-fill: #253D90; -fx-font-size: 14px;" />
             <CheckBox fx:id="checkboxEmploye" onAction="#handleCheckboxSelection" text="Employé" />
             <CheckBox fx:id="checkboxRH" onAction="#handleCheckboxSelection" text="Responsable RH" />
         </HBox>
 
-        <Button onAction="#handleSignUp" text="S'inscrire" />
-        <Hyperlink onAction="#goToLogin" text="Déjà un compte ? Se connecter" />
+        <Button onAction="#handleSignUp" text="S'inscrire" style="-fx-background-color: #253D90; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 10px;" />
 
-        <!-- 🔥 Ajout du label pour afficher les messages d'erreur -->
+        <Hyperlink onAction="#goToLogin" text="Déjà un compte ? Se connecter" style="-fx-text-fill: #253D90;" />
+
         <Label fx:id="errorLabel" textFill="red" />
     </VBox>
 </AnchorPane>
