@@ -84,6 +84,18 @@ public class MainViewController {
     }
 
     @FXML
+    private void showquestion() {
+        switchView("/GestionQuestion.fxml");
+    }
+
+    @FXML
+    private void showtest() { switchView("/GestionTest.fxml");
+    }
+
+    @FXML
+    private void showformation() {switchView("/GestionFormation.fxml");
+    }
+        @FXML
     private void handleProfile() {
         switchView("/Profile.fxml");
     }
