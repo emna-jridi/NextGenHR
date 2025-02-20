@@ -1,10 +1,17 @@
 package tn.esprit.controllers;
 
 import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -76,6 +83,15 @@ public class MainViewController {
         switchView("/AjouterOffre.fxml");
     }
 
+    @FXML
+    private void handleProfile() {
+        switchView("/Profile.fxml");
+    }
+
+
+        @FXML
+    private Text profilText;
+
 
 
 
@@ -96,4 +112,27 @@ public class MainViewController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void initialize() {
+
+    }
+    @FXML
+    private StackPane contentArea;
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        try {
+            // Charger la page de connexion
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml")); // Assure-toi que le chemin est correct
+            Parent root = loader.load();
+
+            // Obtenir la scène actuelle et la remplacer par la page de connexion
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Gérer l'erreur correctement dans un vrai projet
+        }
+    }
+    
 }

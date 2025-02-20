@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="633.0" prefWidth="1438.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.UserController" style="-fx-background-color: #E3EDF9;">
+    <children>
+        <!-- Header -->
+        <AnchorPane prefHeight="66.0" prefWidth="1438.0" style="-fx-background-color: #121C3E;">
+            <children>
+                <Label layoutX="26.0" layoutY="24.0" text="Rechercher :" textFill="WHITE" style="-fx-font-size: 16px;" />
+                <TextField fx:id="txtRecherche" layoutX="150.0" layoutY="20.0" promptText="Nom, Prénom ou Email" style="-fx-background-radius: 5px; -fx-padding: 5px;"/>
+            </children>
+        </AnchorPane>
+
+        <!-- Liste des utilisateurs -->
+        <BorderPane layoutY="70.0" prefHeight="520.0" prefWidth="1438.0">
+            <center>
+                <VBox alignment="CENTER" prefWidth="1438.0" spacing="10" style="-fx-padding: 20px;">
+                    <ListView fx:id="listViewUsers" maxWidth="971.0" prefHeight="510.0" prefWidth="971.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #253D90; -fx-border-radius: 10px; -fx-padding: 10px;"/>
+                </VBox>
+            </center>
+        </BorderPane>
+
+        <!-- Bouton de déconnexion -->
+        <Button fx:id="btnLogout" layoutX="650.0" layoutY="600.0" text="Déconnexion" style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-background-radius: 5px; -fx-font-size: 14px;" onAction="#handleLogout"/>
+    </children>
+</AnchorPane>

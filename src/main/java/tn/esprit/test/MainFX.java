@@ -22,7 +22,7 @@ public class MainFX extends Application {
             Parent root = loader.load();
             System.out.println("FXML chargé avec succès.");
             Scene scene = new Scene(root);
-            primaryStage.setTitle("gestion Télétravail");
+            primaryStage.setTitle("gestion Ressources Humaines ");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {

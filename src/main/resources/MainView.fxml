@@ -1,44 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="637.0" prefWidth="1128.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.MainViewController">
+<BorderPane prefHeight="1020.0" prefWidth="1920.0" style="-fx-background-color: #E3EDF9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.MainViewController">
 
-    <!-- Barre latérale -->
-    <VBox layoutX="0.0" layoutY="0.0" prefHeight="683.0" prefWidth="234.0" style="-fx-background-color: #121C3E; -fx-padding: 20px;">
-        <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Gestion" />
-   
-              <Button onAction="#showHome" prefHeight="30.0" prefWidth="196.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏠 Accueil" />
-        <Button onAction="#showSalle" prefHeight="34.0" prefWidth="198.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Salles" />
-        <Button onAction="#showTeletravailRH" prefHeight="34.0" prefWidth="198.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="💼 Télétravail RH" />
-        <Button onAction="#showTeletravailEm" prefHeight="34.0" prefWidth="203.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="💼 Télétravail Employé" />
-        <Button onAction="#showReservationRH" prefHeight="34.0" prefWidth="215.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Afficher les reservations" />
-        <Button onAction="#showReserationSalle" prefHeight="34.0" prefWidth="241.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Réserver une salle" />
-        <Button onAction="#showConge" prefHeight="34.0" prefWidth="244.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Gestion des congés" />
-        <Button onAction="#showReunion" prefHeight="34.0" prefWidth="248.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Gestion des reunion" />
-        <Button onAction="#showContrat" prefHeight="34.0" prefWidth="217.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Gestion des contrats" />
-        <Button onAction="#showServices" prefHeight="34.0" prefWidth="243.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Gestion des services" />
-        <Button onAction="#showCandidature" prefHeight="34.0" prefWidth="239.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Gestion des candidatures" />
-        <Button onAction="#showOffreEmploi" prefHeight="34.0" prefWidth="320.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏢 Gestion des offres d'emplois" />
+    <!-- Barre supérieure -->
+    <top>
+        <AnchorPane prefHeight="71.0" prefWidth="1024.0" style="-fx-background-color: #253D90;">
+            <children>
+                <HBox alignment="CENTER_LEFT" layoutX="1778.0" layoutY="12.0" spacing="10" style="-fx-background-color: #FFC20E; -fx-background-radius: 30; -fx-padding: 5px;">
+                    <children>
+                        <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@images/User_icon-cp.png" />
+                            </image>
+                        </ImageView>
+                        <Button fx:id="profileButton" onAction="#handleProfile" style="-fx-background-color: transparent; -fx-text-fill: #232423;                                        -fx-font-size: 18px; -fx-font-weight: bold;" text="Profil" />
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </top>
 
-    </VBox>
+    <!-- Menu latéral -->
+    <left>
+        <VBox prefHeight="683.0" prefWidth="234.0" style="-fx-background-color: #253D90; -fx-padding: 20px;">
+
+            <Button fx:id="accueil" onAction="#showHome" prefHeight="30.0" prefWidth="196.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏠 Accueil">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="Salles" onAction="#showSalle" prefHeight="34.0" prefWidth="198.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Salles">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="TT" onAction="#showTeletravailRH" prefHeight="34.0" prefWidth="198.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="💼 Télétravail RH">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="TTem" onAction="#showTeletravailEm" prefHeight="34.0" prefWidth="203.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="💼 Télétravail Employé">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="Reserv" onAction="#showReservationRH" prefHeight="34.0" prefWidth="215.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Afficher les réservations">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="ResSalle" onAction="#showReserationSalle" prefHeight="34.0" prefWidth="241.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Réserver une salle">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="Congé" onAction="#showConge" prefHeight="34.0" prefWidth="244.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Gestion des congés">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="Reunion" onAction="#showReunion" prefHeight="34.0" prefWidth="248.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Gestion des réunions">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="Contrats" onAction="#showContrat" prefHeight="34.0" prefWidth="217.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Gestion des contrats">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="Services" onAction="#showServices" prefHeight="34.0" prefWidth="243.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Gestion des services">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="candidatures" onAction="#showCandidature" prefHeight="34.0" prefWidth="239.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Gestion des candidatures">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="offres" onAction="#showOffreEmploi" prefHeight="34.0" prefWidth="320.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏢 Gestion des offres d'emplois">
+            <VBox.margin>
+               <Insets bottom="20.0" />
+            </VBox.margin></Button>
+            <Button fx:id="btnLogout" alignment="BOTTOM_LEFT" onAction="#handleLogout" style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-background-radius: 15;                            -fx-font-size: 16px; -fx-font-weight: bold;" text="Déconnexion">
+            <VBox.margin>
+               <Insets top="200.0" />
+            </VBox.margin></Button>
+        </VBox>
+    </left>
 
     <!-- Contenu principal -->
-    <AnchorPane fx:id="contentPane" layoutX="237.0" layoutY="0.0" prefHeight="683.0" prefWidth="965.0" style="-fx-background-color: #E3EDF9;">
-        <!-- Contenu de la page d'accueil -->
-        <VBox fx:id="homePage" alignment="CENTER" layoutX="194.0" layoutY="73.0" prefHeight="361.0" prefWidth="540.0" spacing="20.0">
-            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-            <Label style="-fx-font-size: 50px; -fx-text-fill: #2C3E50;" text="Platforme de gestion RH" textAlignment="CENTER">
-            <font>
-               <Font name="System Bold" size="9.0" />
-            </font></Label>
-            <Label style="-fx-font-size: 20px; -fx-text-fill: #34495E;" text="Gérer tous les opérations RH chez vous avec tout le confort " />
-        </VBox>
-    </AnchorPane>
-
-</AnchorPane>
+    <center>
+        <AnchorPane fx:id="contentPane" prefHeight="633.0" prefWidth="844.0" style="-fx-background-color: #E3EDF9;">
+            <VBox fx:id="homePage" alignment="CENTER" prefHeight="389.0" prefWidth="1672.0" spacing="20.0">
+                <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="219.0" prefWidth="1598.0" style="-fx-font-size: 180px; -fx-text-fill: #2C3E50;" text="NextGenHR" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="9.0" />
+                    </font>
+                </Label>
+            </VBox>
+             <Label layoutX="271.0" layoutY="506.0" style="-fx-font-size: 60px; -fx-text-fill: #34495E;" text="Gérez toutes les opérations RH avec confort." />
+        </AnchorPane>
+    </center>
+</BorderPane>
