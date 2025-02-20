@@ -18,14 +18,16 @@ public class ServiceTest implements IService <Test>{
     }
     @Override
     public void add(Test test) {
-        String qry = "INSERT INTO `test`(`date`, `DureeTest`, `ScoreTest`, `IdEmploye`, `TypeTest`) VALUES (?,?,?,?,?)";
+        String qry = "INSERT INTO `test`(`nomTest`,`date`, `DureeTest`, `ScoreTest`, `IdEmploye`, `TypeTest`) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setDate(1, test.getDate());
-            pstm.setString(2, test.getTime());
-            pstm.setInt(3, test.getScore());
-            pstm.setInt(4, test.getIdEmploye());
-    pstm.setString(5, String.valueOf(test.getTypeTest()));
+            pstm.setString(1,test.getNomTest());
+
+            pstm.setDate(2, test.getDate());
+            pstm.setString(3, test.getTime());
+            pstm.setInt(4, test.getScore());
+            pstm.setInt(5, test.getIdEmploye());
+    pstm.setString(6, String.valueOf(test.getTypeTest()));
             pstm.executeUpdate();
 
         } catch (SQLException e) {
@@ -43,6 +45,7 @@ public class ServiceTest implements IService <Test>{
             ResultSet rs = stm.executeQuery(qry);
             while (rs.next()){
                 Test test = new Test();
+                test.setNomTest(rs.getString("nomTest"));
                 test.setDate(rs.getDate("date"));
                 test.setTime(rs.getString("DureeTest"));
                 test.setScore(rs.getInt("ScoreTest"));
@@ -59,16 +62,17 @@ return tests;
 
     @Override
     public void update(Test test) {
-String qry ="UPDATE `test` SET `date`=?,`DureeTest`=?,`ScoreTest`=?,`IdEmploye`=?,`TypeTest`=? WHERE  `IdTest`= ?";
+String qry ="UPDATE `test` SET `nomTest`=?,`date`=?,`DureeTest`=?,`ScoreTest`=?,`IdEmploye`=?,`TypeTest`=? WHERE  `IdTest`= ?";
 
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setDate(1, test.getDate());
-            pstm.setString(2, test.getTime());
-            pstm.setInt(3, test.getScore());
-            pstm.setInt(4, test.getIdEmploye());
-            pstm.setString(5, String.valueOf(test.getTypeTest()));
-            pstm.setInt(6, test.getIdTest());
+            pstm.setString(1,test.getNomTest());
+            pstm.setDate(2, test.getDate());
+            pstm.setString(3, test.getTime());
+            pstm.setInt(4, test.getScore());
+            pstm.setInt(5, test.getIdEmploye());
+            pstm.setString(6, String.valueOf(test.getTypeTest()));
+            pstm.setInt(7, test.getIdTest());
             pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());        }
@@ -99,6 +103,7 @@ String qry ="UPDATE `test` SET `date`=?,`DureeTest`=?,`ScoreTest`=?,`IdEmploye`=
 
             if (rs.next()){
                 Test test = new Test();
+                test.setNomTest(rs.getString("nomTest"));
                 test.setScore(rs.getInt("ScoreTest"));
                 test.setIdEmploye(rs.getInt("IdEmploye"));
                 test.setDate(rs.getDate("date"));

@@ -3,22 +3,39 @@ package tn.esprit.models;
 import java.sql.Date;
 
 public class Formation {
+    public enum Statut {
+        ACTIVE, INACTIVE
+    }
+    public enum NiveauDifficulte {
+        DEBUTANT, INTERMEDIAIRE, AVANCE
+    }
 private int idFormation ;
-private String nomFormation , themeFormation ;
+private String nomFormation , themeFormation ,description ,lien_formation;
 private Date dateFormation ;
-   // private List<Employee> employees;
+    private NiveauDifficulte niveauDifficulte;
+    private Statut statut;
+    // private List<Employee> employees;
     public Formation() {}
-    public Formation( int idFormation,String nomFormation, String themeFormation, Date dateFormation) {
+    public Formation( int idFormation,String nomFormation, String themeFormation,String description,String lien_formation, Date dateFormation , Statut statut , NiveauDifficulte niveauDifficulte) {
         this.nomFormation = nomFormation;
         this.themeFormation = themeFormation;
         this.dateFormation = dateFormation;
         this.idFormation = idFormation;
-
+        this.description = description;
+        this.lien_formation = lien_formation;
+        this.statut=statut;
+        this.niveauDifficulte=niveauDifficulte;
     }
-    public Formation(String nomFormation, String themeFormation, Date dateFormation) {
+
+    public Formation(String nomFormation, String themeFormation, String description, String lien_formation, Date dateFormation , Statut statut , NiveauDifficulte niveauDifficulte) {
         this.nomFormation = nomFormation;
         this.themeFormation = themeFormation;
         this.dateFormation = dateFormation;
+        this.description = description;
+        this.lien_formation = lien_formation;
+        this.statut=statut;
+        this.niveauDifficulte=niveauDifficulte;
+
 
     }
 
@@ -61,13 +78,49 @@ private Date dateFormation ;
 //        this.employees = employees;
 //    }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLien_formation() {
+        return lien_formation;
+    }
+
+    public void setLien_formation(String lien_formation) {
+        this.lien_formation = lien_formation;
+    }
+
+    public NiveauDifficulte getNiveauDifficulte() {
+        return niveauDifficulte;
+    }
+
+    public void setNiveauDifficulte(NiveauDifficulte niveauDifficulte) {
+        this.niveauDifficulte = niveauDifficulte;
+    }
+
+    public Statut getStatut() {
+        return statut;
+    }
+
+    public void setStatut(Statut statut) {
+        this.statut = statut;
+    }
 
     @Override
     public String toString() {
         return "Formation{" +
+                "idFormation=" + idFormation +
                 ", nomFormation='" + nomFormation + '\'' +
                 ", themeFormation='" + themeFormation + '\'' +
+                ", description='" + description + '\'' +
+                ", lien_formation='" + lien_formation + '\'' +
                 ", dateFormation=" + dateFormation +
+                ", niveauDifficulte=" + niveauDifficulte +
+                ", statut=" + statut +
                 '}' + "\n";
     }
 }

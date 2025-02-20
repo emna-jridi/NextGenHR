@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Test {
 private int idTest, score , idEmploye ;
 private Date date;
-private String time;
+private String nomTest ,time;
     public enum TypeTest {
         TECHNIQUE,
         PSYCHOTECHNIQUE
@@ -13,17 +13,19 @@ private String time;
     private TypeTest typeTest;
 
     public Test() {}
-    public Test(int idTest, int score, int idEmploye, Date date, String time , TypeTest typeTest) {
+    public Test(int idTest, int score, int idEmploye, Date date, String nomTest,String time , TypeTest typeTest) {
         this.idTest = idTest;
         this.score = score;
         this.idEmploye = idEmploye;
+        this.nomTest= nomTest;
         this.date = date;
         this.time = time;
         this.typeTest = typeTest;
     }
-    public Test( int score, int idEmploye, Date date, String time , TypeTest typeTest) {
+    public Test( int score, int idEmploye, Date date,String nomTest, String time , TypeTest typeTest) {
         this.score = score;
         this.idEmploye = idEmploye;
+        this.nomTest= nomTest;
         this.date = date;
         this.time = time;
         this.typeTest = typeTest;
@@ -49,6 +51,13 @@ private String time;
         return idEmploye;
     }
 
+    public String getNomTest() {
+        return nomTest;
+    }
+
+    public void setNomTest(String nomTest) {
+        this.nomTest = nomTest;
+    }
     public void setIdEmploye(int idEmploye) {
         this.idEmploye = idEmploye;
     }
@@ -80,6 +89,8 @@ private String time;
     @Override
     public String toString() {
         return "Test{" +
+                "idTest=" + idTest +
+                ", Nomtest=" + nomTest +
                 ", score=" + score +
                 ", idEmploye=" + idEmploye +
                 ", date=" + date +

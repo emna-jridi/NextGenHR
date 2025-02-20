@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+        <?import javafx.geometry.Insets?>
+
+<?import javafx.collections.FXCollections?>
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml">
+    <padding>
+        <Insets/>
+    </padding>
+
+    <GridPane vgap="10" hgap="10">
+        <Label text="Titre du test:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="titreTest" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextArea fx:id="descriptionTest" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Durée (minutes):" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="dureeTest" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <TitledPane text="Questions" expanded="true">
+        <VBox spacing="10">
+            <ListView fx:id="questionsList" VBox.vgrow="ALWAYS"/>
+
+            <HBox spacing="10">
+                <Button text="Ajouter Question"/>
+                <Button text="Modifier Question"/>
+                <Button text="Supprimer Question"/>
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Enregistrer Test"/>
+        <Button text="Annuler"/>
+    </HBox>
+
+    <padding>
+        <Insets/>
+    </padding>
+
+    <Label text="Question:"/>
+    <TextArea fx:id="questionText" VBox.vgrow="ALWAYS"/>
+
+    <Label text="Type de réponse:"/>
+    <ComboBox fx:id="typeReponse">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Checkbox (Choix multiple)"/>
+                <String fx:value="ComboBox (Choix unique)"/>
+                <String fx:value="Texte libre"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <TitledPane text="Options de réponse" fx:id="optionsPane">
+        <VBox spacing="5">
+            <ListView fx:id="optionsList" VBox.vgrow="ALWAYS"/>
+            <HBox spacing="10">
+                <TextField fx:id="nouvelleOption" HBox.hgrow="ALWAYS"/>
+                <Button text="+"/>
+                <Button text="-"/>
+            </HBox>
+            <CheckBox fx:id="multipleCorrect" text="Autoriser plusieurs réponses correctes"/>
+        </VBox>
+    </TitledPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Valider"/>
+        <Button text="Annuler"/>
+    </HBox>
+</VBox>
+

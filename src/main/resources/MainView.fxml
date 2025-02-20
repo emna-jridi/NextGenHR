@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.esprit.Controller.MainView"
+            prefHeight="400.0" prefWidth="600.0">
+
+
+    <!-- Barre latérale -->
+    <VBox layoutX="0.0" layoutY="0.0" prefHeight="637.0" prefWidth="200.0" style="-fx-background-color: #121C3E; -fx-padding: 20px;">
+        <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Gestion" />
+
+        <Button onAction="#showHome" prefHeight="30.0" prefWidth="196.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏠 Accueil" />
+        <Button onAction="#showFormation" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Formation " />
+        <Button onAction="#showTest" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Test" />
+
+
+
+    </VBox>
+
+    <!-- Contenu principal -->
+    <AnchorPane fx:id="contentPane" layoutX="200.0" layoutY="0.0" prefHeight="637.0" prefWidth="928.0" style="-fx-background-color: #E3EDF9;">
+        <!-- Contenu de la page d'accueil -->
+        <VBox fx:id="homePage" alignment="CENTER" layoutX="194.0" layoutY="73.0" prefHeight="361.0" prefWidth="540.0" spacing="20.0">
+            <Label style="-fx-font-size: 50px; -fx-text-fill: #2C3E50;" text="Platforme de gestion RH" textAlignment="CENTER">
+                <font>
+                </font></Label>
+            <Label style="-fx-font-size: 20px; -fx-text-fill: #34495E;" text="Gérer tous les opérations RH chez vous avec tout le confort " />
+        </VBox>
+    </AnchorPane>
+</AnchorPane>
