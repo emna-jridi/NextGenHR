@@ -17,16 +17,16 @@ public class ServiceFormation implements IService<Formation> {
 
     @Override
     public void add(Formation formation) {
-        String qry = "INSERT INTO `formation`(  `NomFormation`, `ThemeFormation`, `description`, `lien_formation`,  `date`) VALUES (?,?,?,?,?)";
+        String qry = "INSERT INTO `formation`(  `NomFormation`, `ThemeFormation`, `description`, `lien_formation`,  `niveau_difficulte`, `statut`, `date`) VALUES (?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, formation.getNomFormation());
             pstm.setString(2, formation.getThemeFormation());
             pstm.setString(3, formation.getDescription());
             pstm.setString(4,formation.getLien_formation());
-          //  pstm.setString(5,String.valueOf(formation.getNiveauDifficulte()));
-           // pstm.setString(6, String.valueOf(formation.getStatut()));
-            pstm.setDate(5, formation.getDateFormation());
+           pstm.setString(5,formation.getNiveauDifficulte());
+           pstm.setString(6, formation.getStatut());
+            pstm.setDate(7, formation.getDateFormation());
             pstm.executeUpdate();
 
         } catch (SQLException e) {
@@ -50,8 +50,8 @@ public class ServiceFormation implements IService<Formation> {
                 f.setThemeFormation(rs.getString("ThemeFormation"));
                 f.setDescription(rs.getString("description"));
                 f.setLien_formation(rs.getString("lien_formation"));
-             //   f.setNiveauDifficulte(Formation.NiveauDifficulte.valueOf(rs.getString("niveau_difficulte")));
-              //  f.setStatut(Formation.Statut.valueOf(rs.getString("statut")));
+                f.setNiveauDifficulte(rs.getString("niveau_difficulte"));
+                f.setStatut(rs.getString("statut"));
                 f.setDateFormation(rs.getDate("date"));
                 f.setIdFormation(rs.getInt("idFormation"));
                 formations.add(f);
@@ -67,17 +67,16 @@ public class ServiceFormation implements IService<Formation> {
     @Override
     public void update(Formation formation) {
 
-        String qry = "UPDATE `formation` SET `NomFormation`=?,`ThemeFormation`=?,`description`=?,`lien_formation`=?,`date`=? WHERE  `IdFormation`= ? ";
+        String qry = "UPDATE `formation` SET `NomFormation`=?,`ThemeFormation`=?,`description`=?,`lien_formation`=?`niveau_difficulte`=?,`statut`=?,`date`=? WHERE  `IdFormation`= ? ";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-
             pstm.setString(1, formation.getNomFormation());
             pstm.setString(2, formation.getThemeFormation());
             pstm.setString(3, formation.getDescription());
             pstm.setString(4, formation.getLien_formation());
-            pstm.setString(5, String.valueOf(formation.getNiveauDifficulte()));
-            //pstm.setString(6, String.valueOf(formation.getStatut()));
-            //pstm.setDate(7, formation.getDateFormation());
+            pstm.setString(5, formation.getNiveauDifficulte());
+            pstm.setString(6,formation.getStatut());
+            pstm.setDate(7, formation.getDateFormation());
             pstm.setInt(6, formation.getIdFormation());
             pstm.executeUpdate();
 
@@ -112,8 +111,8 @@ public class ServiceFormation implements IService<Formation> {
                 f.setThemeFormation(rs.getString("ThemeFormation"));
                 f.setDescription(rs.getString("description"));
                 f.setLien_formation(rs.getString("lien_formation"));
-                //f.setNiveauDifficulte(Formation.NiveauDifficulte.valueOf(rs.getString("niveau_difficulte")));
-               // f.setStatut(Formation.Statut.valueOf(rs.getString("statut")));
+                f.setNiveauDifficulte(rs.getString("niveau_difficulte"));
+                f.setStatut(rs.getString("statut"));
                 f.setDateFormation(rs.getDate("date"));
                 f.setIdFormation(rs.getInt("idFormation"));
                 return f;

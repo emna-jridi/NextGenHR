@@ -3,20 +3,20 @@ package tn.esprit.models;
 import java.sql.Date;
 
 public class Formation {
-    public enum Statut {
-        ACTIVE, INACTIVE
-    }
-    public enum NiveauDifficulte {
-        DEBUTANT, INTERMEDIAIRE, AVANCE
-    }
+//    public enum Statut {
+//        ACTIVE, INACTIVE
+//    }
+//    public enum NiveauDifficulte {
+//        DEBUTANT, INTERMEDIAIRE, AVANCE
+//    }
 private int idFormation ;
 private String nomFormation , themeFormation ,description ,lien_formation;
 private Date dateFormation ;
-    private NiveauDifficulte niveauDifficulte;
-    private Statut statut;
+    private String niveauDifficulte;
+    private String statut;
     // private List<Employee> employees;
     public Formation() {}
-    public Formation( int idFormation,String nomFormation, String themeFormation,String description,String lien_formation, Date dateFormation , Statut statut , NiveauDifficulte niveauDifficulte) {
+    public Formation( int idFormation,String nomFormation, String themeFormation,String description,String lien_formation, Date dateFormation , String statut , String niveauDifficulte) {
         this.nomFormation = nomFormation;
         this.themeFormation = themeFormation;
         this.dateFormation = dateFormation;
@@ -27,7 +27,7 @@ private Date dateFormation ;
         this.niveauDifficulte=niveauDifficulte;
     }
 
-    public Formation(String nomFormation, String themeFormation, String description, String lien_formation, Date dateFormation , Statut statut , NiveauDifficulte niveauDifficulte) {
+    public Formation(String nomFormation, String themeFormation, String description, String lien_formation, Date dateFormation , String statut , String niveauDifficulte) {
         this.nomFormation = nomFormation;
         this.themeFormation = themeFormation;
         this.dateFormation = dateFormation;
@@ -94,19 +94,19 @@ private Date dateFormation ;
         this.lien_formation = lien_formation;
     }
 
-    public NiveauDifficulte getNiveauDifficulte() {
+    public String getNiveauDifficulte() {
         return niveauDifficulte;
     }
 
-    public void setNiveauDifficulte(NiveauDifficulte niveauDifficulte) {
+    public void setNiveauDifficulte(String niveauDifficulte) {
         this.niveauDifficulte = niveauDifficulte;
     }
 
-    public Statut getStatut() {
+    public String getStatut() {
         return statut;
     }
 
-    public void setStatut(Statut statut) {
+    public void setStatut(String statut) {
         this.statut = statut;
     }
 

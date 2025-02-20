@@ -23,10 +23,10 @@ public class GestionFormation  implements Initializable {
     IService<Formation> sf = new ServiceFormation();
     private int id;
     @FXML
-//    private ChoiceBox<Formation.Statut> status;
-//    @FXML
-//    private ChoiceBox<Formation.NiveauDifficulte> Niveau_difficulte;
-//    @FXML
+    private ChoiceBox<String> status;
+    @FXML
+    private ChoiceBox<String> Niveau_difficulte;
+    @FXML
     private TableColumn<Formation, Date> date;
 
     @FXML
@@ -68,6 +68,12 @@ public class GestionFormation  implements Initializable {
 //        } else {
 //            System.err.println("ChoiceBoxes not properly initialized from FXML!");
 //        }
+        status.getItems().addAll("Disponible", "Indisponible", "En pause");
+
+        Niveau_difficulte.getItems().addAll("Facile", "Moyen", "Difficile");
+
+        status.setValue("Disponible");
+        Niveau_difficulte.setValue("Moyen");
 
         nom.setCellValueFactory(new PropertyValueFactory<>("nomFormation"));
         theme.setCellValueFactory(new PropertyValueFactory<>("themeFormation"));
@@ -99,8 +105,8 @@ public class GestionFormation  implements Initializable {
         formation.setDateFormation(Date.valueOf(pdate.getValue()));
         formation.setLien_formation(lien.getText());
         formation.setDescription(description.getText());
-//        formation.setNiveauDifficulte(Niveau_difficulte.getValue());
-//        formation.setStatut(status.getValue());
+       formation.setNiveauDifficulte(Niveau_difficulte.getValue());
+       formation.setStatut(status.getValue());
         sf.add(formation);
         System.out.println(formation);
         rafraichirTableView();
@@ -121,8 +127,8 @@ public class GestionFormation  implements Initializable {
         pdate.setValue(selectedFormation.getDateFormation().toLocalDate());
         description.setText(selectedFormation.getDescription());
         lien.setText(selectedFormation.getLien_formation());
-//        Niveau_difficulte.setValue(selectedFormation .getNiveauDifficulte());
-//        status.setValue(selectedFormation.getStatut());
+     Niveau_difficulte.setValue(selectedFormation.getNiveauDifficulte());
+      status.setValue(selectedFormation.getStatut());
     }
 
     @FXML
@@ -173,8 +179,8 @@ public class GestionFormation  implements Initializable {
         selectedFormation.setDateFormation(Date.valueOf(pdate.getValue()));
         selectedFormation.setDescription(description.getText());
         selectedFormation.setLien_formation(lien.getText());
-//        selectedFormation.setNiveauDifficulte(Niveau_difficulte.getValue());
-//        selectedFormation.setStatut(status.getValue());
+        selectedFormation.setNiveauDifficulte(Niveau_difficulte.getValue());
+        selectedFormation.setStatut(status.getValue());
         sf.update(selectedFormation);
         rafraichirTableView();
         clearFields();
