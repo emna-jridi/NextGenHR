@@ -16,8 +16,10 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class GestionFormation  implements Initializable {
     IService<Formation> sf = new ServiceFormation();
@@ -48,9 +50,12 @@ public class GestionFormation  implements Initializable {
 
     @FXML
     private TableView<Formation> tvFormation;
-
+    @FXML
+    private Button search;
     @FXML
     private DatePicker pdate;
+    @FXML
+    private TextField tfsearch;
 
     private ObservableList<Formation> lf;
 
@@ -199,6 +204,29 @@ public class GestionFormation  implements Initializable {
         lien.clear();
         description.clear();
 
+    }
+    @FXML
+    void search(ActionEvent event) {
+
+        String searchTerm = tfsearch.getText();
+        List<Formation> allFormations = sf.getAll();
+        List<Formation> filteredFormations = searchList(searchTerm, allFormations);
+        lf = FXCollections.observableList(filteredFormations);
+        tvFormation.setItems(lf);
+    }
+
+    private List<Formation> searchList(String searchNom, List<Formation> listOfFormations) {
+
+        List<String> searchNomArray = Arrays.asList(searchNom.trim().split(" "));
+
+
+        return listOfFormations.stream()
+                .filter(formation -> {
+
+                    return searchNomArray.stream().allMatch(word ->
+                            formation.getNomFormation().toLowerCase().contains(word.toLowerCase()));
+                })
+                .collect(Collectors.toList());
     }
 
     private void showAlert(String title, String message) {
