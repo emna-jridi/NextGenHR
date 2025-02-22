@@ -28,6 +28,10 @@ public class MainViewController {
     private void showHome() {
         contentPane.getChildren().setAll(homePage);
     }
+    @FXML
+    private void showDashboard() {
+        switchView("/dashboard.fxml");
+    }
 
     @FXML
     private void showSalle() {

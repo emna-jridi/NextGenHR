@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import tn.esprit.test.main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -86,7 +86,7 @@ public class LoginController {
    @FXML
     private void goToHome() {
        try {
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/Mainview.fxml"));
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainViewEm.fxml"));
            Parent root = loader.load();
             Stage stage = (Stage) emailField.getScene().getWindow(); // Récupère la fenêtre actuelle
           stage.setScene(new Scene(root)); // Change la scène
@@ -115,7 +115,7 @@ public class LoginController {
     private void goToDashboard() {
         try {
             System.out.println("🔄 Redirection vers le Dashboard..."); // Débug
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainviewRH.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(new Scene(root));

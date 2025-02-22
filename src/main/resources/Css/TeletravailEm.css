@@ -1,0 +1,110 @@
+/* Style général */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #F5F7FA;
+}
+
+/* AnchorPane */
+.anchor-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 5);
+}
+
+/* Champ de texte et DatePicker */
+.text-field, .date-picker, .text-area {
+    -fx-font-size: 14px;
+    -fx-border-color: #253D90;
+    -fx-border-radius: 5px;
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 5px;
+}
+
+/* ListView */
+.list-view {
+    -fx-border-color: #253D90;
+    -fx-border-radius: 5px;
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 5px;
+}
+
+/* Style des boutons */
+.button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #253D90;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Effet au survol */
+.button:hover {
+    -fx-background-color: #1B2E5A;
+}
+
+/* Effet de clic */
+.button:pressed {
+    -fx-background-color: #162347;
+}
+
+/* Bouton Modifier */
+#IDmodifier {
+    -fx-background-color: #FFC107;
+    -fx-text-fill: black;
+}
+
+#IDmodifier:hover {
+    -fx-background-color: #E0A800;
+}
+
+/* Bouton Afficher */
+.button[text="Afficher"] {
+    -fx-background-color: #17A2B8;
+}
+
+.button[text="Afficher"]:hover {
+    -fx-background-color: #138496;
+}
+
+/* Bouton Trier par ID */
+.button[text="Trier par ID"] {
+    -fx-background-color: #6C757D;
+}
+
+.button[text="Trier par ID"]:hover {
+    -fx-background-color: #5A6268;
+}
+
+/* Bouton Envoyer */
+.button[text="Envoyer"] {
+    -fx-background-color: #28A745;
+}
+
+.button[text="Envoyer"]:hover {
+    -fx-background-color: #218838;
+}
+.card {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 15, 0, 0, 0);
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}

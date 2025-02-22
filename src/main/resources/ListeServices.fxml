@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="692.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ListServices">
+<AnchorPane prefHeight="692.0" prefWidth="951.0" stylesheets="@Css/TeletravailEm.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ListServices">
     <children>
         <!-- Titre -->
         <Label layoutX="367.0" layoutY="35.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Liste des Services" />
@@ -37,9 +37,9 @@
 
         <!-- Boutons Modifier et Supprimer -->
         <HBox layoutX="20.0" layoutY="380.0" spacing="10.0" />
-        <Button fx:id="btnAjouter" layoutX="512.0" layoutY="517.0" onAction="#ajouterService" text="Ajouter" />
-        <Button fx:id="btnSupprimer" layoutX="412.0" layoutY="517.0" onAction="#supprimerService" text="Supprimer" />
-        <Button fx:id="btnModifier" layoutX="329.0" layoutY="517.0" onAction="#modifierService" text="Modifier" />
+        <Button fx:id="btnAjouter" layoutX="604.0" layoutY="517.0" onAction="#ajouterService" prefHeight="38.0" prefWidth="225.0" text="Ajouter" />
+        <Button fx:id="btnSupprimer" layoutX="353.0" layoutY="517.0" onAction="#supprimerService" prefHeight="38.0" prefWidth="225.0" text="Supprimer" />
+        <Button fx:id="btnModifier" layoutX="101.0" layoutY="517.0" onAction="#modifierService" prefHeight="38.0" prefWidth="225.0" text="Modifier" />
 
          <!-- Tri services actifs -->
          <CheckBox fx:id="chkTriServicesActifs" layoutX="28.0" layoutY="165.0" onAction="#filterActiveServices" text="Services Actifs">

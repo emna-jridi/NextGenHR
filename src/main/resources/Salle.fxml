@@ -15,8 +15,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="468.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.SallesController">
-    <VBox prefHeight="636.0" prefWidth="561.0" spacing="15" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane prefHeight="468.0" prefWidth="930.0" stylesheets="@Css/TeletravailEm.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.SallesController">
+    <VBox prefHeight="636.0" prefWidth="586.0" spacing="15" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
         <!-- En-tête -->
         <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Gestion des Salles" />
@@ -27,7 +27,7 @@
         </HBox>
 
         <!-- Liste des salles -->
-        <TableView fx:id="tableSalle" prefHeight="495.0" prefWidth="521.0" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableSalle" prefHeight="486.0" prefWidth="551.0" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="columnRefSalle" prefWidth="100" text="Référence" />
                 <TableColumn fx:id="columnCapacite" prefWidth="100" text="Capacité" />
@@ -35,18 +35,27 @@
                 <TableColumn fx:id="columnDisponibilite" prefWidth="100" text="Statut" />
             </columns>
         </TableView>
-      <VBox>
+      <VBox prefHeight="38.0" prefWidth="564.0">
          <children>
-            <HBox>
+            <HBox prefHeight="38.0" prefWidth="581.0">
                <children>
-                     <Button fx:id="btnAfficher" onAction="#AfficherSalle" prefHeight="25.0" prefWidth="196.0" text="Afficher Salles" />
+                     <Button fx:id="btnAfficher" onAction="#AfficherSalle" prefHeight="25.0" prefWidth="196.0" text="Afficher Salles">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Button>
                      <Button fx:id="btnSupprimer" onAction="#SupprimerSalle" prefHeight="25.0" prefWidth="216.0" text="Supprimer Salle" textAlignment="RIGHT">
                      <HBox.margin>
-                        <Insets left="40.0" />
+                        <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                   <Button fx:id="btnTrier" layoutX="492.0" layoutY="400.0" onAction="#trierSalles" prefHeight="25.0" prefWidth="195.0" text="Trier par Référence" />
-                   <Button fx:id="btnExporter" layoutX="704.0" layoutY="400.0" onAction="#exporterSalles" prefHeight="25.0" prefWidth="195.0" text="Exporter en Excel" />
+                   <Button fx:id="btnTrier" layoutX="492.0" layoutY="400.0" onAction="#trierSalles" prefHeight="25.0" prefWidth="195.0" text="Trier par Référence">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Button>
+                   <Button fx:id="btnExporter" layoutX="704.0" layoutY="400.0" onAction="#exporterSalles" prefHeight="25.0" prefWidth="195.0" text="Exporter en Excel">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></Button>
                </children>
             </HBox>
          </children>

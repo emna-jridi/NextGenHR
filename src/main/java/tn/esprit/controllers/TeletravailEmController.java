@@ -4,11 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.util.Callback;
 import tn.esprit.models.Teletravail;
 import tn.esprit.services.ServiceTeletravail;
 
 import java.net.URL;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -25,6 +28,12 @@ public class TeletravailEmController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         TTService = new ServiceTeletravail();
+
+        // Configurer le DatePicker de la date de début
+        configurerDateDebutPicker();
+
+        // Configurer le DatePicker de la date de fin
+        configurerDateFinPicker();
 
         // Définir la façon d'afficher les éléments dans la ListView
         IdList.setCellFactory(param -> new ListCell<Teletravail>() {
@@ -45,6 +54,75 @@ public class TeletravailEmController implements Initializable {
                 remplirChamps(newValue);
             }
         });
+    }
+
+    // Configurer le DatePicker de la date de début
+    private void configurerDateDebutPicker() {
+        Id_date_debut.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        LocalDate minDate = LocalDate.now().plusDays(3); // 3 jours après aujourd'hui
+                        DayOfWeek day = date.getDayOfWeek();
+
+                        if (date.isBefore(minDate) || day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+                            setDisable(true); // Désactiver les dates antérieures et les week-ends
+                            setStyle("-fx-background-color: #ffc0cb;"); // Style pour les dates désactivées
+                        }
+                    }
+                };
+            }
+        });
+
+        // Mettre à jour le DatePicker de la date de fin lorsque la date de début change
+        Id_date_debut.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                configurerDateFinPicker();
+            }
+        });
+    }
+
+    // Configurer le DatePicker de la date de fin
+    private void configurerDateFinPicker() {
+        Id_Date_Fin.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        LocalDate dateDebut = Id_date_debut.getValue();
+                        if (dateDebut != null) {
+                            LocalDate minDate = dateDebut;
+                            LocalDate maxDate = getNextWorkingDay(dateDebut, 1); // Calculer la date max en jours ouvrables
+                            DayOfWeek day = date.getDayOfWeek();
+
+                            if (date.isBefore(minDate) || date.isAfter(maxDate) || day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+                                setDisable(true); // Désactiver les dates hors de la plage et les week-ends
+                                setStyle("-fx-background-color: #ffc0cb;"); // Style pour les dates désactivées
+                            }
+                        }
+                    }
+                };
+            }
+        });
+    }
+
+    // Fonction utilitaire pour calculer la prochaine date ouvrable (en excluant les week-ends)
+    private LocalDate getNextWorkingDay(LocalDate startDate, int days) {
+        LocalDate date = startDate;
+        int addedDays = 0;
+
+        while (addedDays < days) {
+            date = date.plusDays(1);
+            if (date.getDayOfWeek() != DayOfWeek.SATURDAY && date.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                addedDays++;
+            }
+        }
+        return date;
     }
 
     // Affiche les demandes de télétravail pour un employé donné
@@ -80,20 +158,40 @@ public class TeletravailEmController implements Initializable {
             return;
         }
 
+        LocalDate dateDebut = Id_date_debut.getValue();
+        LocalDate dateFin = Id_Date_Fin.getValue();
+
+        // Vérifier si la date de début est un vendredi
+        if (dateDebut.getDayOfWeek().getValue() == 5) { // 5 = Vendredi
+            // Ignorer samedi et dimanche
+            LocalDate lundi = dateDebut.plusDays(3); // Prochain lundi
+            LocalDate mardi = dateDebut.plusDays(4); // Mardi
+            if (dateFin.isBefore(lundi) || dateFin.isAfter(mardi)) {
+                showAlert("Erreur", "Si la date de début est un vendredi, la date de fin doit être lundi ou mardi.");
+                return;
+            }
+        } else {
+            // Validation normale (2 jours maximum)
+            long duree = ChronoUnit.DAYS.between(dateDebut, dateFin);
+            if (duree > 2) {
+                showAlert("Erreur", "La durée de la demande ne peut pas dépasser 2 jours consécutifs.");
+                return;
+            }
+        }
+
         // Mettre à jour l'objet avec les nouvelles valeurs
         teletravail.setRaisonTT(Id_Raison.getText().trim());
-        teletravail.setDateDebutTT(Id_date_debut.getValue());
-        teletravail.setDateFinTT(Id_Date_Fin.getValue());
+        teletravail.setDateDebutTT(dateDebut);
+        teletravail.setDateFinTT(dateFin);
 
         if (TTService.update(teletravail)) {
             showAlert("Succès", "Demande de télétravail modifiée avec succès.");
-            afficherTTbyId(new ActionEvent()); // Rafraîchir la liste
+            AfficherTT(new ActionEvent()); // Rafraîchir la liste
         } else {
             showAlert("Erreur", "Erreur lors de la modification de la demande.");
         }
     }
 
-    // Ajouter une nouvelle demande de télétravail
     @FXML
     void AjouterTT(ActionEvent event) {
         if (!validateFields()) return;
@@ -101,17 +199,38 @@ public class TeletravailEmController implements Initializable {
         int idEmploye = parseId(Id_Identifiant.getText().trim());
         if (idEmploye == -1) return;
 
+        LocalDate dateDebut = Id_date_debut.getValue();
+        LocalDate dateFin = Id_Date_Fin.getValue();
+
+        // Vérifier si la date de début est un vendredi
+        if (dateDebut.getDayOfWeek().getValue() == 5) { // 5 = Vendredi
+            // Ignorer samedi et dimanche
+            LocalDate lundi = dateDebut.plusDays(3); // Prochain lundi
+            LocalDate mardi = dateDebut.plusDays(4); // Mardi
+            if (dateFin.isBefore(lundi) || dateFin.isAfter(mardi)) {
+                showAlert("Erreur", "Si la date de début est un vendredi, la date de fin doit être lundi ou mardi.");
+                return;
+            }
+        } else {
+            // Validation normale (2 jours maximum)
+            long duree = ChronoUnit.DAYS.between(dateDebut, dateFin);
+            if (duree > 2) {
+                showAlert("Erreur", "La durée de la demande ne peut pas dépasser 2 jours consécutifs.");
+                return;
+            }
+        }
+
         Teletravail teletravail = new Teletravail();
         teletravail.setIdEmploye(idEmploye);
         teletravail.setRaisonTT(Id_Raison.getText().trim());
         teletravail.setDateDemandeTT(LocalDate.now());
-        teletravail.setDateDebutTT(Id_date_debut.getValue());
-        teletravail.setDateFinTT(Id_Date_Fin.getValue());
+        teletravail.setDateDebutTT(dateDebut);
+        teletravail.setDateFinTT(dateFin);
         teletravail.setStatutTT("En attente");
 
         if (TTService.add(teletravail)) {
             showAlert("Succès", "Demande de télétravail ajoutée avec succès.");
-            afficherTTbyId(new ActionEvent()); // Rafraîchir la liste
+            AfficherTT(new ActionEvent()); // Rafraîchir la liste
         } else {
             showAlert("Erreur", "Erreur lors de l'ajout de la demande.");
         }
@@ -132,28 +251,6 @@ public class TeletravailEmController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    // Récupérer les demandes de télétravail d'un employé par ID
-    @FXML
-    void afficherTTbyId(ActionEvent event) {
-        String identifiant = Id_Identifiant.getText().trim();
-
-        if (identifiant.isEmpty()) {
-            showAlert("Erreur", "Veuillez entrer un identifiant valide.");
-            return;
-        }
-
-        int idEmploye = parseId(identifiant);
-        if (idEmploye == -1) return;
-
-        List<Teletravail> demandes = TTService.getTeletravailByEmploye(idEmploye);
-        if (demandes.isEmpty()) {
-            showAlert("Info", "Aucune demande trouvée pour cet employé.");
-            IdList.getItems().clear();
-        } else {
-            IdList.getItems().setAll(demandes);
-        }
     }
 
     // Fonction utilitaire pour valider les champs du formulaire
@@ -181,6 +278,7 @@ public class TeletravailEmController implements Initializable {
         return "ID: " + tt.getIdTeletravail() + " | " + tt.getRaisonTT() + " (" +
                 tt.getDateDebutTT() + " - " + tt.getDateFinTT() + ")" + "|" + tt.getStatutTT();
     }
+
     @FXML
     void trierParId(ActionEvent event) {
         List<Teletravail> demandesTriees = TTService.getAllSortedById();

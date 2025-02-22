@@ -8,31 +8,30 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="725.0" prefWidth="887.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.CandidatureController">
+<AnchorPane prefHeight="725.0" prefWidth="887.0" stylesheets="@Css/TeletravailEm.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.CandidatureController">
    <children>
       <Label layoutX="36.0" layoutY="66.0" text="Nom" />
       <Label layoutX="36.0" layoutY="104.0" text="Prenom" />
       <Label layoutX="36.0" layoutY="140.0" text="email" />
       <Label layoutX="36.0" layoutY="176.0" text="telephone" />
       <Label layoutX="36.0" layoutY="212.0" text="Date" />
-      <Label layoutX="33.0" layoutY="332.0" text="Statut" />
-      <Label layoutX="35.0" layoutY="253.0" text="CV" />
-      <Label layoutX="35.0" layoutY="288.0" text="Lettre de Motivation" />
-      <Label layoutX="29.0" layoutY="379.0" text="Offre" />
-      <TextField fx:id="txtNom" layoutX="90.0" layoutY="62.0" />
-      <TextField fx:id="txtPrenom" layoutX="106.0" layoutY="100.0" />
-      <TextField fx:id="txtEmail" layoutX="91.0" layoutY="136.0" />
-      <TextField fx:id="txtTelephone" layoutX="107.0" layoutY="172.0" />
-      <TextField fx:id="txtCv" layoutX="69.0" layoutY="249.0" />
-      <TextField fx:id="txtLettre" layoutX="155.0" layoutY="284.0" />
-      <TextField fx:id="txtStatut" layoutX="98.0" layoutY="328.0" />
-      <Button layoutX="116.0" layoutY="446.0" mnemonicParsing="false" onAction="#Ajouter" text="Ajouter" />
-      <ComboBox fx:id="listeoffres" layoutX="80.0" layoutY="375.0" onAction="#selectionner" prefWidth="150.0" />
-      <DatePicker fx:id="dateCandidature" layoutX="68.0" layoutY="208.0" />
-      <ListView fx:id="listcandidats" layoutX="331.0" layoutY="53.0" prefHeight="453.0" prefWidth="406.0" />
-      <Button layoutX="505.0" layoutY="529.0" mnemonicParsing="false" onAction="#Afficher" text="Afficher" />
-      <Button layoutX="764.0" layoutY="109.0" mnemonicParsing="false" onAction="#Supprimer" text="Supprimer" />
-      <Button layoutX="769.0" layoutY="149.0" mnemonicParsing="false" onAction="#Modifier" text="Modifier" />
+      <Label layoutX="33.0" layoutY="339.0" text="Statut" />
+      <Label layoutX="35.0" layoutY="260.0" text="CV" />
+      <Label layoutX="35.0" layoutY="295.0" text="Lettre de Motivation" />
+      <Label layoutX="29.0" layoutY="386.0" text="Offre" />
+      <TextField fx:id="txtNom" layoutX="155.0" layoutY="60.0" />
+      <TextField fx:id="txtPrenom" layoutX="155.0" layoutY="98.0" />
+      <TextField fx:id="txtEmail" layoutX="155.0" layoutY="134.0" />
+      <TextField fx:id="txtTelephone" layoutX="155.0" layoutY="170.0" />
+      <TextField fx:id="txtCv" layoutX="155.0" layoutY="254.0" />
+      <TextField fx:id="txtLettre" layoutX="155.0" layoutY="291.0" />
+      <TextField fx:id="txtStatut" layoutX="155.0" layoutY="333.0" />
+      <Button layoutX="99.0" layoutY="521.0" mnemonicParsing="false" onAction="#Ajouter" prefHeight="38.0" prefWidth="150.0" text="Ajouter" />
+      <ComboBox fx:id="listeoffres" layoutX="155.0" layoutY="382.0" onAction="#selectionner" prefWidth="150.0" />
+      <DatePicker fx:id="dateCandidature" layoutX="156.0" layoutY="207.0" />
+      <ListView fx:id="listcandidats" layoutX="380.0" layoutY="58.0" prefHeight="453.0" prefWidth="486.0" />
+      <Button layoutX="380.0" layoutY="521.0" mnemonicParsing="false" onAction="#Afficher" prefHeight="38.0" prefWidth="150.0" text="Afficher" />
+      <Button layoutX="716.0" layoutY="521.0" mnemonicParsing="false" onAction="#Supprimer" prefHeight="38.0" prefWidth="150.0" text="Supprimer" />
+      <Button layoutX="548.0" layoutY="521.0" mnemonicParsing="false" onAction="#Modifier" prefHeight="38.0" prefWidth="150.0" text="Modifier" />
    </children>
 </AnchorPane>

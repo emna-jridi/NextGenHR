@@ -5,24 +5,24 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="470.0" prefWidth="679.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.RhController">
+<AnchorPane prefHeight="547.0" prefWidth="900.0" stylesheets="@Css/TeletravailRH.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.RhController">
     <children>
-        <TableView fx:id="reservationsTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="445.0">
+        <TableView fx:id="reservationsTable" layoutX="14.0" layoutY="52.0" prefHeight="200.0" prefWidth="573.0">
             <columns>
-                <TableColumn fx:id="columnNomEmploye" prefWidth="160.0" text="Identifiant Employé" />
-                <TableColumn fx:id="columnSalle" minWidth="0.0" prefWidth="69.0" text="Salle" />
-                <TableColumn fx:id="columnDateReservation" prefWidth="120.0" text="Date Réservation" />
-                <TableColumn fx:id="columnStatut" prefWidth="95.0" text="Statut" />
+                <TableColumn fx:id="columnNomEmploye" prefWidth="208.0" text="Identifiant Employé" />
+                <TableColumn fx:id="columnSalle" minWidth="0.0" prefWidth="75.0" text="Salle" />
+                <TableColumn fx:id="columnDateReservation" prefWidth="207.0" text="Date Réservation" />
+                <TableColumn fx:id="columnStatut" prefWidth="82.0" text="Statut" />
             </columns>
         </TableView>
-        <TableView fx:id="sallesOccupeesTable" layoutX="14.0" layoutY="270.0" prefHeight="186.0" prefWidth="445.0">
+        <TableView fx:id="sallesOccupeesTable" layoutX="14.0" layoutY="334.0" prefHeight="186.0" prefWidth="573.0">
             <columns>
-                <TableColumn fx:id="columnRefSalle" prefWidth="118.0" text="Référence Salle" />
-                <TableColumn fx:id="columnCapacite" prefWidth="81.0" text="Capacité" />
-                <TableColumn fx:id="columnTypeSalle" prefWidth="114.0" text="Type Salle" />
+                <TableColumn fx:id="columnRefSalle" prefWidth="246.0" text="Référence Salle" />
+                <TableColumn fx:id="columnCapacite" prefWidth="183.0" text="Capacité" />
+                <TableColumn fx:id="columnTypeSalle" prefWidth="143.0" text="Type Salle" />
             </columns>
         </TableView>
-        <Button layoutX="475.0" layoutY="102.0" mnemonicParsing="false" onAction="#exporterReservations" prefHeight="25.0" prefWidth="141.0" text="Exporter Réservations" />
-        <Button layoutX="487.0" layoutY="358.0" mnemonicParsing="false" onAction="#exporterSallesOccupees" text="Exporter Liste Salle" />
+        <Button layoutX="660.0" layoutY="140.0" mnemonicParsing="false" onAction="#exporterReservations" prefHeight="40.0" prefWidth="234.0" text="Exporter Réservations" />
+        <Button layoutX="660.0" layoutY="427.0" mnemonicParsing="false" onAction="#exporterSallesOccupees" prefHeight="40.0" prefWidth="234.0" text="Exporter Liste Salle" />
     </children>
 </AnchorPane>

@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import tn.esprit.models.ReservationSalle;
 import tn.esprit.models.Salle;
 import tn.esprit.services.ServiceReservationSalle;
@@ -15,13 +17,16 @@ import java.util.List;
 
 public class ReservationSalleController {
 
+    @FXML private ListView<HBox> sallesListView;
     @FXML private TextField idEmployeField;
-    @FXML private ChoiceBox<String> salleChoiceBox;
     @FXML private DatePicker datePicker;
     @FXML private TextField dureeField;
+    @FXML private Button btnReserver;
 
     private final ServiceSalle serviceSalle = new ServiceSalle();
     private final ServiceReservationSalle serviceReservation = new ServiceReservationSalle();
+
+    private Salle selectedSalle;
 
     @FXML
     public void initialize() {
@@ -30,31 +35,56 @@ public class ReservationSalleController {
 
     private void loadSallesDisponibles() {
         List<Salle> salles = serviceSalle.getAll();
-        ObservableList<String> salleRefs = FXCollections.observableArrayList();
+        ObservableList<HBox> salleCards = FXCollections.observableArrayList();
+
         for (Salle salle : salles) {
             if ("Disponible".equals(salle.getDisponibilite())) {
-                salleRefs.add(salle.getRefSalle());
+                HBox salleCard = createSalleCard(salle);
+                salleCards.add(salleCard);
             }
         }
-        salleChoiceBox.setItems(salleRefs);
+
+        sallesListView.setItems(salleCards);
+    }
+
+    private HBox createSalleCard(Salle salle) {
+        Label salleRefLabel = new Label(salle.getRefSalle());
+        salleRefLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+
+        Label capaciteLabel = new Label("Capacité: " + salle.getCapacite());
+
+        Button selectButton = new Button("Sélectionner");
+        selectButton.setOnAction(event -> selectSalle(salle));
+
+        HBox salleCard = new HBox(20, salleRefLabel, capaciteLabel, selectButton);
+        salleCard.setStyle("-fx-background-color: #f4f4f4; -fx-padding: 10px; -fx-border-radius: 5px; -fx-spacing: 15px;");
+
+        return salleCard;
+    }
+
+    private void selectSalle(Salle salle) {
+        this.selectedSalle = salle;
+        showAlert(Alert.AlertType.INFORMATION, "Salle sélectionnée", "Vous avez choisi : " + salle.getRefSalle());
     }
 
     @FXML
     private void reserverSalle() {
         try {
+            if (selectedSalle == null) {
+                showAlert(Alert.AlertType.WARNING, "Erreur", "Veuillez sélectionner une salle !");
+                return;
+            }
+
             int idEmploye = Integer.parseInt(idEmployeField.getText().trim());
-            String refSalle = salleChoiceBox.getValue();
             LocalDate dateReservation = datePicker.getValue();
             LocalTime dureeReservation = LocalTime.parse(dureeField.getText().trim());
 
-            if (refSalle == null || dateReservation == null || dureeReservation == null) {
+            if (dateReservation == null || dureeReservation == null) {
                 showAlert(Alert.AlertType.WARNING, "Erreur", "Tous les champs sont obligatoires !");
                 return;
             }
 
-            int idSalle = serviceSalle.getIdByRef(refSalle); // Récupérer l'ID de la salle depuis la référence
-
-            ReservationSalle reservation = new ReservationSalle(idEmploye, idSalle, dateReservation, dureeReservation, "Confirmée");
+            ReservationSalle reservation = new ReservationSalle(idEmploye, selectedSalle.getIdSalle(), dateReservation, dureeReservation, "Confirmée");
 
             if (serviceReservation.add(reservation)) {
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Réservation effectuée avec succès !");
@@ -71,9 +101,9 @@ public class ReservationSalleController {
 
     private void clearFields() {
         idEmployeField.clear();
-        salleChoiceBox.setValue(null);
         datePicker.setValue(null);
         dureeField.clear();
+        selectedSalle = null;
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {

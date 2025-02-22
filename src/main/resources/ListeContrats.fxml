@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="692.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ListContrats">
+<AnchorPane prefHeight="692.0" prefWidth="951.0" stylesheets="@Css/TeletravailEm.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ListContrats">
     <children>
         <!-- Titre -->
         <Label layoutX="399.0" layoutY="23.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Liste des Contrats">

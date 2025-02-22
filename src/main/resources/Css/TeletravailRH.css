@@ -1,0 +1,90 @@
+/* Style général */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #F5F7FA;
+}
+
+/* AnchorPane */
+.anchor-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 5);
+}
+
+/* ListView */
+.list-view {
+    -fx-border-color: #253D90;
+    -fx-border-radius: 5px;
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 5px;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-font-size: 14px;
+    -fx-border-color: #253D90;
+    -fx-border-radius: 5px;
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 5px;
+}
+
+/* Style des boutons */
+.button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #253D90;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Effet au survol */
+.button:hover {
+    -fx-background-color: #1B2E5A;
+}
+
+/* Effet de clic */
+.button:pressed {
+    -fx-background-color: #162347;
+}
+
+/* Bouton Approuver */
+#IDApprouverTT {
+    -fx-background-color: #28A745;
+}
+
+#IDApprouverTT:hover {
+    -fx-background-color: #218838;
+}
+
+/* Bouton Refuser */
+#IDRefuserTT {
+    -fx-background-color: #DC3545;
+}
+
+#IDRefuserTT:hover {
+    -fx-background-color: #C82333;
+}
+
+/* Bouton Supprimer */
+#IDSupprimerTT {
+    -fx-background-color: #FFC107;
+    -fx-text-fill: black;
+}
+
+#IDSupprimerTT:hover {
+    -fx-background-color: #E0A800;
+}
+
+/* Bouton Afficher */
+#IDafficherTT {
+    -fx-background-color: #17A2B8;
+}
+
+#IDafficherTT:hover {
+    -fx-background-color: #138496;
+}
