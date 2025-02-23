@@ -1,0 +1,177 @@
+/* Définir la couleur de fond principale */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f4f4f4);
+}
+
+/* Style du titre */
+.label {
+    -fx-text-fill: #FFCC00;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 3, 0, 0, 2);
+}
+
+/* Barre de recherche */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #003366;
+    -fx-border-width: 2px;
+    -fx-text-fill: #003366;
+    -fx-font-size: 12px;
+    -fx-padding: 8px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.image-view {
+    -fx-cursor: hand; /* Change le curseur pour indiquer une action possible */
+}
+
+
+/* Style des CheckBox */
+.check-box {
+    -fx-text-fill: #003366;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #003366;
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+}
+
+/* Style des en-têtes de colonnes */
+.table-view .column-header {
+    -fx-background-color: #FFCC00;
+    -fx-text-fill: #003366;
+    -fx-font-weight: bold;
+    -fx-border-color: #003366;
+    -fx-border-width: 1px;
+    -fx-font-size: 14px;
+}
+
+/* Appliquer un border-radius aux en-têtes de colonnes */
+.table-view .column-header-background {
+    -fx-background-radius: 15px 15px 0 0; /* Arrondi seulement en haut */
+    -fx-border-radius: 15px 15px 0 0; /* Même arrondi pour la bordure */
+    -fx-border-color: #003366;
+    -fx-border-width: 2px;
+    -fx-background-insets: 0, 0 0 1 0; /* Ajuste l'effet de superposition */
+}
+
+/* Appliquer un border-radius aux colonnes*/
+.table-view .column-header {
+    -fx-background-radius: 15px 15px 0 0;
+    -fx-border-radius: 15px 15px 0 0;
+}
+
+/* Ajustement pour éviter l'effet de superposition */
+.table-view .column-header .label {
+    -fx-background-radius: 15px 15px 0 0;
+    -fx-border-radius: 15px 15px 0 0;
+}
+
+
+
+/* Style des en-têtes de colonnes */
+.table-view .column-header-background .label {
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+}
+
+
+/* Style des cellules du TableView */
+.table-row-cell {
+    -fx-background-color: white; /* Bleu marine avec transparence */
+//-fx-text-fill: white;
+    -fx-border-color:  #003366;
+    -fx-border-width: 0.5px;
+    -fx-font-size: 14px;
+}
+
+
+
+/* Effet de sélection */
+.table-row-cell:selected {
+    -fx-background-color: #FFCC00;
+    -fx-text-fill: #003366;
+    -fx-font-weight: bold;
+}
+
+/* Effet hover */
+.table-row-cell:hover {
+    -fx-background-color: #FFCC00;
+    -fx-text-fill: #003366;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+
+
+
+
+/* Style des boutons */
+.button {
+    -fx-background-color: linear-gradient(to right, #FFCC00, #FFA500);
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-border-color: #003366;
+    -fx-border-width: 2px;
+    -fx-padding: 12px 25px;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 3);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Effet hover */
+.button:hover {
+    -fx-background-color: #003366;
+    -fx-text-fill: #FFCC00;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Effet lorsque le bouton est pressé */
+.button:pressed {
+    -fx-background-color: #002244;
+    -fx-text-fill: white;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Style des boutons Modifier et Supprimer */
+#btnModifier {
+    -fx-background-color: linear-gradient(to right, #FFA500, #FF8700);
+}
+
+#btnModifier:hover {
+    -fx-background-color: #e69500;
+}
+
+#btnSupprimer {
+    -fx-background-color: linear-gradient(to right, #D9534F, #C9302C);
+}
+
+#btnSupprimer:hover {
+    -fx-background-color: #c9302c;
+}
+
+/* Style du conteneur principal */
+.form-container {
+    -fx-background-color: rgba(0, 51, 102, 0.9); /* Bleu marine avec opacité */
+    -fx-border-color: #FFCC00;
+    -fx-border-width: 3px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-padding: 25px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
+}

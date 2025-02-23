@@ -32,101 +32,60 @@ public class AjouterService {
     @FXML
     private RadioButton radioInactif;
 
-    private ServiceService serviceService = new ServiceService();
+    @FXML
+    private ToggleGroup statusGroup;
 
+    private final ServiceService serviceService = new ServiceService();
 
     private Runnable onServiceAdded;
-
 
     public void setOnServiceAdded(Runnable onServiceAdded) {
         this.onServiceAdded = onServiceAdded;
     }
 
     @FXML
-    private ToggleGroup statusGroup;
-
-    @FXML
-    void initialize() {
-
-        statusGroup = new ToggleGroup();
-        radioActif.setToggleGroup(statusGroup);
-        radioInactif.setToggleGroup(statusGroup);
-    }
-
-    @FXML
     void ajouterService(ActionEvent event) {
-
-        String nom = nomService.getText();
-        String description = descriptionService.getText();
-        String type = typeService.getText();
+        String nom = nomService.getText().trim();
+        String description = descriptionService.getText().trim();
+        String type = typeService.getText().trim();
         LocalDate dateDebut = dateDebutService.getValue();
         LocalDate dateFin = dateFinService.getValue();
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
 
-
-        if (nom.isEmpty()) {
-            showAlert("Erreur", "Le nom du service est obligatoire.");
+        // Vérification des champs obligatoires
+        if (nom.isEmpty() || description.isEmpty() || type.isEmpty() || dateDebut == null || dateFin == null) {
+            showAlert("Erreur", "Veuillez remplir tous les champs.", Alert.AlertType.ERROR);
             return;
         }
 
-        if (description.isEmpty()) {
-            showAlert("Erreur", "La description du service est obligatoire.");
-            return;
-        }
-
-        if (type.isEmpty()) {
-            showAlert("Erreur", "Le type du service est obligatoire.");
-            return;
-        }
-
-        if (dateDebut == null) {
-            showAlert("Erreur", "La date de début du service est obligatoire.");
-            return;
-        }
-
-        if (dateFin == null) {
-            showAlert("Erreur", "La date de fin du service est obligatoire.");
-            return;
-        }
-
+        // Vérification de la date
         if (dateDebut.isAfter(dateFin)) {
-            showAlert("Erreur", "La date de début ne peut pas être après la date de fin.");
+            showAlert("Erreur", "La date de début ne peut pas être après la date de fin.", Alert.AlertType.ERROR);
             return;
         }
 
-
-
-
+        // Création et ajout du service
         Service service = new Service(nom, description, type, dateDebut, dateFin, status);
-
-
         serviceService.add(service);
 
-
-
-
+        // Exécution du callback si défini
         if (onServiceAdded != null) {
             onServiceAdded.run();
         }
 
-
-        showAlert("Succès", "Le service a été ajouté avec succès.");
+        showAlert("Succès", "Le service a été ajouté avec succès.", Alert.AlertType.INFORMATION);
         closeWindow();
     }
 
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-
-
     private void closeWindow() {
-
-        ((Stage) typeService.getScene().getWindow()).close();
+        ((Stage) nomService.getScene().getWindow()).close();
     }
 }

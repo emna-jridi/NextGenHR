@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.models.Contrat;
+import tn.esprit.models.TypeContrat;
 import tn.esprit.services.ServiceContrat;
 
 import java.util.regex.Matcher;
@@ -13,7 +14,8 @@ import java.util.regex.Pattern;
 public class AjouterContrat {
 
     @FXML
-    private TextField typeContrat;
+    private ComboBox<TypeContrat> comboTypeContrat;  // Remplacer TextField par ComboBox
+
 
     @FXML
     private DatePicker dateDebutContrat;
@@ -44,14 +46,16 @@ public class AjouterContrat {
 
     private Runnable onContratAdded;
 
-
+//refresh the Contrats list
     public void setOnContratAdded(Runnable onContratAdded) {
         this.onContratAdded = onContratAdded;
     }
 
+    //initialiser ToggleGroup
     @FXML
     void initialize() {
-
+// Remplir le ComboBox avec les valeurs de l'enum TypeContrat
+        comboTypeContrat.getItems().setAll(TypeContrat.values());
         statusGroup = new ToggleGroup();
         radioActif.setToggleGroup(statusGroup);
         radioInactif.setToggleGroup(statusGroup);
@@ -60,16 +64,23 @@ public class AjouterContrat {
     @FXML
     void ajouter(ActionEvent event) {
 
-        String type = typeContrat.getText();
+        // Récupérer le type de contrat sélectionné dans le ComboBox
+        TypeContrat type = comboTypeContrat.getValue();
         String montantStr = montantContrat.getText();
         String nom = nomClient.getText();
         String email = emailClient.getText();
-
-
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
 
 
-        if (type.isEmpty()) {
+        // Vérifier si tous les champs sont vides
+        if (type == null && montantStr.isEmpty() && nom.isEmpty() && email.isEmpty() &&
+                dateDebutContrat.getValue() == null && dateFinContrat.getValue() == null) {
+            showAlert("Erreur", "Veuillez remplir les champs svp.");
+            return;
+        }
+
+
+        if (type == null) {
             showAlert("Erreur", "Le type du contrat est obligatoire.");
             return;
         }
@@ -157,6 +168,6 @@ public class AjouterContrat {
 
     private void closeWindow() {
 
-        ((Stage) typeContrat.getScene().getWindow()).close();
+        ((Stage) comboTypeContrat.getScene().getWindow()).close();
     }
 }

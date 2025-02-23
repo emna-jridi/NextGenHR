@@ -3,6 +3,7 @@ package tn.esprit.services;
 import tn.esprit.interfaces.IServices;
 import tn.esprit.models.Contrat;
 import tn.esprit.models.Service;
+import tn.esprit.models.TypeContrat;
 import tn.esprit.utils.MyDatabase;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class ServiceContrat implements IServices<Contrat> {
 
     //controles de saisies pour contrats
     private boolean validateContrat(Contrat contrat) {
-        if (contrat.getTypeContrat() == null || contrat.getTypeContrat().isEmpty()) {
+        if (contrat.getTypeContrat() == null ) {
             System.out.println("Erreur : Le type de contrat est obligatoire !");
             return false;
         }
@@ -62,7 +63,6 @@ public class ServiceContrat implements IServices<Contrat> {
     //Ajouter Contrat//
     @Override
     public void add(Contrat contrat) {
-
         if (!validateContrat(contrat)) {
             return;
         }
@@ -71,19 +71,18 @@ public class ServiceContrat implements IServices<Contrat> {
 
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setString(1, contrat.getTypeContrat());
+            // Utilisation de toString() pour insérer l'énumération sous forme de chaîne
+            pstm.setString(1, contrat.getTypeContrat().toString());  // Passage de TypeContrat à String
             pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
             pstm.setDate(3, java.sql.Date.valueOf(contrat.getDateFinContrat()));
             pstm.setString(4, contrat.getStatusContrat());
             pstm.setInt(5, contrat.getMontantContrat());
             pstm.setString(6, contrat.getNomClient());
             pstm.setString(7, contrat.getEmailClient());
-            //pstm.setInt(8, contrat.getIdService());
 
             pstm.executeUpdate();
 
             System.out.println("Contrat ajouté avec succès !");
-
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout du contrat : " + e.getMessage());
         }
@@ -93,9 +92,7 @@ public class ServiceContrat implements IServices<Contrat> {
     //Afficher les contrats existants//
     @Override
     public List<Contrat> getAll() {
-
         List<Contrat> contrats = new ArrayList<>();
-
         String qry = "SELECT * FROM `contrat`";
 
         try {
@@ -105,14 +102,15 @@ public class ServiceContrat implements IServices<Contrat> {
             while (rs.next()) {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
-                c.setTypeContrat(rs.getString("typeContrat"));
+                // Conversion de la chaîne en TypeContrat
+                String typeContratStr = rs.getString("typeContrat");
+                c.setTypeContrat(TypeContrat.valueOf(typeContratStr));  // Conversion de String à TypeContrat
                 c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
                 c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
                 c.setMontantContrat(rs.getInt("montantContrat"));
                 c.setNomClient(rs.getString("nomClient"));
                 c.setEmailClient(rs.getString("emailClient"));
-                //c.setIdService(rs.getInt("idService"));
 
                 contrats.add(c);
             }
@@ -185,7 +183,7 @@ public class ServiceContrat implements IServices<Contrat> {
         try {
 
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setString(1, contrat.getTypeContrat());
+            pstm.setString(1, contrat.getTypeContrat().name());
             pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
             pstm.setDate(3, java.sql.Date.valueOf(contrat.getDateFinContrat()));
             pstm.setString(4, contrat.getStatusContrat());
@@ -247,7 +245,11 @@ public class ServiceContrat implements IServices<Contrat> {
             if (rs.next()) {
                 Contrat contrat = new Contrat();
                 contrat.setIdContrat(rs.getInt("idContrat"));
-                contrat.setTypeContrat(rs.getString("typeContrat"));
+                // Handling the enum conversion (assuming it's stored as String in the database)
+                String typeContratStr = rs.getString("typeContrat");
+                if (typeContratStr != null) {
+                    contrat.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
+                }
                 contrat.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
                 contrat.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 contrat.setStatusContrat(rs.getString("statusContrat"));
@@ -285,7 +287,11 @@ public class ServiceContrat implements IServices<Contrat> {
             while (rs.next()) {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
-                c.setTypeContrat(rs.getString("typeContrat"));
+                // Handling the enum conversion (assuming it's stored as String in the database)
+                String typeContratStr = rs.getString("typeContrat");
+                if (typeContratStr != null) {
+                    c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
+                }
                 c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
                 c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
@@ -322,7 +328,11 @@ public class ServiceContrat implements IServices<Contrat> {
             while (rs.next()) {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
-                c.setTypeContrat(rs.getString("typeContrat"));
+                // Handling the enum conversion (assuming it's stored as String in the database)
+                String typeContratStr = rs.getString("typeContrat");
+                if (typeContratStr != null) {
+                    c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
+                }
                 c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
                 c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
@@ -358,7 +368,11 @@ public class ServiceContrat implements IServices<Contrat> {
             while (rs.next()) {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
-                c.setTypeContrat(rs.getString("typeContrat"));
+                // Handle enum conversion for 'typeContrat'
+                String typeContratStr = rs.getString("typeContrat");
+                if (typeContratStr != null) {
+                    c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
+                }
                 c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
                 c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
@@ -417,7 +431,11 @@ public class ServiceContrat implements IServices<Contrat> {
                 while (rs.next()) {
                     Contrat c = new Contrat();
                     c.setIdContrat(rs.getInt("idContrat"));
-                    c.setTypeContrat(rs.getString("typeContrat"));
+                    // Convert 'typeContrat' from string to enum
+                    String typeContratStr = rs.getString("typeContrat");
+                    if (typeContratStr != null) {
+                        c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
+                    }
                     c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
                     c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                     c.setStatusContrat(rs.getString("statusContrat"));

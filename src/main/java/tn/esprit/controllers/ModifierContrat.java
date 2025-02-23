@@ -1,12 +1,10 @@
 package tn.esprit.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.models.Contrat;
+import tn.esprit.models.TypeContrat;
 import tn.esprit.services.ServiceContrat;
 
 import java.time.LocalDate;
@@ -18,7 +16,8 @@ public class ModifierContrat {
     @FXML
     private TextField idContratField;
     @FXML
-    private TextField typeContratField;
+    private ComboBox<TypeContrat> comboTypeContrat; // Référence au ComboBox
+
     @FXML
     private DatePicker dateDebutField;
     @FXML
@@ -45,7 +44,8 @@ public class ModifierContrat {
 
     @FXML
     public void initialize() {
-
+        // Remplir le ComboBox avec les valeurs de l'enum TypeContrat
+        comboTypeContrat.getItems().setAll(TypeContrat.values());
         statusGroup = new ToggleGroup();
         statusActif.setToggleGroup(statusGroup);
         statusInactif.setToggleGroup(statusGroup);
@@ -58,7 +58,10 @@ public class ModifierContrat {
 
 
         idContratField.setText(String.valueOf(contrat.getIdContrat()));
-        typeContratField.setText(contrat.getTypeContrat());
+        // Convertir le typeContrat en String et le récupérer comme valeur de l'enum dans le ComboBox
+        String typeContratString = contrat.getTypeContrat().toString(); // Assurez-vous que getTypeContrat() retourne un TypeContrat
+        TypeContrat selectedType = TypeContrat.valueOf(typeContratString); // Convertir String en Enum
+        comboTypeContrat.setValue(selectedType);
         dateDebutField.setValue(contrat.getDateDebutContrat());
         dateFinField.setValue(contrat.getDateFinContrat());
         montantField.setText(String.valueOf(contrat.getMontantContrat()));
@@ -79,7 +82,8 @@ public class ModifierContrat {
     private void handleSave() {
         try {
 
-            String typeContrat = typeContratField.getText();
+            // Récupérer la valeur sélectionnée dans le ComboBox pour TypeContrat
+            TypeContrat typeContrat = comboTypeContrat.getValue();
             LocalDate dateDebut = dateDebutField.getValue();
             LocalDate dateFin = dateFinField.getValue();
             String statusContrat = statusActif.isSelected() ? "Actif" : "Inactif";
@@ -88,7 +92,7 @@ public class ModifierContrat {
             String emailClient = emailClientField.getText();
 
 
-            if (typeContrat.isEmpty() || nomClient.isEmpty() || emailClient.isEmpty()) {
+            if (typeContrat == null || nomClient.isEmpty() || emailClient.isEmpty()) {
                 System.out.println("Erreur : Tous les champs doivent être remplis !");
                 return;
             }
@@ -117,6 +121,7 @@ public class ModifierContrat {
             System.out.println("Contrat mis à jour avec succès !");
 
 
+
             ((Stage) montantField.getScene().getWindow()).close();
 
         } catch (DateTimeParseException e) {
@@ -125,4 +130,7 @@ public class ModifierContrat {
             System.out.println("Erreur : Le montant doit être un nombre valide !");
         }
     }
+
+
+
 }

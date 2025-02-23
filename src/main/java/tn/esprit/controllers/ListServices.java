@@ -171,9 +171,14 @@ public class ListServices {
     @FXML
     private void filtrerTypeService(ActionEvent event) {
         if (chkFiltrerType.isSelected()) {
+            // Si la case "Filtrer par Type" est cochée, décocher "Services Actifs"
+            chkTriServicesActifs.setSelected(false);
+
+            // Appliquer le filtrage par type
             List<Service> servicesTriesParType = serviceService.sortServicesByType();
             updateTableView(servicesTriesParType);
         } else {
+            // Recharger les services sans filtre lorsque la case "Filtrer par Type" est décochée
             loadServices();
         }
     }
@@ -181,10 +186,16 @@ public class ListServices {
     @FXML
     private void filterActiveServices(ActionEvent event) {
         if (chkTriServicesActifs.isSelected()) {
+            // Si la case "Services Actifs" est cochée, décocher "Filtrer par Type"
+            chkFiltrerType.setSelected(false);
+
+            // Appliquer le filtrage des services actifs
             List<Service> servicesActifs = serviceService.filterActiveServices();
             updateTableView(servicesActifs);
         } else {
+            // Recharger les services sans filtre lorsque la case "Services Actifs" est décochée
             loadServices();
         }
     }
+
 }
