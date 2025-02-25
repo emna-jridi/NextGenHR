@@ -81,6 +81,7 @@
         <Button fx:id="btnAjouter" layoutX="522.0" layoutY="511.0" onAction="#ajouterContrat" text="Ajouter" />
         <Button fx:id="btnSupprimer" layoutX="367.0" layoutY="511.0" onAction="#supprimerContrat" text="Supprimer" />
         <Button fx:id="btnModifier" layoutX="227.0" layoutY="511.0" onAction="#modifierContrat" text="Modifier" />
+        <Button fx:id="btnGenererPDF" layoutX="677.0" layoutY="511.0" onAction="#genererContratPDF" text="Générer PDF" />
 
         <!-- Icône d'exportation -->
         <ImageView fx:id="exportIcon" fitHeight="38.0" fitWidth="39.0" layoutX="876.0" layoutY="109.0" onMouseClicked="#exporterContrats" pickOnBounds="true" preserveRatio="true">

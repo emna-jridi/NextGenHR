@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import javafx.stage.Stage;
 import tn.esprit.models.Contrat;
+import tn.esprit.models.ContratToText;
+import tn.esprit.models.PDFShiftService;
 import tn.esprit.services.ServiceContrat;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -55,6 +57,8 @@ public class ListContrats {
     private Button btnModifier;
     @FXML
     private Button btnSupprimer;
+    @FXML
+    private Button btnGenererPDF;
     @FXML
     private TextField searchField;
     @FXML
@@ -301,6 +305,40 @@ public class ListContrats {
     }
 
 
+
+
+
+//générer contrat via api
+    @FXML
+    private void genererContratPDF(ActionEvent event) {
+        // Récupérer le contrat sélectionné
+        Contrat contratSelectionne = tableView.getSelectionModel().getSelectedItem();
+        if (contratSelectionne == null) {
+            showAlert("Aucun contrat sélectionné", "Veuillez sélectionner un contrat pour générer le PDF.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Générer le contenu HTML du contrat
+        String contractHtml = ContratToText.generateContract(contratSelectionne);
+
+        // Créer un FileChooser pour sélectionner le dossier de sauvegarde
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+        fileChooser.setInitialFileName("contrat_" + contratSelectionne.getNomClient() + ".pdf");
+
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            // Générer le PDF
+            try {
+                // Appel de la méthode pour générer le PDF
+                PDFShiftService.generatePDF(contractHtml, file.getAbsolutePath());
+                showAlert("PDF généré", "Le contrat a été généré avec succès.", Alert.AlertType.INFORMATION);
+            } catch (IOException e) {
+                showAlert("Erreur", "Erreur lors de la génération du PDF.", Alert.AlertType.ERROR);
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 
