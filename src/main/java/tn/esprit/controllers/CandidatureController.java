@@ -15,6 +15,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import tn.esprit.models.Candidature;
 import tn.esprit.models.Offreemploi;
 import tn.esprit.services.ServiceCandidature;
+import tn.esprit.services.ServiceMail;
 import tn.esprit.services.ServiceOffre;
 
 import java.io.File;
@@ -179,6 +180,17 @@ public class CandidatureController {
             return;
         }
         serviceCandidature.update(selectedCandidature);
+        if (!oldStatut.equals(newStatut)) {
+            ServiceMail serviceEmail = new ServiceMail();
+            String destinataire = selectedCandidature.getEmail();
+            String sujet = "Mise à jour de votre candidature";
+            String contenu = "Bonjour " + selectedCandidature.getPrenom() + ",\n\n"
+                    + "Le statut de votre candidature pour l'offre '" + selectedOffre.getTitre() + "' "
+                    + "a été mis à jour : " + newStatut + ".\n\n"
+                    + "Cordialement,\nL'équipe RH";
+
+            serviceEmail.sendEmail(destinataire, sujet, contenu);
+        }
         loadCandidatures();
         clearFields();
     }
