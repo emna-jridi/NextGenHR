@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="654.0" prefWidth="1094.0" style="-fx-background-color: #E3EDF9;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="tn.esprit.controllers.SignUpController">
+    <VBox alignment="CENTER" layoutX="312" layoutY="50" prefHeight="500" prefWidth="400" spacing="15" style="-fx-background-color: #FFFFFF; -fx-border-color: #253D90; -fx-border-width: 2px; -fx-border-radius: 10px; -fx-padding: 20px;">
+        <Label style="-fx-font-size: 22px; -fx-text-fill: #253D90; -fx-font-weight: bold;" text="Inscription" />
+        <TextField fx:id="nomField" promptText="Nom" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <TextField fx:id="prenomField" promptText="Prénom" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <DatePicker fx:id="dateNaissanceField" promptText="Date de naissance" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <TextField fx:id="adresseField" promptText="Adresse" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <TextField fx:id="telephoneField" promptText="Téléphone" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <TextField fx:id="emailField" promptText="Email" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <PasswordField fx:id="passwordField" promptText="Mot de passe" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+        <PasswordField fx:id="confirmPasswordField" promptText="Confirmer le mot de passe" style="-fx-background-color: #E3EDF9; -fx-border-radius: 5px;" />
+
+        <HBox spacing="10">
+            <Label style="-fx-text-fill: #253D90; -fx-font-size: 14px;" text="Rôle :" />
+            <CheckBox fx:id="checkboxEmploye" onAction="#handleCheckboxSelection" text="Employé" />
+            <CheckBox fx:id="checkboxRH" onAction="#handleCheckboxSelection" text="Responsable RH" />
+        </HBox>
+
+        <Button onAction="#handleSignUp" style="-fx-background-color: #253D90; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 10px;" text="S'inscrire" />
+
+        <Hyperlink onAction="#goToLogin" style="-fx-text-fill: #3F861E;" text="Déjà un compte ? Se connecter" />
+
+        <Label fx:id="errorLabel" textFill="red" />
+    </VBox>
+</AnchorPane>
