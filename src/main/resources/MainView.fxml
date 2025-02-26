@@ -24,7 +24,7 @@
 
     <!-- Menu latéral -->
     <left>
-        <VBox prefHeight="879.0" prefWidth="261.0" style="-fx-background-color: #253D90; -fx-padding: 20px;">
+        <VBox prefHeight="878.0" prefWidth="262.0" style="-fx-background-color: #253D90; -fx-padding: 20px;">
 
             <Button fx:id="accueil" onAction="#showHome" prefHeight="30.0" prefWidth="196.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" text="🏠 Accueil">
             <VBox.margin>
@@ -74,6 +74,15 @@
             <VBox.margin>
                <Insets bottom="20.0" />
             </VBox.margin></Button>
+            <Button fx:id="postuler" onAction="#showOffreCandidat" prefHeight="34.0" prefWidth="320.0"
+                    style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px;
+               -fx-border-color: white; -fx-border-width: 2px;"
+                    text="🏢 Postuler !!">
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin>
+            </Button>
+
             <Button fx:id="btnLogout" alignment="BOTTOM_LEFT" onAction="#handleLogout" style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-background-radius: 15;                            -fx-font-size: 16px; -fx-font-weight: bold;" text="Déconnexion">
             <VBox.margin>
                <Insets top="200.0" />
@@ -83,7 +92,7 @@
 
     <!-- Contenu principal -->
     <center>
-        <AnchorPane fx:id="contentPane" prefHeight="878.0" prefWidth="1514.0" style="-fx-background-color: #E3EDF9;">
+        <AnchorPane fx:id="contentPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" style="-fx-background-color: #E3EDF9;">
             <VBox fx:id="homePage" alignment="CENTER" layoutX="172.0" layoutY="64.0" prefHeight="261.0" prefWidth="1051.0" spacing="20.0">
                 <ImageView fitHeight="24.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
                 <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="219.0" prefWidth="800.0" style="-fx-font-size: 180px; -fx-text-fill: #2C3E50;" text="NextGenHR" textAlignment="CENTER">
@@ -93,8 +102,8 @@
                 </Label>
             </VBox>
              <Label layoutX="271.0" layoutY="506.0" style="-fx-font-size: 60px; -fx-text-fill: #34495E;" text="Gérez toutes les opérations RH avec confort." />
-               <Button fx:id="profileButton" layoutX="1452.0" layoutY="24.0" onAction="#handleProfile" style="-fx-background-color: transparent; -fx-text-fill: #232423;                                        -fx-font-size: 18px; -fx-font-weight: bold;" text="Profil" />
-               <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="1522.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+               <Button fx:id="profileButton" layoutX="1374.0" layoutY="44.0" onAction="#handleProfile" style="-fx-background-color: transparent; -fx-text-fill: #232423;                                        -fx-font-size: 18px; -fx-font-weight: bold;" text="Profil" />
+               <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="1452.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                    <image>
                        <Image url="@images/User_icon-cp.png" />
                    </image>

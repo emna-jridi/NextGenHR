@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -17,6 +18,9 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 public class MainViewController {
+
+    @FXML
+    private Button postuler;
 
     @FXML
     private AnchorPane contentPane;
@@ -86,6 +90,12 @@ public class MainViewController {
     @FXML
     private void handleProfile() {
         switchView("/Profile.fxml");
+    }
+
+    @FXML
+    void showOffreCandidat(ActionEvent event) {
+        switchView("/OffreCandidat.fxml");
+
     }
 
 
