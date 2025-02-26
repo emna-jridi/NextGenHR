@@ -6,8 +6,8 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class ServiceMail {
-    private final String username = "myriambenabdallah17@gmail.com"; // Adresse e-mail de l'expéditeur
-    private final String password = "cuzp ccxe deai bxrg"; // Remplacer par votre mot de passe ou mot de passe d'application
+    private final String username = "myriambenabdallah17@gmail.com";
+    private final String password = "cuzp ccxe deai bxrg";
 
     public void sendEmail(String to, String subject, String body) {
         Properties props = new Properties();
@@ -15,8 +15,6 @@ public class ServiceMail {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
-
-        // Création de la session d'authentification
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -25,14 +23,11 @@ public class ServiceMail {
         });
 
         try {
-            // Création du message
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             message.setSubject(subject);
             message.setText(body);
-
-            // Envoi de l'email
             Transport.send(message);
             System.out.println("Email envoyé avec succès à " + to);
         } catch (MessagingException e) {

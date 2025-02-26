@@ -121,8 +121,6 @@ public class ServiceOffre{
             } catch (SQLException e) {
                 System.out.println("Erreur lors de la mise à jour de l'offre d'emploi : " + e.getMessage());
             }
-         // Ajouter cette ligne si vous travaillez dans une transaction manuelle
-
     }
 
 

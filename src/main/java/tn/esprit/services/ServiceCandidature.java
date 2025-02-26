@@ -20,7 +20,7 @@ public class ServiceCandidature{
         String qry = "INSERT INTO candidature (dateCandidature, statut, cvUrl, lettreMotivation, offreId, Nom, Prenom, email, telephone) VALUES (?, ?, ?, ?, ?, ? , ? ,?, ?)";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
-            pstm.setString(2, candidature.getStatut());
+            pstm.setString(2, candidature.getStatut().name());
             pstm.setString(3, candidature.getCvUrl());
             pstm.setString(4, candidature.getLettreMotivation());
             if (candidature.getOffreemploi() != null) {
@@ -56,7 +56,7 @@ public class ServiceCandidature{
                     candidature.setPrenom(rs.getString("prenom"));
                     candidature.setEmail(rs.getString("email"));
                     candidature.setTelephone(rs.getString("telephone"));
-                    candidature.setStatut(rs.getString("statut"));
+                    candidature.setStatut(Statut.valueOf(rs.getString("statut")));
                     candidature.setCvUrl(rs.getString("cvUrl"));
                     candidature.setLettreMotivation(rs.getString("lettreMotivation"));
                     candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
@@ -89,7 +89,7 @@ public class ServiceCandidature{
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
-            pstm.setString(2, candidature.getStatut());
+            pstm.setString(2, candidature.getStatut().name());
             pstm.setString(3, candidature.getCvUrl());
             pstm.setString(4, candidature.getLettreMotivation());
             pstm.setInt(5, offre.getId());
@@ -124,7 +124,7 @@ public class ServiceCandidature{
                 candidature = new Candidature();
                 candidature.setId(rs.getInt("id"));
                 candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
-                candidature.setStatut(rs.getString("statut"));
+                candidature.setStatut(Statut.valueOf(rs.getString("statut")));
                 candidature.setCvUrl(rs.getString("cvUrl"));
                 candidature.setLettreMotivation(rs.getString("lettreMotivation"));
                 candidature.setNom(rs.getString("Nom"));
@@ -141,11 +141,8 @@ public class ServiceCandidature{
 
         String qry = "DELETE FROM candidature WHERE id=?";
         try {
-            // Préparer la requête SQL avec les paramètres
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setInt(1, id);  // L'ID de la candidature à supprimer
-
-            // Exécution de la suppression
+            pstm.setInt(1, id);
             pstm.executeUpdate();
             System.out.println("Candidature supprimée avec succès !");
         } catch (SQLException e) {
@@ -158,7 +155,7 @@ public class ServiceCandidature{
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
-            pstm.setString(2, candidature.getStatut());
+            pstm.setString(2, candidature.getStatut().name());
             pstm.setString(3, candidature.getCvUrl());
             pstm.setString(4, candidature.getLettreMotivation());
 

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Candidature {
     private int id;
     private LocalDateTime dateCandidature;
-    private String statut;
+    private Statut statut;
     private String cvUrl;
     private String lettreMotivation;
     private String Nom;
@@ -22,7 +22,7 @@ public class Candidature {
     // private Utilisateur candidat; lien maa l user
     public Candidature() {};
 
-    public Candidature(LocalDateTime dateCandidature, String statut, String cvUrl, String lettreMotivation, Offreemploi offreemploi, String nom, String prenom, String email, String telephone) {
+    public Candidature(LocalDateTime dateCandidature, Statut statut, String cvUrl, String lettreMotivation, Offreemploi offreemploi, String nom, String prenom, String email, String telephone) {
         this.dateCandidature = dateCandidature;
         this.statut = statut;
         this.cvUrl = cvUrl;
@@ -50,11 +50,11 @@ public class Candidature {
         this.dateCandidature = dateCandidature;
     }
 
-    public String getStatut() {
+    public Statut getStatut() {
         return statut;
     }
 
-    public void setStatut(String statut) {
+    public void setStatut(Statut statut) {
         this.statut = statut;
     }
 

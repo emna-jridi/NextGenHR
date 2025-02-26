@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import tn.esprit.models.Candidature;
 import tn.esprit.models.Offreemploi;
+import tn.esprit.models.Statut;
 import tn.esprit.services.ServiceCandidature;
 import tn.esprit.services.ServiceMail;
 import tn.esprit.services.ServiceOffre;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -66,7 +68,7 @@ public class CandidatureController {
     private TextField txtPrenom;
 
     @FXML
-    private TextField txtStatut;
+    private ChoiceBox<Statut> statutchoice;
     @FXML
     private Button importCV;
 
@@ -80,8 +82,8 @@ public class CandidatureController {
     @FXML
     public void initialize() {
         txtTelephone.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d{0,8}")) { // Autorise uniquement jusqu'à 8 chiffres
-                txtTelephone.setText(oldValue); // Rétablit l'ancienne valeur si dépassement
+            if (!newValue.matches("\\d{0,8}")) {
+                txtTelephone.setText(oldValue);
             }
 
             if (newValue.length() < 8) {
@@ -109,6 +111,7 @@ public class CandidatureController {
                 alertemail.setVisible(true);
             }
         });
+        statutchoice.getItems().setAll(Arrays.asList(Statut.values()));
         listcandidats.setOnMouseClicked(event -> {
             selectedcand = listcandidats.getSelectionModel().getSelectedItem();
             if (selectedcand != null) {
@@ -118,7 +121,7 @@ public class CandidatureController {
                 txtTelephone.setText(selectedcand.getTelephone());
                 txtCv.setText(selectedcand.getCvUrl());
                 txtLettre.setText(selectedcand.getLettreMotivation());
-                txtStatut.setText(selectedcand.getStatut());
+                statutchoice.setValue(selectedcand.getStatut());
                 dateCandidature.setValue(selectedcand.getDateCandidature().toLocalDate());
                 listeoffres.setValue(selectedcand.getOffreemploi());
             }
@@ -151,18 +154,17 @@ public class CandidatureController {
             System.out.println("Veuillez sélectionner une candidature à modifier.");
             return;
         }
-        String oldStatut = selectedCandidature.getStatut(); // Stocker l'ancien statut
-        String newStatut = txtStatut.getText();
+        String oldStatut = selectedCandidature.getStatut().name();
+        String newStatut = statutchoice.getValue().name();
 
 
-        selectedCandidature.setStatut(txtStatut.getText());
+        selectedCandidature.setStatut(Statut.valueOf(newStatut));
         selectedCandidature.setCvUrl(txtCv.getText());
         selectedCandidature.setLettreMotivation(txtLettre.getText());
         selectedCandidature.setNom(txtNom.getText());
         selectedCandidature.setPrenom(txtPrenom.getText());
         selectedCandidature.setEmail(txtEmail.getText());
         selectedCandidature.setTelephone(txtTelephone.getText());
-        selectedCandidature.setStatut(txtStatut.getText());
 
         LocalDate date = dateCandidature.getValue();
         if (date != null) {
@@ -184,10 +186,28 @@ public class CandidatureController {
             ServiceMail serviceEmail = new ServiceMail();
             String destinataire = selectedCandidature.getEmail();
             String sujet = "Mise à jour de votre candidature";
-            String contenu = "Bonjour " + selectedCandidature.getPrenom() + ",\n\n"
-                    + "Le statut de votre candidature pour l'offre '" + selectedOffre.getTitre() + "' "
-                    + "a été mis à jour : " + newStatut + ".\n\n"
-                    + "Cordialement,\nL'équipe RH";
+            String contenu = "";
+
+            if (newStatut.equals("acceptée")) {
+                contenu = "Madame/Monsieur " + selectedCandidature.getPrenom() + ",\n\n"
+                        + "Nous avons le plaisir de vous informer que votre candidature pour le poste de '"
+                        + selectedOffre.getTitre() + "' a été retenue.\n\n"
+                        + "Félicitations ! Nous vous invitons à prendre contact avec notre équipe RH pour discuter des prochaines étapes et de votre intégration.\n\n"
+                        + "Nous vous remercions pour l'intérêt porté à notre entreprise et à cette offre.\n\n"
+                        + "Dans l'attente de votre confirmation, nous vous adressons nos salutations les plus distinguées.\n\n"
+                        + "Cordialement,\nL'équipe Ressources Humaines\n";
+            } else if (newStatut.equals("disqualifiée")) {
+
+
+                contenu = "Madame/Monsieur " + selectedCandidature.getPrenom() + ",\n\n"
+                        + "Nous regrettons de vous informer que, après avoir examiné votre candidature pour le poste de '"
+                        + selectedOffre.getTitre() + "', nous avons décidé de ne pas retenir votre profil.\n\n"
+                        + "Bien que votre candidature n'ait pas été retenue, nous tenons à vous remercier pour l'intérêt que vous avez porté à notre entreprise et à cette offre.\n\n"
+                        + "Nous vous souhaitons beaucoup de succès dans vos futures démarches professionnelles.\n\n"
+                        + "Dans l'attente de pouvoir peut-être collaborer dans le futur, nous vous adressons nos salutations les plus respectueuses.\n\n"
+                        + "Cordialement,\nL'équipe Ressources Humaines\n"
+                        + "Entreprise XYZ";
+            }
 
             serviceEmail.sendEmail(destinataire, sujet, contenu);
         }
@@ -217,7 +237,7 @@ public class CandidatureController {
             alert.setHeaderText(null);
             alert.setContentText("L'email saisi est invalide. Veuillez entrer un email au format xxxx@xxx.xx");
             alert.showAndWait();
-            return; // Stoppe l'ajout
+            return;
         }
         Offreemploi selectedOffre = listeoffres.getValue();
 
@@ -225,7 +245,12 @@ public class CandidatureController {
 
             Candidature candidature = new Candidature();
             candidature.setDateCandidature(LocalDateTime.now());
-            candidature.setStatut(txtStatut.getText());
+            Statut statutSelectionne = statutchoice.getValue();
+            if (statutSelectionne == null) {
+                candidature.setStatut(Statut.En_cours);
+            } else {
+                candidature.setStatut(statutSelectionne);
+            }
             candidature.setCvUrl(txtCv.getText());
             candidature.setLettreMotivation(txtLettre.getText());
             candidature.setNom(txtNom.getText());
@@ -255,7 +280,7 @@ public class CandidatureController {
         txtLettre.clear();
         txtNom.clear();
         txtPrenom.clear();
-        txtStatut.clear();
+        statutchoice.setValue(null);
         txtTelephone.clear();
     }
 
@@ -263,8 +288,8 @@ public class CandidatureController {
     @FXML
     void Afficher(ActionEvent event) {
         List<Candidature> candidatures = serviceCandidature.getAll();
-        ObservableList<Candidature> candidaturesAffichees = FXCollections.observableArrayList(candidatures); // Ajouter les candidatures à la liste observable
-        listcandidats.setItems(candidaturesAffichees); // Mettre à jour la ListView
+        ObservableList<Candidature> candidaturesAffichees = FXCollections.observableArrayList(candidatures);
+        listcandidats.setItems(candidaturesAffichees);
     }
 
     @FXML
@@ -288,10 +313,10 @@ public class CandidatureController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Tous les fichiers", "*.*"));
 
-        File selectedFile = fileChooser.showOpenDialog(new Stage());  // Crée une nouvelle fenêtre pour ouvrir un fichier
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
 
         if (selectedFile != null) {
-            txtCv.setText(selectedFile.getAbsolutePath());  // Affiche le chemin du fichier dans ton TextField
+            txtCv.setText(selectedFile.getAbsolutePath());
             System.out.println("Fichier sélectionné : " + selectedFile.getAbsolutePath());
         }
     }
@@ -304,12 +329,10 @@ public class CandidatureController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Tous les fichiers", "*.*"));
 
-        // Utiliser la fenêtre principale (stage) pour ouvrir le file chooser
         Stage stage = (Stage) importLettre.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
-
         if (selectedFile != null) {
-            txtLettre.setText(selectedFile.getAbsolutePath());  // Affiche le chemin du fichier dans ton TextField
+            txtLettre.setText(selectedFile.getAbsolutePath());
             System.out.println("Fichier Lettre de Motivation sélectionné : " + selectedFile.getAbsolutePath());
         }
     }
@@ -322,14 +345,11 @@ public class CandidatureController {
             System.out.println("Veuillez sélectionner une candidature.");
             return;
         }
-
-        // Créer un FileChooser pour choisir l'emplacement du fichier PDF
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
         File file = fileChooser.showSaveDialog(new Stage());
 
         if (file != null) {
-            // Créer un document PDF avec PDFBox
             try (PDDocument document = new PDDocument()) {
                 PDPage page = new PDPage();
                 document.addPage(page);
@@ -340,9 +360,8 @@ public class CandidatureController {
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 contentStream.newLineAtOffset(100, 750);
 
-                // Ajouter les informations de la candidature
                 contentStream.showText("Candidature : ");
-                contentStream.newLineAtOffset(0, -15);  // Espacement vertical entre les lignes
+                contentStream.newLineAtOffset(0, -15);
 
                 contentStream.showText("Nom: " + selectedCandidature.getNom());
                 contentStream.newLineAtOffset(0, -15);
@@ -401,9 +420,6 @@ public class CandidatureController {
 
                 contentStream.endText();
                 contentStream.close();
-
-
-                // Sauvegarder le document PDF dans le fichier choisi par l'utilisateur
                 document.save(file);
                 System.out.println("Candidature exportée en PDF avec succès!");
 
@@ -419,14 +435,8 @@ public class CandidatureController {
     @FXML
     void triercand(ActionEvent event) {
         List<Candidature> candidatures = serviceCandidature.getAll();
-
-        // Appliquer le tri par date
         candidatures.sort(triParDateCandidature);
-
-        // Créer une ObservableList à partir des candidatures triées
         ObservableList<Candidature> candidaturesTriees = FXCollections.observableArrayList(candidatures);
-
-        // Mettre à jour la ListView avec les candidatures triées
         listcandidats.setItems(candidaturesTriees);
 
     }
