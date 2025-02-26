@@ -1,244 +1,267 @@
 package tn.esprit.Controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import tn.esprit.interfaces.IService;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import tn.esprit.models.Formation;
 import tn.esprit.services.ServiceFormation;
 
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class GestionFormation  implements Initializable {
-    IService<Formation> sf = new ServiceFormation();
-    private int id;
-    @FXML
-    private ChoiceBox<String> status;
-    @FXML
-    private ChoiceBox<String> Niveau_difficulte;
-    @FXML
-    private TableColumn<Formation, Date> date;
+public class GestionFormation implements Initializable {
 
-    @FXML
-    private TextArea description;
+    @FXML private FlowPane formationsContainer;
+    @FXML private TextField searchField;
+    @FXML private Button searchButton;
+    @FXML private Button resetButton;
 
-    @FXML
-    private TextField lien;
-    @FXML
-    private TableColumn<Formation, String> nom;
+    // Checkboxes pour les filtres
+    @FXML private CheckBox devCheckBox;
+    @FXML private CheckBox managementCheckBox;
+    @FXML private CheckBox comCheckBox;
+    @FXML private CheckBox rhCheckBox;
+    @FXML private CheckBox dureeCourteCheckBox;
+    @FXML private CheckBox dureeMoyenneCheckBox;
+    @FXML private CheckBox dureeLongueCheckBox;
+    @FXML private CheckBox debutantCheckBox;
+    @FXML private CheckBox intermediaireCheckBox;
+    @FXML private CheckBox avanceCheckBox;
 
-    @FXML
-    private TextField tfNomFormation;
+    private List<Formation> allFormations = new ArrayList<>();
+    private List<Formation> filteredFormations = new ArrayList<>();
 
-    @FXML
-    private TextField tfThemeFormation;
-
-    @FXML
-    private TableColumn<Formation, String> theme;
-
-    @FXML
-    private TableView<Formation> tvFormation;
-    @FXML
-    private Button search;
-    @FXML
-    private DatePicker pdate;
-    @FXML
-    private TextField tfsearch;
-
-    private ObservableList<Formation> lf;
+    private ServiceFormation serviceFormation = new ServiceFormation();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        // Check if ChoiceBoxes are properly initialized
-//        if (Niveau_difficulte != null && status != null) {
-//            // Initialize the ChoiceBoxes with their values
-//            Niveau_difficulte.getItems().addAll(Formation.NiveauDifficulte.values());
-//            status.getItems().addAll(Formation.Statut.values());
+        // Charger toutes les formations depuis la base de données
+        loadFormationsFromDatabase();
+
+        // Configurer la recherche en temps réel
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            applyFilters();
+        });
+
+        // Afficher toutes les formations au démarrage
+        displayFormations(allFormations);
+    }
+
+    private void loadFormationsFromDatabase() {
+        // Utiliser votre service pour charger les formations
+        allFormations = serviceFormation.getAll();
+        filteredFormations = new ArrayList<>(allFormations);
+    }
+
+    @FXML
+    private void searchFormations() {
+        applyFilters();
+    }
+
+    @FXML
+    private void resetFilters() {
+        // Réinitialiser tous les checkboxes
+        devCheckBox.setSelected(false);
+        managementCheckBox.setSelected(false);
+        comCheckBox.setSelected(false);
+        rhCheckBox.setSelected(false);
+        dureeCourteCheckBox.setSelected(false);
+        dureeMoyenneCheckBox.setSelected(false);
+        dureeLongueCheckBox.setSelected(false);
+        debutantCheckBox.setSelected(false);
+        intermediaireCheckBox.setSelected(false);
+        avanceCheckBox.setSelected(false);
+
+        // Vider le champ de recherche
+        searchField.clear();
+
+        // Afficher toutes les formations
+        filteredFormations = new ArrayList<>(allFormations);
+        displayFormations(filteredFormations);
+    }
+
+    @FXML
+    private void applyFilters() {
+        // Commencer avec toutes les formations
+        List<Formation> result = new ArrayList<>(allFormations);
+
+        // Filtrer par texte de recherche
+        String searchText = searchField.getText().toLowerCase().trim();
+        if (!searchText.isEmpty()) {
+            result = result.stream()
+                    .filter(f -> f.getNomFormation().toLowerCase().contains(searchText) ||
+                            f.getDescription().toLowerCase().contains(searchText))
+                    .collect(Collectors.toList());
+        }
+
+        // Filtrer par catégorie (utiliser le statut comme catégorie)
+        if (devCheckBox.isSelected() || managementCheckBox.isSelected() ||
+                comCheckBox.isSelected() || rhCheckBox.isSelected()) {
+
+            result = result.stream()
+                    .filter(f -> (devCheckBox.isSelected() && f.getThemeFormation().equals("Développement")) ||
+                            (managementCheckBox.isSelected() && f.getThemeFormation().equals("Management")) ||
+                            (comCheckBox.isSelected() && f.getThemeFormation().equals("Communication")) ||
+                            (rhCheckBox.isSelected() && f.getThemeFormation().equals("Ressources Humaines")))
+                    .collect(Collectors.toList());
+        }
+
+        // Filtrer par durée
+        if (dureeCourteCheckBox.isSelected() || dureeMoyenneCheckBox.isSelected() ||
+                dureeLongueCheckBox.isSelected()) {
+
+            result = result.stream()
+                    .filter(f -> (dureeCourteCheckBox.isSelected() && f.getDuree() < 5) ||
+                            (dureeMoyenneCheckBox.isSelected() && f.getDuree() >= 5 && f.getDuree() <= 10) ||
+                            (dureeLongueCheckBox.isSelected() && f.getDuree() > 10))
+                    .collect(Collectors.toList());
+        }
+
+        // Filtrer par niveau
+        if (debutantCheckBox.isSelected() || intermediaireCheckBox.isSelected() ||
+                avanceCheckBox.isSelected()) {
+
+            result = result.stream()
+                    .filter(f -> (debutantCheckBox.isSelected() && f.getNiveauDifficulte().equals("Débutant")) ||
+                            (intermediaireCheckBox.isSelected() && f.getNiveauDifficulte().equals("Intermédiaire")) ||
+                            (avanceCheckBox.isSelected() && f.getNiveauDifficulte().equals("Avancé")))
+                    .collect(Collectors.toList());
+        }
+
+        // Mettre à jour la liste filtrée et l'affichage
+        filteredFormations = result;
+        displayFormations(filteredFormations);
+    }
+
+    private void displayFormations(List<Formation> formations) {
+        formationsContainer.getChildren().clear();
+
+        for (Formation formation : formations) {
+            try {
+                // Créer une carte pour chaque formation
+                VBox card = createFormationCard(formation);
+                formationsContainer.getChildren().add(card);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Afficher un message si aucune formation ne correspond aux critères
+        if (formations.isEmpty()) {
+            Label noResult = new Label("Aucune formation ne correspond à vos critères");
+            noResult.getStyleClass().add("no-result");
+            formationsContainer.getChildren().add(noResult);
+        }
+    }
+
+    private VBox createFormationCard(Formation formation) {
+        VBox card = new VBox();
+        card.getStyleClass().add("formation-card");
+        card.setPrefWidth(250);
+        card.setMaxWidth(250);
+        card.setSpacing(10);
+
+        // Image de la formation
+        ImageView imageView = new ImageView();
+        try {
+            // Utiliser l'URL de l'image ou une image par défaut
+            if (formation.getImageUrl() != null && !formation.getImageUrl().isEmpty()) {
+                Image image = new Image(formation.getImageUrl());
+                imageView.setImage(image);
+            } else {
+                // Image par défaut
+                Image defaultImage = new Image(getClass().getResourceAsStream("/images/default-formation.png"));
+                imageView.setImage(defaultImage);
+            }
+        } catch (Exception e) {
+            // Utiliser une image par défaut en cas d'erreur
+            Image defaultImage = new Image(getClass().getResourceAsStream("/images/default-formation.png"));
+            imageView.setImage(defaultImage);
+        }
+
+        imageView.setFitWidth(250);
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(true);
+
+        // Titre de la formation
+        Label titleLabel = new Label(formation.getNomFormation());
+        titleLabel.getStyleClass().add("formation-title");
+        titleLabel.setWrapText(true);
+
+        // Catégorie et niveau
+        HBox infoBox = new HBox(10);
+        Label categoryLabel = new Label(formation.getThemeFormation()); // Utiliser statut comme catégorie
+        categoryLabel.getStyleClass().add("formation-category");
+        Label levelLabel = new Label(formation.getNiveauDifficulte());
+        levelLabel.getStyleClass().add("formation-level");
+        infoBox.getChildren().addAll(categoryLabel, levelLabel);
+
+        // Description courte
+        Label descLabel = new Label(getShortDescription(formation.getDescription(), 100));
+        descLabel.getStyleClass().add("formation-description");
+        descLabel.setWrapText(true);
+
+        // Durée et date
+        HBox detailsBox = new HBox(20);
+        Label durationLabel = new Label(formation.getDuree() + " jours");
+        durationLabel.getStyleClass().add("formation-duration");
+        Label dateLabel = new Label(formation.getDateFormation().toString());
+        dateLabel.getStyleClass().add("formation-date");
+        detailsBox.getChildren().addAll(durationLabel, dateLabel);
+
+        // Bouton pour voir les détails
+//        Button detailsButton = new Button("Voir détails");
+//        detailsButton.getStyleClass().add("details-button");
+//        detailsButton.setMaxWidth(Double.MAX_VALUE);
+       // detailsButton.setOnAction(e -> openFormationDetails(formation));
+
+        // Ajouter tous les éléments à la carte
+        card.getChildren().addAll(imageView, titleLabel, infoBox, descLabel, detailsBox);
+
+        return card;
+    }
+
+    private String getShortDescription(String description, int maxLength) {
+        if (description == null) {
+            return "";
+        }
+        if (description.length() <= maxLength) {
+            return description;
+        }
+        return description.substring(0, maxLength) + "...";
+    }
+
+//    private void openFormationDetails(Formation formation) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FormationDetailsView.fxml"));
+//            Parent root = loader.load();
 //
-//            // Set default values
-//            Niveau_difficulte.setValue(Formation.NiveauDifficulte.DEBUTANT);
-//            status.setValue(Formation.Statut.ACTIVE);
-//        } else {
-//            System.err.println("ChoiceBoxes not properly initialized from FXML!");
+//            FormationDetailsController controller = loader.getController();
+//            controller.setFormation(formation);
+//
+//            // Ouvrir dans une nouvelle fenêtre ou remplacer la vue actuelle
+//            // Selon votre design d'application
+//
+//        } catch (IOException e) {
+//            showAlert("Erreur", "Impossible d'ouvrir les détails de la formation.");
+//            e.printStackTrace();
 //        }
-        status.getItems().addAll("Disponible", "Indisponible", "En pause");
-
-        Niveau_difficulte.getItems().addAll("Facile", "Moyen", "Difficile");
-
-        status.setValue("Disponible");
-        Niveau_difficulte.setValue("Moyen");
-
-        nom.setCellValueFactory(new PropertyValueFactory<>("nomFormation"));
-        theme.setCellValueFactory(new PropertyValueFactory<>("themeFormation"));
-        date.setCellValueFactory(new PropertyValueFactory<>("dateFormation"));
-       rafraichirTableView();
-    }
-
-    @FXML
-    void ajouterFormation(ActionEvent event) {
-
-        if (tfNomFormation.getText().trim().isEmpty() || tfThemeFormation.getText().trim().isEmpty() || pdate.getValue() == null) {
-            showAlert("Erreur", "Veuillez remplir tous les champs !");
-            return;
-        }
-
-        if (!tfNomFormation.getText().matches("[a-zA-Z0-9_]+") || !tfThemeFormation.getText().matches("[a-zA-Z0-9_]+")) {
-            showAlert("Erreur", "Le nom et le thème de la formation doivent contenir  des lettres et des chiffres  .");
-            return;
-        }
-
-        LocalDate today = LocalDate.now();
-        if (pdate.getValue().isBefore(today)) {
-            showAlert("Erreur", "La date de la formation doit être supérieure à la date d'aujourd'hui.");
-            return;
-        }
-        Formation formation = new Formation();
-        formation.setNomFormation(tfNomFormation.getText());
-        formation.setThemeFormation(tfThemeFormation.getText());
-        formation.setDateFormation(Date.valueOf(pdate.getValue()));
-        formation.setLien_formation(lien.getText());
-        formation.setDescription(description.getText());
-       formation.setNiveauDifficulte(Niveau_difficulte.getValue());
-       formation.setStatut(status.getValue());
-        sf.add(formation);
-        System.out.println(formation);
-        rafraichirTableView();
-        clearFields();
-        showAlert("Succès", "Formation ajoutée avec succès !");
-    }
-
-    @FXML
-    void getData(MouseEvent event) {
-        Formation selectedFormation = tvFormation.getSelectionModel().getSelectedItem();
-        if (selectedFormation == null) {
-            showAlert("Erreur", "Veuillez sélectionner une formation !");
-            return;
-        }
-        id = selectedFormation.getIdFormation();
-        tfNomFormation.setText(selectedFormation.getNomFormation());
-        tfThemeFormation.setText(selectedFormation.getThemeFormation());
-        pdate.setValue(selectedFormation.getDateFormation().toLocalDate());
-        description.setText(selectedFormation.getDescription());
-        lien.setText(selectedFormation.getLien_formation());
-     Niveau_difficulte.setValue(selectedFormation.getNiveauDifficulte());
-      status.setValue(selectedFormation.getStatut());
-    }
-
-    @FXML
-    void effacerFormation(ActionEvent event) {
-        Formation selectedFormation = tvFormation.getSelectionModel().getSelectedItem();
-        if (selectedFormation == null) {
-            showAlert("Erreur", "Veuillez sélectionner une formation à supprimer !");
-            return;
-        }
-        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmation.setTitle("Confirmation");
-        confirmation.setHeaderText("Supprimer la formation");
-        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer cette formation ?");
-
-        Optional<ButtonType> result = confirmation.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            sf.delete(selectedFormation);
-            rafraichirTableView();
-            clearFields();
-            showAlert("Succès", "Formation supprimée avec succès !");
-        }
-    }
-
-    @FXML
-    void modifierFormation(ActionEvent event) {
-        if (tfNomFormation.getText().isEmpty() || tfThemeFormation.getText().isEmpty() || pdate.getValue() == null) {
-            showAlert("Erreur", "Veuillez remplir tous les champs !");
-            return;
-        }
-
-        if (!tfNomFormation.getText().matches("[a-zA-Z]+") || !tfThemeFormation.getText().matches("[a-zA-Z]+")) {
-            showAlert("Erreur", "Le nom et le thème de la formation doivent contenir uniquement des lettres.");
-            return;
-        }
-
-        LocalDate today = LocalDate.now();
-        if (pdate.getValue().isBefore(today)) {
-            showAlert("Erreur", "La date de la formation doit être supérieure à la date d'aujourd'hui.");
-            return;
-        }
-        Formation selectedFormation = tvFormation.getSelectionModel().getSelectedItem();
-        if (selectedFormation == null) {
-            showAlert("Erreur", "Veuillez sélectionner une formation à modifier !");
-            return;
-        }
-        selectedFormation.setNomFormation(tfNomFormation.getText());
-        selectedFormation.setThemeFormation(tfThemeFormation.getText());
-        selectedFormation.setDateFormation(Date.valueOf(pdate.getValue()));
-        selectedFormation.setDescription(description.getText());
-        selectedFormation.setLien_formation(lien.getText());
-        selectedFormation.setNiveauDifficulte(Niveau_difficulte.getValue());
-        selectedFormation.setStatut(status.getValue());
-        sf.update(selectedFormation);
-        rafraichirTableView();
-        clearFields();
-        showAlert("Succès", "Formation modifiée avec succès !");
-    }
-
-    private void rafraichirTableView() {
-        lf = FXCollections.observableList(sf.getAll());
-        tvFormation.setItems(lf);
-    }
-
-    private void clearFields() {
-        tfNomFormation.clear();
-        tfThemeFormation.clear();
-        pdate.setValue(null);
-        lien.clear();
-        description.clear();
-
-    }
-    @FXML
-    void search(ActionEvent event) {
-
-        String searchTerm = tfsearch.getText();
-        List<Formation> allFormations = sf.getAll();
-        List<Formation> filteredFormations = searchList(searchTerm, allFormations);
-        lf = FXCollections.observableList(filteredFormations);
-        tvFormation.setItems(lf);
-    }
-
-    private List<Formation> searchList(String searchNom, List<Formation> listOfFormations) {
-
-        List<String> searchNomArray = Arrays.asList(searchNom.trim().split(" "));
-
-
-        return listOfFormations.stream()
-                .filter(formation -> {
-
-                    return searchNomArray.stream().allMatch(word ->
-                            formation.getNomFormation().toLowerCase().contains(word.toLowerCase()));
-                })
-                .collect(Collectors.toList());
-    }
+//    }
 
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 }
-
-
-
-
-

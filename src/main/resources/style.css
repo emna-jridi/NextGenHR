@@ -1,0 +1,123 @@
+/* styles.css */
+
+/* Styles généraux */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: #f5f5f5;
+}
+
+/* Styles pour la barre latérale (filtres) */
+.sidebar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+    -fx-background-radius: 5;
+}
+
+.title-filter {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+.reset-button {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #555;
+    -fx-cursor: hand;
+}
+
+.reset-button:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+/* Styles pour les cartes de formation */
+.formation-card {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 0);
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease;
+}
+
+.formation-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-translate-y: -2;
+}
+
+.formation-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 0 0 0;
+}
+
+.formation-category {
+    -fx-background-color: #e3f2fd;
+    -fx-text-fill: #1976d2;
+    -fx-padding: 2 8;
+    -fx-background-radius: 20;
+    -fx-font-size: 12px;
+}
+
+.formation-level {
+    -fx-background-color: #fff8e1;
+    -fx-text-fill: #ffa000;
+    -fx-padding: 2 8;
+    -fx-background-radius: 20;
+    -fx-font-size: 12px;
+}
+
+.formation-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #666;
+}
+
+.formation-duration {
+    -fx-text-fill: #555;
+    -fx-font-size: 13px;
+}
+
+.formation-price {
+    -fx-text-fill: #43a047;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.details-button {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-padding: 8 0;
+    -fx-font-weight: bold;
+}
+
+.details-button:hover {
+    -fx-background-color: #1976d2;
+}
+
+.no-result {
+    -fx-font-size: 16px;
+    -fx-text-fill: #757575;
+    -fx-font-style: italic;
+    -fx-padding: 20;
+}
+
+/* Styles pour le champ de recherche */
+.text-field {
+    -fx-background-radius: 20;
+    -fx-padding: 8 15;
+}
+
+/* Styles pour les TitledPane */
+.titled-pane {
+    -fx-animated: true;
+}
+
+.titled-pane > .title {
+    -fx-background-color: #f5f5f5;
+    -fx-font-weight: bold;
+}
+
+.titled-pane > .content {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
