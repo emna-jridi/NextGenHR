@@ -17,55 +17,6 @@ public class ServiceService implements IServices<Service> {
 
 
 
-    //controles de saisies pour service
-    private boolean validateService(Service service) {
-
-        if (service.getNomService() == null || service.getNomService().trim().isEmpty()) {
-            System.out.println("Erreur : Le nom de service est obligatoire !");
-            return false;
-        }
-
-        if (service.getDescriptionService() == null || service.getDescriptionService().trim().isEmpty()) {
-            System.out.println("Erreur : La description de service est obligatoire !");
-            return false;
-        }
-
-        if (service.getTypeService() == null || service.getTypeService().trim().isEmpty()) {
-            System.out.println("Erreur : Le type de service est obligatoire !");
-            return false;
-        }
-
-        if (service.getDateDebutService() == null || service.getDateFinService() == null) {
-            System.out.println("Erreur : Les dates de sébut et de fin sont obligatoires !");
-            return false;
-        }
-
-        if (service.getDateDebutService().isAfter(service.getDateFinService())) {
-            System.out.println("Erreur : La date de début ne peut pas être après la date de fin. !");
-            return false;
-        }
-
-
-        if (service.getStatusService() == null || service.getStatusService().trim().isEmpty()) {
-            System.out.println("Erreur : Le statut de service est obligatoire");
-            return false;
-        }
-
-        if (!service.getStatusService().equalsIgnoreCase("Actif") && !service.getStatusService().equalsIgnoreCase("Inactif")) {
-            System.out.println("Erreur : Le statut de service doit etre actif ou inactif !");
-            return false;
-        }
-
-        /*if (service.getIdContrat() <= 0) {
-            System.out.println("Erreur : L'id du contrat doit étre un nombre positif !");
-            return false;
-        }*/
-        return true;
-    }
-
-
-
-
 
     //ajouter un service//
     @Override
@@ -318,6 +269,57 @@ public class ServiceService implements IServices<Service> {
         }
         return activeServices;
     }
+
+
+
+
+
+
+    private boolean validateService(Service service) {
+
+        if (service.getNomService() == null || service.getNomService().trim().isEmpty()) {
+            System.out.println("Erreur : Le nom de service est obligatoire !");
+            return false;
+        }
+
+        if (service.getDescriptionService() == null || service.getDescriptionService().trim().isEmpty()) {
+            System.out.println("Erreur : La description de service est obligatoire !");
+            return false;
+        }
+
+        if (service.getTypeService() == null || service.getTypeService().trim().isEmpty()) {
+            System.out.println("Erreur : Le type de service est obligatoire !");
+            return false;
+        }
+
+        if (service.getDateDebutService() == null || service.getDateFinService() == null) {
+            System.out.println("Erreur : Les dates de sébut et de fin sont obligatoires !");
+            return false;
+        }
+
+        if (service.getDateDebutService().isAfter(service.getDateFinService())) {
+            System.out.println("Erreur : La date de début ne peut pas être après la date de fin. !");
+            return false;
+        }
+
+
+        if (service.getStatusService() == null || service.getStatusService().trim().isEmpty()) {
+            System.out.println("Erreur : Le statut de service est obligatoire");
+            return false;
+        }
+
+        if (!service.getStatusService().equalsIgnoreCase("Actif") && !service.getStatusService().equalsIgnoreCase("Inactif")) {
+            System.out.println("Erreur : Le statut de service doit etre actif ou inactif !");
+            return false;
+        }
+
+        /*if (service.getIdContrat() <= 0) {
+            System.out.println("Erreur : L'id du contrat doit étre un nombre positif !");
+            return false;
+        }*/
+        return true;
+    }
+
 
 
 

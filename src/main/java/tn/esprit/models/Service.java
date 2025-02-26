@@ -14,6 +14,7 @@ public class Service {
     private LocalDate dateDebutService;
     private LocalDate dateFinService;
     private String statusService;
+    private Contrat contrat;
     //private int idContrat;
 
 
@@ -101,13 +102,16 @@ public class Service {
         this.statusService = statusService;
     }
 
-    /*public int getIdContrat() {
-        return idContrat;
+
+    public Contrat getContrat() {
+        return contrat;
     }
 
-    public void setIdContrat(int idContrat) {
-        this.idContrat = idContrat;
-    }*/
+    public void setContrat(Contrat contrat) {
+        this.contrat = contrat;
+    }
+
+
 
 
 

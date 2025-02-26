@@ -1,6 +1,5 @@
 package tn.esprit.controllers;
 
-
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,7 +16,6 @@ import javafx.stage.FileChooser;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -74,10 +72,8 @@ public class ListContrats {
     @FXML
     public void initialize() {
 
-        colId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIdContrat()).asObject());
+        //colId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIdContrat()).asObject());
         colType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeContrat().name()));
-
-
         colDateDebut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateDebutContrat().toString()));
         colDateFin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateFinContrat().toString()));
         colMontant.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMontantContrat()).asObject());
@@ -102,6 +98,7 @@ public class ListContrats {
     @FXML
     private void modifierContrat(ActionEvent event) {
         Contrat contratSelectionne = tableView.getSelectionModel().getSelectedItem();
+
         if (contratSelectionne == null) {
             showAlert("Aucun contrat sélectionné", "Veuillez sélectionner un contrat à modifier.", Alert.AlertType.WARNING);
             return;
@@ -176,13 +173,11 @@ public class ListContrats {
     private void filtrerContrats(ActionEvent event) {
         List<Contrat> contrats = contratService.getAll();
 
-
         if (chkFiltrerActifs.isSelected()) {
             contrats = contrats.stream()
                     .filter(contrat -> "Actif".equals(contrat.getStatusContrat()))
                     .collect(Collectors.toList());
         }
-
 
         if (chkTriMontantAsc.isSelected()) {
             contrats.sort((c1, c2) -> Integer.compare(c1.getMontantContrat(), c2.getMontantContrat()));
@@ -190,9 +185,9 @@ public class ListContrats {
             contrats.sort((c1, c2) -> Integer.compare(c2.getMontantContrat(), c1.getMontantContrat()));
         }
 
-
         updateTableView(contrats);
     }
+
 
     @FXML
     private void handleTriMontantAsc(ActionEvent event) {
@@ -202,6 +197,7 @@ public class ListContrats {
         filtrerContrats(null);
     }
 
+
     @FXML
     private void handleTriMontantDesc(ActionEvent event) {
         if (chkTriMontantDesc.isSelected()) {
@@ -210,10 +206,12 @@ public class ListContrats {
         filtrerContrats(null);
     }
 
+
     private void updateTableView(List<Contrat> contrats) {
         ObservableList<Contrat> observableContrats = FXCollections.observableArrayList(contrats);
         tableView.setItems(observableContrats);
     }
+
 
     private void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
@@ -228,14 +226,12 @@ public class ListContrats {
     //exporter les contrats vers un fichier excel//
     @FXML
     private void exporterContrats(MouseEvent event) {
-        // Récupérer la liste des contrats
+
         List<Contrat> contrats = contratService.getAll();
 
-        // Créer un classeur Excel
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Contrats");
 
-        // Créer un style pour l'entête (gras, aligné au centre, fond coloré)
         CellStyle headerStyle = workbook.createCellStyle();
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
@@ -244,7 +240,6 @@ public class ListContrats {
         headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
-        // Créer l'entête
         Row headerRow = sheet.createRow(0);
         String[] columns = {"ID Contrat", "Type Contrat", "Date Début", "Date Fin", "Montant", "Nom Client", "Email Client", "Statut"};
         for (int i = 0; i < columns.length; i++) {
@@ -253,7 +248,6 @@ public class ListContrats {
             cell.setCellStyle(headerStyle);
         }
 
-        // Créer un style pour les cellules de données (centré, bordure)
         CellStyle dataStyle = workbook.createCellStyle();
         dataStyle.setAlignment(HorizontalAlignment.CENTER);
         dataStyle.setBorderBottom(BorderStyle.THIN);
@@ -261,12 +255,10 @@ public class ListContrats {
         dataStyle.setBorderLeft(BorderStyle.THIN);
         dataStyle.setBorderRight(BorderStyle.THIN);
 
-        // Remplir les données
         int rowNum = 1;
         for (Contrat contrat : contrats) {
             Row row = sheet.createRow(rowNum++);
 
-            // Remplir chaque cellule pour chaque contrat
             row.createCell(0).setCellValue(contrat.getIdContrat());
             row.createCell(1).setCellValue(contrat.getTypeContrat().toString());
             row.createCell(2).setCellValue(contrat.getDateDebutContrat().toString());
@@ -276,18 +268,15 @@ public class ListContrats {
             row.createCell(6).setCellValue(contrat.getEmailClient());
             row.createCell(7).setCellValue(contrat.getStatusContrat());
 
-            // Appliquer le style des données à chaque cellule
             for (int i = 0; i < columns.length; i++) {
                 row.getCell(i).setCellStyle(dataStyle);
             }
         }
 
-        // Ajuster la largeur des colonnes en fonction du contenu
         for (int i = 0; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
         }
 
-        // Ouvrir une boîte de dialogue pour choisir l'emplacement de sauvegarde
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier Excel", "*.xlsx"));
         File file = fileChooser.showSaveDialog(new Stage());
@@ -308,7 +297,7 @@ public class ListContrats {
 
 
 
-//générer contrat via api
+//générer contrat PDF via api
     @FXML
     private void genererContratPDF(ActionEvent event) {
         // Récupérer le contrat sélectionné

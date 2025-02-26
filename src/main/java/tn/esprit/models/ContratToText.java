@@ -27,18 +27,18 @@ public class ContratToText {
                 "<div class='contract-container'>" +
                 "<h2>CONTRAT DE TRAVAIL</h2>" +
                 "<p><strong>Entre les soussignés :</strong></p>" +
-                "<p><strong>L'Employeur :</strong> NextGenHR, Adresse: 123 Rue de l'Entreprise, Numéro SIRET: 987654321.</p>" +
-                "<p><strong>Le Salarié :</strong> " + contrat.getNomClient() + ", Email: " + contrat.getEmailClient() + ".</p>" +
+                "<p><strong>La société :</strong> NextGenHR, Adresse: 123 Rue de l'Entreprise, Numéro SIRET: 987654321.</p>" +
+                "<p><strong>Le/La Client(e) :</strong> " + contrat.getNomClient() + ", <strong>Email:</strong> " + contrat.getEmailClient() + ".</p>" +
                 "<h3>Article 1 : Objet du contrat</h3>" +
-                "<p>Le présent contrat a pour objet de définir les conditions de travail entre l'employeur et le salarié. Ce contrat est de type <strong>" + contrat.getTypeContrat() + "</strong>, et entre en vigueur à compter du " + contrat.getDateDebutContrat() + "</strong> à "+ contrat.getDateFinContrat() + ".</p>" +
+                "<p>Le présent contrat a pour objet de définir les conditions de travail entre la société et le/La client(e). Ce contrat est de type <strong>" + contrat.getTypeContrat() + "</strong>, et entre en vigueur à compter du " + contrat.getDateDebutContrat() + "</strong> à "+ contrat.getDateFinContrat() + ".</p>" +
                 "<h3>Article 2 : Durée du travail</h3>" +
-                "<p>La durée hebdomadaire du travail est de 40 heures , réparties en 5 jours. Le salarié pourra être amené à effectuer des heures supplémentaires, dans la limite prévue par la législation en vigueur. : " + ".</p>" +
+                "<p>La durée hebdomadaire du travail est de 40 heures , réparties en 5 jours. Le/La client(e) pourra être amené à effectuer des heures supplémentaires, dans la limite prévue par la législation en vigueur. : " + ".</p>" +
                 "<h3>Article 3 : Rémunération</h3>" +
-                "<p>Le salarié percevra une rémunération brute mensuelle de <strong>" + contrat.getMontantContrat() + " DT</strong> payable par virement bancaire à la fin de chaque mois.</p>" +
+                "<p>Le/La client(e) percevra une rémunération brute mensuelle de <strong>" + contrat.getMontantContrat() + " DT</strong> payable par virement bancaire à la fin de chaque mois.</p>" +
                 "<h3>Article 4 : Congés payés</h3>" +
-                "<p>Le salarié bénéficie de congés payés annuels selon les dispositions légales en vigueur, soit 15 jours minimum par an. " + ".</p>" +
+                "<p>Le/La client(e) bénéficie de congés payés annuels selon les dispositions légales en vigueur, soit 15 jours minimum par an. " + ".</p>" +
                 "<h3>Article 5 : Confidentialité</h3>" +
-                "<p>Le salarié s'engage à respecter la confidentialité des informations relatives à l'entreprise et à ses activités pendant et après la durée du contrat. " + ".</p>" +
+                "<p>Le/La client(e) s'engage à respecter la confidentialité des informations relatives à l'entreprise et à ses activités pendant et après la durée du contrat. " + ".</p>" +
 
 
                 "<br>"+
@@ -51,9 +51,9 @@ public class ContratToText {
                 "<br>"+
 
                 "<h3>Article 6 : Résiliation du contrat</h3>" +
-                "<p>En cas de rupture du contrat par l'employeur ou le salarié, un préavis de [durée du préavis] est à respecter, sauf en cas de faute grave. " + ".</p>" +
+                "<p>En cas de rupture du contrat par la société ou le/la client(e), un préavis de 15jrs est à respecter, sauf en cas de faute grave. " + ".</p>" +
                 "<h3>Article 7 : Divers</h3>" +
-                "<p>Les deux parties conviennent de respecter les règles éthiques et professionnelles en vigueur dans l'entreprise. Le salarié déclare avoir pris connaissance des conditions de travail et s'engage à les respecter. " + ".</p>" +
+                "<p>Les deux parties conviennent de respecter les règles éthiques et professionnelles en vigueur dans l'entreprise. Le/La client(e) déclare avoir pris connaissance des conditions de travail et s'engage à les respecter. " + ".</p>" +
 
 
 
@@ -68,11 +68,11 @@ public class ContratToText {
 
                 "<div class='signatures-container'>" +
                 "<div class='signature'>" +
-                "<p>L'Employeur</p>" +
+                "<p>La société</p>" +
                 "<div class='signature-box'></div>" +
                 "</div>" +
                 "<div class='signature'>" +
-                "<p>Le Salarié</p>" +
+                "<p>Le/La Client(e)</p>" +
                 "<div class='signature-box'></div>" +
                 "</div>" +
                 "</div>" +

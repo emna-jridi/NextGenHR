@@ -1,12 +1,13 @@
 package tn.esprit.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Contrat {
 
     private int idContrat;
-    private TypeContrat typeContrat;  // Modifié pour utiliser l'énumération
+    private TypeContrat typeContrat;
     private LocalDate dateDebutContrat;
     private LocalDate dateFinContrat;
     private String statusContrat;
@@ -30,6 +31,7 @@ public class Contrat {
         this.montantContrat = montantContrat;
         this.nomClient = nomClient;
         this.emailClient = emailClient;
+        this.services = new ArrayList<>();
     }
 
     public Contrat(TypeContrat typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,

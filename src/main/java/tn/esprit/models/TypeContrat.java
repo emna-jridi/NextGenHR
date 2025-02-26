@@ -3,6 +3,6 @@ package tn.esprit.models;
 public enum TypeContrat {
     CDI,    // Contrat à durée indéterminée
     CDD,    // Contrat à durée déterminée
-    Freelance, // Contrat Freelance
-    Stage;   // Stage
+    Freelance,
+    Stage;
 }

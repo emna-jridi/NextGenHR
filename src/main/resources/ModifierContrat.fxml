@@ -15,7 +15,7 @@
 <?import javafx.scene.control.ComboBox?>
 <AnchorPane prefHeight="703.0" prefWidth="934.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ModifierContrat">
 
-    <!-- Lien vers le fichier CSS -->
+
     <stylesheets>
         <URL value="@styles/styleajoutcontrat.css" />
     </stylesheets>
@@ -85,6 +85,11 @@
             <!-- Email Client -->
             <Label layoutX="100.0" layoutY="440.0" text="Email Client:" />
             <TextField fx:id="emailClientField" alignment="CENTER" layoutX="280.0" layoutY="433.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir l'email du client" />
+            <Label fx:id="emailValidationLabel" layoutX="273.0" layoutY="350.0" text="" style="-fx-text-fill: red;" />
+
+
+
+
             <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="240.0" layoutY="440.0">
                 <image>
                     <Image url="@images/email_icon.png" />

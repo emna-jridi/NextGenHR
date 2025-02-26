@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class PDFShiftService {
 
-    private static final String API_KEY = "sk_66b7eca7405741e477d2af2c039d781f6cdc3c86"; // Remplace par ta clé API
+    private static final String API_KEY = "sk_66b7eca7405741e477d2af2c039d781f6cdc3c86";
 
     // Méthode pour générer le PDF
     public static void generatePDF(String htmlContent, String outputFilePath) throws IOException {
@@ -31,7 +31,7 @@ public class PDFShiftService {
                 .uri(URI.create("https://api.pdfshift.io/v3/convert/pdf"))
                 .timeout(Duration.ofSeconds(20))
                 .header("Content-Type", "application/json")
-                .header("Authentication", "Basic " + encodedApiKey) // Authentification avec la clé API
+                .header("Authentication", "Basic " + encodedApiKey)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonObject.toString()))
                 .build();
 

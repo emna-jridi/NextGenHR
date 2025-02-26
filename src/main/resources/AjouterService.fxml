@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="713.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterService">
+<AnchorPane prefHeight="713.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterService">
 
     <stylesheets>
         <URL value="@styles/styleajoutservice.css" />
@@ -65,7 +65,7 @@
             <Button layoutX="292.0" layoutY="503.0" onAction="#ajouterService" prefHeight="48.0" prefWidth="150.0" text="Ajouter Service" />
 
              <!-- Champ TextArea -->
-             <TextArea fx:id="descriptionService" layoutX="270.0" layoutY="140.0" prefHeight="100" prefWidth="266.0" promptText="donner une description" />
+             <TextArea fx:id="descriptionService" layoutX="270.0" layoutY="140.0" prefHeight="100" prefWidth="266.0" promptText="donner une description du service" />
              <!-- Icône -->
              <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="145.0">
                  <Image url="@images/description-icon.png" />
