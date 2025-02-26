@@ -63,7 +63,7 @@
         </VBox>
 
         <!-- Table des Contrats -->
-        <TableView fx:id="tableView" layoutX="86.0" layoutY="204.0" prefHeight="300.0" prefWidth="763.0">
+        <TableView fx:id="tableView" layoutX="53.0" layoutY="196.0" prefHeight="300.0" prefWidth="790.0">
             <columns>
                 <!--<TableColumn fx:id="colId" prefWidth="75.0" text="ID Contrat" />-->
                 <TableColumn fx:id="colType" prefWidth="100.0" text="Type Contrat" />
@@ -71,7 +71,7 @@
                 <TableColumn fx:id="colDateFin" prefWidth="100.0" text="Date Fin" />
                 <TableColumn fx:id="colStatut" text="Statut" />
                 <TableColumn fx:id="colMontant" prefWidth="100.0" text="Montant" />
-                <TableColumn fx:id="colNomClient" prefWidth="100.0" text="Nom Client(e)" />
+                <TableColumn fx:id="colNomClient" prefWidth="150.0" text="Nom Client(e)" />
                 <TableColumn fx:id="colEmailClient" prefWidth="175.0" text="Email Client(e)" />
             </columns>
         </TableView>

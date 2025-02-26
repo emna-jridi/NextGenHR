@@ -77,8 +77,8 @@ public class AjouterContrat {
 
         //loadServices();
 
-        // Définir un converter pour afficher uniquement le nom du service
-        /*checkComboBoxServices.setConverter(new StringConverter<Service>() {
+        /*// Définir un converter pour afficher uniquement le nom du service
+        checkComboBoxServices.setConverter(new StringConverter<Service>() {
             @Override
             public String toString(Service service) {
                 return service == null ? "" : service.getNomService();

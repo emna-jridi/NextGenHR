@@ -37,6 +37,8 @@
             <!-- Description du Service -->
             <Label layoutX="100.0" layoutY="150.0" text="Description:" />
             <HBox spacing="10" />
+            <!-- Champ TextArea -->
+            <TextArea fx:id="descriptionService" layoutX="270.0" layoutY="140.0" prefHeight="100" prefWidth="266.0" promptText="donner une description du service" />
 
 
             <!-- Type du Service -->
@@ -64,8 +66,7 @@
             <!-- Bouton Ajouter -->
             <Button layoutX="292.0" layoutY="503.0" onAction="#ajouterService" prefHeight="48.0" prefWidth="150.0" text="Ajouter Service" />
 
-             <!-- Champ TextArea -->
-             <TextArea fx:id="descriptionService" layoutX="270.0" layoutY="140.0" prefHeight="100" prefWidth="266.0" promptText="donner une description du service" />
+
              <!-- Icône -->
              <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="145.0">
                  <Image url="@images/description-icon.png" />

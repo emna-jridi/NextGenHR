@@ -12,8 +12,10 @@ import java.util.List;
 
 public class ServiceContrat implements IServices<Contrat> {
 
+    //gérer la connexion à la base de données
     private Connection cnx;
 
+    // initialise la connexion à la base de données
     public ServiceContrat() {
         cnx = MyDatabase.getInstance().getCnx();
     }
@@ -31,7 +33,7 @@ public class ServiceContrat implements IServices<Contrat> {
 
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            // Utilisation de toString() pour insérer l'énumération sous forme de chaîne
+            //conversion de l'énumération typeContrat en une chaîne.
             pstm.setString(1, contrat.getTypeContrat().toString());
             pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
             pstm.setDate(3, java.sql.Date.valueOf(contrat.getDateFinContrat()));
@@ -57,7 +59,7 @@ public class ServiceContrat implements IServices<Contrat> {
 
         try {
             Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
+            ResultSet rs = stm.executeQuery(qry); //contient les résultats de la requête
 
             while (rs.next()) {
                 Contrat c = new Contrat();
