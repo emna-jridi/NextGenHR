@@ -3,12 +3,17 @@ package controllers;
 
 import entities.Reunion;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import services.ServiceReunion;
 import java.time.LocalDate;
+
 
 
 import java.time.LocalDate;
@@ -28,6 +33,8 @@ public class ReunionController {
     @FXML
     private TextField description;
 
+
+
     ServiceReunion serviceReunion = new ServiceReunion();
     private int reunionIdToUpdate = -1;
     private boolean isEditing = false;
@@ -38,6 +45,9 @@ public class ReunionController {
     }
     @FXML
     private FlowPane containerReunions;
+
+    @FXML
+    private TextField searchField;
 
 
     @FXML
@@ -120,6 +130,7 @@ public class ReunionController {
         deleteButton.setOnAction(e -> {
             serviceReunion.delete(reunion.getId());
             handleAfficherAction(new ActionEvent());
+
         });
 
         card.getChildren().addAll(titleLabel, dateLabel, typeLabel, descLabel, editButton, deleteButton);
@@ -232,4 +243,37 @@ public class ReunionController {
         description.setText(reunion.getDescription());
         reunionIdToUpdate = reunion.getId(); // Stocker l'ID pour la mise à jour
     }
+
+
+    @FXML
+    private void handleSearchAction() {
+        String searchText = searchField.getText().toLowerCase().trim();
+        containerReunions.getChildren().clear(); // Nettoyer avant d'afficher
+
+        List<Reunion> reunions = serviceReunion.getAll();
+        List<Reunion> filteredReunions = reunions.stream()
+                .filter(r -> r.getTitre().toLowerCase().contains(searchText))
+                .toList();
+
+        for (Reunion reunion : filteredReunions) {
+            VBox card = createReunionCard(reunion);
+            containerReunions.getChildren().add(card);
+        }
+    }
+
+    @FXML
+    private void handleSortByDate() {
+        containerReunions.getChildren().clear(); // Nettoyer avant d'afficher
+
+        List<Reunion> reunions = serviceReunion.getAll();
+        reunions.sort((r1, r2) -> r1.getDate().compareTo(r2.getDate())); // Tri par date croissante
+
+        for (Reunion reunion : reunions) {
+            VBox card = createReunionCard(reunion);
+            containerReunions.getChildren().add(card);
+        }
+    }
+
+
+
 }

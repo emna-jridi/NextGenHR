@@ -92,6 +92,27 @@ public class ServiceConge {
         }
     }
 
+    public conge getById(int id) {
+        try {
+            String req = "SELECT * FROM conge WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(req);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new conge(
+                        rs.getInt("id"),
+                        rs.getString("type_conge"),
+                        rs.getDate("date_debut").toLocalDate(),
+                        rs.getDate("date_fin").toLocalDate(),
+                        rs.getString("status")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }

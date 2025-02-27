@@ -23,7 +23,8 @@ public class CongeMain extends Application {
             DBConnection db = DBConnection.getInstance();
 
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reunion.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutConge.fxml"));
+
 
             Parent root = loader.load();
 
