@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 import services.ServiceUser;
 
 import java.io.IOException;
@@ -40,17 +41,12 @@ public class SignUpController {
     @FXML
     private Label errorLabel;
 
-    // 🔥 Instance du Service pour le CRUD
     private final ServiceUser serviceUser = new ServiceUser();
 
-    /**
-     * Méthode pour gérer la sélection des CheckBox
-     */
     @FXML
     private void handleCheckboxSelection(ActionEvent event) {
         CheckBox source = (CheckBox) event.getSource();
 
-        // Si Employé est sélectionné, désélectionner RH et vice versa
         if (source.equals(checkboxEmploye)) {
             checkboxRH.setSelected(false);
         } else if (source.equals(checkboxRH)) {
@@ -58,12 +54,8 @@ public class SignUpController {
         }
     }
 
-    /**
-     * Méthode pour gérer l'inscription
-     */
     @FXML
     private void handleSignUp() {
-        // 1. Récupérer les données
         String nom = nomField.getText().trim();
         String prenom = prenomField.getText().trim();
         LocalDate dateNaissance = dateNaissanceField.getValue();
@@ -73,41 +65,56 @@ public class SignUpController {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
-        // 2. Vérification des champs obligatoires
+        // 1. Vérification des champs obligatoires
         if (nom.isEmpty() || prenom.isEmpty() || dateNaissance == null || adresse.isEmpty() ||
                 telephone.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             errorLabel.setText("Tous les champs sont obligatoires !");
             return;
         }
 
-        // 3. Vérification des mots de passe
+        // 2. Vérification des mots de passe
         if (!password.equals(confirmPassword)) {
             errorLabel.setText("Les mots de passe ne correspondent pas !");
             return;
         }
 
-        // 4. Validation de l'email
+        // 3. Validation de l'email
         if (!isValidEmail(email)) {
             errorLabel.setText("Email invalide !");
             return;
         }
 
-        // 5. Validation du téléphone
+        // 4. Validation du téléphone
         if (!isValidPhone(telephone)) {
             errorLabel.setText("Téléphone invalide !");
             return;
         }
 
-        // 6. Vérification des rôles
+        // 5. Validation de la longueur du mot de passe
+        if (password.length() <= 8) {
+            errorLabel.setText("Le mot de passe doit contenir plus de 8 caractères !");
+            return;
+        }
+
+        // 6. Vérification de la date de naissance
+        if (dateNaissance.isAfter(LocalDate.now())) {
+            errorLabel.setText("La date de naissance ne peut pas être dans le futur !");
+            return;
+        }
+
+        // 7. Vérification des rôles
         if (!checkboxEmploye.isSelected() && !checkboxRH.isSelected()) {
             errorLabel.setText("Veuillez sélectionner au moins un rôle !");
             return;
         }
 
-        // 7. Détermination du rôle
+        // Détermination du rôle
         Role role = checkboxEmploye.isSelected() ? Role.EMPLOYE : Role.RESPONSABLE_RH;
 
-        // 8. Création de l'utilisateur
+        // Hachage du mot de passe avant l'enregistrement
+        String hashedPassword = hashPassword(password);
+
+        // Création de l'utilisateur
         User user = new User();
         user.setNomUser(nom);
         user.setPrenomUser(prenom);
@@ -115,36 +122,31 @@ public class SignUpController {
         user.setAdresseUser(adresse);
         user.setTelephoneUser(telephone);
         user.setEmailUser(email);
-        user.setPassword(password);
+        user.setPassword(hashedPassword); // On enregistre le mot de passe haché
         user.setRole(role);
 
-        // 9. Ajout dans la base de données via le Service
+        // Ajout dans la base de données
         serviceUser.add(user);
 
-        // 10. Confirmation et redirection
         errorLabel.setText("Inscription réussie !");
         goToLogin();
     }
 
-    /**
-     * Validation de l'email avec une expression régulière
-     */
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return Pattern.compile(emailRegex).matcher(email).matches();
     }
 
-    /**
-     * Validation du téléphone (Exemple : Numéro à 10 chiffres)
-     */
     private boolean isValidPhone(String phone) {
         String phoneRegex = "^\\d{8}$";
         return Pattern.compile(phoneRegex).matcher(phone).matches();
     }
 
-    /**
-     * Redirection vers la page de connexion
-     */
+    // 🔹 Méthode pour hasher un mot de passe avec BCrypt
+    private String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(12)); // Coût de 12 pour un bon équilibre entre sécurité et performance
+    }
+
     @FXML
     private void goToLogin() {
         try {

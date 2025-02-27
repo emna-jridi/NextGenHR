@@ -10,8 +10,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-
-<?import javafx.scene.chart.PieChart?>
 <AnchorPane prefHeight="700.0" prefWidth="1500.0" style="-fx-background-color: linear-gradient(to bottom, #E3EDF9, #AABEDC);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserController">
     <children>
         <!-- Header -->
@@ -27,18 +25,33 @@
             </children>
         </AnchorPane>
 
+        <!-- Statistics Rectangles -->
+        <HBox layoutY="100" layoutX="50" spacing="30">
+            <VBox style="-fx-background-color: #FFC20E; -fx-padding: 20px; -fx-border-radius: 15px; -fx-min-width: 200px;">
+                <Label text="👥 Utilisateurs" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                <Label fx:id="lblUsers" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            </VBox>
+            <VBox style="-fx-background-color: #3F861E; -fx-padding: 20px; -fx-border-radius: 15px; -fx-min-width: 200px;">
+                <Label text="👔 RH Managers" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                <Label fx:id="lblRHManagers" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            </VBox>
+            <VBox style="-fx-background-color: #253D90; -fx-padding: 20px; -fx-border-radius: 15px; -fx-min-width: 200px;">
+                <Label text="🧑‍💼 Employés" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                <Label fx:id="lblEmployees" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            </VBox>
+        </HBox>
+
         <!-- Liste des utilisateurs -->
-        <BorderPane layoutY="100.0" prefHeight="530.0" prefWidth="1500.0">
+        <BorderPane layoutY="200.0" prefHeight="480.0" prefWidth="1500.0">
             <center>
                 <VBox alignment="CENTER" spacing="20" style="-fx-padding: 30px;">
                     <VBox prefWidth="1200.0" spacing="10" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 7);">
                         <Label text="Liste des utilisateurs" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #253D90; -fx-padding: 10px 0;" />
                         <Rectangle width="1100" height="2" style="-fx-fill: #3F861E; -fx-margin: 10px 0;" />
-                        <ListView fx:id="listViewUsers" maxWidth="1410.0" prefHeight="440.0" prefWidth="1410.0" style="-fx-background-color: #F5F5F5; -fx-border-color: #DADADA; -fx-padding: 10px; -fx-font-size: 14px; -fx-border-radius: 10px;" />
+                        <ListView fx:id="listViewUsers" maxWidth="1410.0" prefHeight="400.0" prefWidth="1410.0" style="-fx-background-color: #F5F5F5; -fx-border-color: #DADADA; -fx-padding: 10px; -fx-font-size: 14px; -fx-border-radius: 10px;" />
                     </VBox>
                 </VBox>
             </center>
         </BorderPane>
     </children>
-
 </AnchorPane>
