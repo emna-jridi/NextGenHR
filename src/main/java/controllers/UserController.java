@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 import services.ServiceUser;
 
 public class UserController {
+
     @FXML
     private ListView<User> listViewUsers;
     @FXML
@@ -85,6 +86,7 @@ public class UserController {
             }
         });
     }
+
     private void loadUsers() {
         List<User> users = this.serviceUser.getAll();
         this.userList = FXCollections.observableArrayList(users);
@@ -99,12 +101,26 @@ public class UserController {
     }
 
     private void toggleUserStatus(User user, Button button) {
-        boolean newStatus = !user.isActive();
-        this.serviceUser.toggleUserStatus(user.getIdUser(), newStatus);
-        user.setActive(newStatus);
-        button.setText(newStatus ? "Désactiver" : "Activer");
-        button.setStyle("-fx-background-color: " + (newStatus ? "#FFC20E" : "#4CAF50") + "; -fx-text-fill: black;");
-        this.listViewUsers.refresh();
+        // Affichage de la confirmation avant de changer le statut
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Confirmer l'activation/désactivation");
+        String action = user.isActive() ? "désactiver" : "activer";
+        alert.setContentText("Êtes-vous sûr de vouloir " + action + " le compte de " + user.getNomUser() + " ?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Si l'utilisateur confirme, on change le statut
+            boolean newStatus = !user.isActive();
+            this.serviceUser.toggleUserStatus(user.getIdUser(), newStatus);
+            user.setActive(newStatus);
+            button.setText(newStatus ? "Désactiver" : "Activer");
+            button.setStyle("-fx-background-color: " + (newStatus ? "#FFC20E" : "#4CAF50") + "; -fx-text-fill: black;");
+            this.listViewUsers.refresh();
+        } else {
+            // Si l'utilisateur annule, on ne fait rien
+            System.out.println("Action annulée !");
+        }
     }
 
     private void confirmerSuppression(User user) {
@@ -147,13 +163,12 @@ public class UserController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     public void trierUtilisateursParRole() {
         List<User> sortedUsers = new ArrayList<>(this.listViewUsers.getItems());
         sortedUsers.sort(Comparator.comparing(User::getRole));
         this.listViewUsers.getItems().setAll(sortedUsers);
     }
-
-
 
     @FXML
     private void handleLogout(ActionEvent event) {
@@ -167,7 +182,6 @@ public class UserController {
             IOException e = var5;
             e.printStackTrace();
         }
-
     }
 
     @FXML

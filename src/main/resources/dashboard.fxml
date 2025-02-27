@@ -32,7 +32,7 @@
                 <Label fx:id="lblUsers" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" />
             </VBox>
             <VBox style="-fx-background-color: #3F861E; -fx-padding: 20px; -fx-border-radius: 15px; -fx-min-width: 200px;">
-                <Label text="👔 RH Managers" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                <Label text="👔 Responsables RH " style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
                 <Label fx:id="lblRHManagers" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" />
             </VBox>
             <VBox style="-fx-background-color: #253D90; -fx-padding: 20px; -fx-border-radius: 15px; -fx-min-width: 200px;">
