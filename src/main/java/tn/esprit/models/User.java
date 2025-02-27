@@ -1,36 +1,10 @@
+
+
 package tn.esprit.models;
+
 import java.time.LocalDate;
 
 public class User {
-
-    public User(int i, String doe, String john, LocalDate of, String s, String number, String mail, String password123, Role role) {
-    }
-
-    // ✅ Énumération pour le rôle
-    public enum Role {
-        RESPONSABLE_RH("ResponsableRH"),
-        EMPLOYE("Employe");
-
-        private final String dbValue;
-
-        Role(String dbValue) {
-            this.dbValue = dbValue;
-        }
-
-        public String getDbValue() {
-            return dbValue;
-        }
-
-        public static Role fromDbValue(String dbValue) {
-            for (Role role : Role.values()) {
-                if (role.dbValue.equalsIgnoreCase(dbValue)) {
-                    return role;
-                }
-            }
-            throw new IllegalArgumentException("Valeur de rôle inconnue : " + dbValue);
-        }
-    }
-
     private int idUser;
     private String nomUser;
     private String prenomUser;
@@ -38,16 +12,16 @@ public class User {
     private String adresseUser;
     private String telephoneUser;
     private String emailUser;
-    private Role role;
     private String password;
-    // ✅ Constructeur par défaut
+    private Role role;
+    private boolean isActive;
+
     public User() {
-        this.role = Role.EMPLOYE; // Par défaut = Employé
+        this.role = User.Role.EMPLOYE;
+        this.isActive = true;
     }
 
-    // ✅ Constructeur complet
-    public User(int idUser, String nomUser, String prenomUser, LocalDate dateNaissanceUser,
-                String adresseUser, String telephoneUser, String emailUser, Role role) {
+    public User(int idUser, String nomUser, String prenomUser, LocalDate dateNaissanceUser, String adresseUser, String telephoneUser, String emailUser, String password, Role role, boolean isActive) {
         this.idUser = idUser;
         this.nomUser = nomUser;
         this.prenomUser = prenomUser;
@@ -55,27 +29,17 @@ public class User {
         this.adresseUser = adresseUser;
         this.telephoneUser = telephoneUser;
         this.emailUser = emailUser;
+        this.password = password;
         this.role = role;
-        this.password = password;
+        this.isActive = isActive;
     }
 
-    // ✅ Constructeur sans rôle (par défaut = Employé)
-    public User(int idUser, String nomUser, String prenomUser, LocalDate dateNaissanceUser,
-                String adresseUser, String telephoneUser, String emailUser) {
-        this.idUser = idUser;
-        this.nomUser = nomUser;
-        this.prenomUser = prenomUser;
-        this.dateNaissanceUser = dateNaissanceUser;
-        this.adresseUser = adresseUser;
-        this.telephoneUser = telephoneUser;
-        this.emailUser = emailUser;
-        this.role = Role.EMPLOYE;
-        this.password = password;
+    public User(int idUser, String nomUser, String prenomUser, LocalDate dateNaissanceUser, String adresseUser, String telephoneUser, String emailUser, String password) {
+        this(idUser, nomUser, prenomUser, dateNaissanceUser, adresseUser, telephoneUser, emailUser, password, User.Role.EMPLOYE, true);
     }
 
-    // ✅ Getters et Setters
     public int getIdUser() {
-        return idUser;
+        return this.idUser;
     }
 
     public void setIdUser(int idUser) {
@@ -83,7 +47,7 @@ public class User {
     }
 
     public String getNomUser() {
-        return nomUser;
+        return this.nomUser;
     }
 
     public void setNomUser(String nomUser) {
@@ -91,7 +55,7 @@ public class User {
     }
 
     public String getPrenomUser() {
-        return prenomUser;
+        return this.prenomUser;
     }
 
     public void setPrenomUser(String prenomUser) {
@@ -99,7 +63,7 @@ public class User {
     }
 
     public LocalDate getDateNaissanceUser() {
-        return dateNaissanceUser;
+        return this.dateNaissanceUser;
     }
 
     public void setDateNaissanceUser(LocalDate dateNaissanceUser) {
@@ -107,7 +71,7 @@ public class User {
     }
 
     public String getAdresseUser() {
-        return adresseUser;
+        return this.adresseUser;
     }
 
     public void setAdresseUser(String adresseUser) {
@@ -115,7 +79,7 @@ public class User {
     }
 
     public String getTelephoneUser() {
-        return telephoneUser;
+        return this.telephoneUser;
     }
 
     public void setTelephoneUser(String telephoneUser) {
@@ -123,7 +87,7 @@ public class User {
     }
 
     public String getEmailUser() {
-        return emailUser;
+        return this.emailUser;
     }
 
     public void setEmailUser(String emailUser) {
@@ -131,34 +95,60 @@ public class User {
     }
 
     public Role getRole() {
-        return role;
+        return this.role;
     }
 
     public void setRole(Role role) {
         this.role = role;
     }
+
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "idUser=" + idUser +
-                ", nomUser='" + nomUser + '\'' +
-                ", prenomUser='" + prenomUser + '\'' +
-                ", dateNaissanceUser=" + dateNaissanceUser +
-                ", adresseUser='" + adresseUser + '\'' +
-                ", telephoneUser='" + telephoneUser + '\'' +
-                ", emailUser='" + emailUser + '\'' +
-                ", password='****'" +  // Sécurité : Ne pas afficher le vrai mot de passe
-                ", role=" + role.getDbValue() +
-                '}';
+    public boolean isActive() {
+        return this.isActive;
     }
 
+    public void setActive(boolean active) {
+        this.isActive = active;
+    }
+
+    public String toString() {
+        int var10000 = this.idUser;
+        return "User{idUser=" + var10000 + ", nomUser='" + this.nomUser + "', prenomUser='" + this.prenomUser + "', dateNaissanceUser=" + String.valueOf(this.dateNaissanceUser) + ", adresseUser='" + this.adresseUser + "', telephoneUser='" + this.telephoneUser + "', emailUser='" + this.emailUser + "', password='****', role=" + this.role.getDbValue() + ", isActive=" + this.isActive + "}";
+    }
+
+    public static enum Role {
+        RESPONSABLE_RH("ResponsableRH"),
+        EMPLOYE("Employe");
+
+        private final String dbValue;
+
+        private Role(String dbValue) {
+            this.dbValue = dbValue;
+        }
+
+        public String getDbValue() {
+            return this.dbValue;
+        }
+
+        public static Role fromDbValue(String dbValue) {
+            Role[] var1 = values();
+            int var2 = var1.length;
+
+            for(int var3 = 0; var3 < var2; ++var3) {
+                Role role = var1[var3];
+                if (role.dbValue.equalsIgnoreCase(dbValue)) {
+                    return role;
+                }
+            }
+
+            throw new IllegalArgumentException("Valeur de rôle inconnue : " + dbValue);
+        }
+    }
 }

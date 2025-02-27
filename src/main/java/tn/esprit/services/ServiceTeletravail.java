@@ -233,4 +233,43 @@ public class ServiceTeletravail {
         }
         return "Inconnu";
     }
-}
+
+        public void traiterDemandeTT(int idTeletravail, String statut) {
+            try {
+                // 1. Mettre à jour le statut dans la base de données
+                String updateQuery = "UPDATE teletravail SET StatutTT = ? WHERE IdTeletravail = ?";
+                PreparedStatement pst = connection.prepareStatement(updateQuery);
+                pst.setString(1, statut);
+                pst.setInt(2, idTeletravail);
+                pst.executeUpdate();
+
+                System.out.println("Statut mis à jour avec succès : " + statut);
+
+                // 2. Récupérer l'email de l'employé concerné
+                String emailQuery = "SELECT e.EmailEmploye, e.NomEmploye, e.PrenomEmploye FROM employés e " +
+                        "JOIN teletravail t ON e.IdEmploye = t.IdEmploye WHERE t.IdTeletravail = ?";
+                PreparedStatement emailPst = connection.prepareStatement(emailQuery);
+                emailPst.setInt(1, idTeletravail);
+                ResultSet rs = emailPst.executeQuery();
+
+                if (rs.next()) {
+                    String email = rs.getString("EmailEmploye");
+                    String nom = rs.getString("NomEmploye");
+                    String prenom = rs.getString("PrenomEmploye");
+
+                    // 3. Envoyer l'email
+                    String subject = "Mise à jour de votre demande de télétravail";
+                    String body = "Bonjour " + prenom + " " + nom + ",\n\n" +
+                            "Votre demande de télétravail a été " + statut.toLowerCase() + ".\n\n" +
+                            "Cordialement,\nL'équipe RH.";
+
+                    MailServiceTT mailServiceTT = new MailServiceTT();
+                    mailServiceTT.sendEmail(email, subject, body);
+
+                    System.out.println("Email envoyé à : " + email);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }

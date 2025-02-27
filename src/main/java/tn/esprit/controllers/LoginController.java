@@ -1,8 +1,6 @@
 package tn.esprit.controllers;
 
 import java.util.logging.Logger;
-
-import com.sun.tools.javac.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
+import tn.esprit.test.main;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,45 +38,97 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        final Logger logger = Logger.getLogger(Main.class.getName());
-        String email = emailField.getText().trim();
-        String password = passwordField.getText().trim();
-
+        Logger logger = Logger.getLogger(main.class.getName());
+        String email = this.emailField.getText().trim();
+        String password = this.passwordField.getText().trim();
         logger.info("Tentative de connexion avec l'email : " + email);
+        if (!email.isEmpty() && !password.isEmpty()) {
+            String qry = "SELECT isActive, Role FROM user WHERE EmailUser = ? AND Password = ?";
+            Connection con = MyDatabase.getInstance().getCnx();
 
-        // Vérification des champs vides
-        if (email.isEmpty() || password.isEmpty()) {
-            errorLabel.setText("Veuillez remplir tous les champs !");
-            return;
-        }
+            try {
+                PreparedStatement pstm = con.prepareStatement(qry);
 
-        String qry = "SELECT * FROM user WHERE EmailUser = ? AND Password = ?";
-        Connection con = MyDatabase.getInstance().getCnx();
-        try {
-            PreparedStatement pstm = con.prepareStatement(qry);
-            pstm.setString(1, email);
-            pstm.setString(2, password);
+                label106: {
+                    try {
+                        pstm.setString(1, email);
+                        pstm.setString(2, password);
+                        ResultSet rs = pstm.executeQuery();
 
-            ResultSet rs = pstm.executeQuery();
+                        label99: {
+                            try {
+                                if (!rs.next()) {
+                                    this.errorLabel.setText("❌ Email ou mot de passe incorrect !");
+                                    break label99;
+                                }
 
-            if (rs.next()) { // Si un utilisateur est trouvé
-                String role = rs.getString("Role"); // Récupère le rôle de l'utilisateur
-                System.out.println("✅ Connexion réussie ! Rôle : " + role);
+                                int isActive = rs.getInt("isActive");
+                                System.out.println("Valeur de isActive pour l'email '" + email + "': " + isActive);
+                                if (isActive != 0) {
+                                    String role = rs.getString("Role");
+                                    System.out.println("✅ Connexion réussie ! Rôle : " + role);
+                                    if (role.equalsIgnoreCase("ResponsableRH")) {
+                                        this.goToDashboard();
+                                    } else if (role.equalsIgnoreCase("Employe")) {
+                                        this.goToHome();
+                                    } else {
+                                        this.errorLabel.setText("❌ Rôle non reconnu !");
+                                    }
+                                    break label99;
+                                }
 
-                // Redirection selon le rôle
-                if (role.equalsIgnoreCase("ResponsableRH")) {
-                    goToDashboard(); // Redirection vers le dashboard
-                } else if (role.equalsIgnoreCase("Employe")) {
-                   goToHome(); // Redirection vers la Home Page
-                } else {
-                    errorLabel.setText("❌ Rôle non reconnu !");
+                                this.errorLabel.setText("❌ Votre compte est désactivé. Contactez l'administration.");
+                            } catch (Throwable var12) {
+                                if (rs != null) {
+                                    try {
+                                        rs.close();
+                                    } catch (Throwable var11) {
+                                        var12.addSuppressed(var11);
+                                    }
+                                }
+
+                                throw var12;
+                            }
+
+                            if (rs != null) {
+                                rs.close();
+                            }
+                            break label106;
+                        }
+
+                        if (rs != null) {
+                            rs.close();
+                        }
+                    } catch (Throwable var13) {
+                        if (pstm != null) {
+                            try {
+                                pstm.close();
+                            } catch (Throwable var10) {
+                                var13.addSuppressed(var10);
+                            }
+                        }
+
+                        throw var13;
+                    }
+
+                    if (pstm != null) {
+                        pstm.close();
+                    }
+
+                    return;
                 }
-            } else {
-                errorLabel.setText("❌ Email ou mot de passe incorrect !");
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+            } catch (SQLException var14) {
+                SQLException e = var14;
+                System.out.println("❌ Erreur lors de la connexion : " + e.getMessage());
+                this.errorLabel.setText("❌ Une erreur est survenue !");
             }
-        } catch (SQLException e) {
-            System.out.println("❌ Erreur lors de la connexion : " + e.getMessage());
-            errorLabel.setText("❌ Une erreur est survenue !");
+        } else {
+            this.errorLabel.setText("Veuillez remplir tous les champs !");
         }
     }
 
@@ -114,8 +164,7 @@ public class LoginController {
     @FXML
     private void goToDashboard() {
         try {
-            System.out.println("🔄 Redirection vers le Dashboard..."); // Débug
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainviewRH.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainViewRH.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(new Scene(root));

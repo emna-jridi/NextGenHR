@@ -1,45 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="713.0" prefWidth="933.0" stylesheets="@Css/TeletravailEm.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterService">
+<AnchorPane prefHeight="713.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterService">
+
+    <stylesheets>
+        <URL value="@styles/styleajoutservice.css" />
+    </stylesheets>
 
     <children>
-        <!-- Titre -->
-        <Label layoutX="341.0" layoutY="24.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Service" />
+        <Pane layoutX="100.0" layoutY="50.0" prefHeight="600.0" prefWidth="750.0" styleClass="form-container">
 
-        <!-- Nom du Service -->
-        <Label layoutX="122.0" layoutY="82.0" text="Nom du Service:" />
-        <TextField fx:id="nomService" layoutX="339.0" layoutY="78.0" prefWidth="200.0" promptText="saisir nom du service" />
+            <!-- Titre -->
+            <Label alignment="CENTER" layoutX="276.0" layoutY="22.0" prefHeight="33.0" prefWidth="183.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Service" />
 
-        <!-- Description du Service -->
-        <Label layoutX="134.0" layoutY="135.0" text="Description:" />
-        <TextArea fx:id="descriptionService" layoutX="343.0" layoutY="129.0" prefHeight="100.0" prefWidth="200.0" promptText="donner une description du service" />
+            <!-- Nom du Service -->
+            <Label layoutX="86.0" layoutY="90.0" text="Nom du Service:" />
+            <TextField fx:id="nomService" alignment="CENTER" layoutX="270.0" layoutY="84.0" prefWidth="266.0" promptText="Saisir nom du service" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="85.0">
+                <image>
+                    <Image url="@images/service_icon.png" />
+                </image>
+            </ImageView>
 
-        <!-- Type du Service -->
-        <Label layoutX="134.0" layoutY="260.0" text="Type de Service:" />
-        <TextField fx:id="typeService" layoutX="343.0" layoutY="256.0" prefWidth="200.0" promptText="saisir type de service" />
+            <!-- Description du Service -->
+            <Label layoutX="100.0" layoutY="150.0" text="Description:" />
+            <HBox spacing="10" />
+            <!-- Champ TextArea -->
+            <TextArea fx:id="descriptionService" layoutX="270.0" layoutY="140.0" prefHeight="100" prefWidth="266.0" promptText="donner une description du service" />
 
-        <!-- Date Début du Service -->
-        <Label layoutX="145.0" layoutY="309.0" text="Date Début:" />
-        <DatePicker fx:id="dateDebutService" layoutX="335.0" layoutY="304.0" prefHeight="26.0" prefWidth="215.0" promptText="choisir date de début de service" />
 
-        <!-- Date Fin du Service -->
-        <Label layoutX="153.0" layoutY="361.0" text="Date Fin:" />
-        <DatePicker fx:id="dateFinService" layoutX="335.0" layoutY="356.0" prefHeight="26.0" prefWidth="215.0" promptText="choisir date de fin de service" />
+            <!-- Type du Service -->
+            <Label layoutX="86.0" layoutY="270.0" text="Type de Service:" />
+            <TextField fx:id="typeService" alignment="CENTER" layoutX="270.0" layoutY="264.0" prefWidth="266.0" promptText="Saisir type du service" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="265.0">
+                <image>
+                    <Image url="@images/type_icon.png" />
+                </image>
+            </ImageView>
 
-        <!-- Statut du Service (Actif/Inactif) -->
-        <Label layoutX="145.0" layoutY="418.0" text="Statut du Service:" />
-        <RadioButton fx:id="radioActif" layoutX="392.0" layoutY="418.0" selected="true" text="Actif" />
-        <RadioButton fx:id="radioInactif" layoutX="467.0" layoutY="418.0" text="Inactif" />
+            <!-- Date Début du Service -->
+            <Label layoutX="100.0" layoutY="320.0" text="Date Début:" />
+            <DatePicker fx:id="dateDebutService" layoutX="270.0" layoutY="306.0" prefWidth="266.0" promptText="Choisir date de début" />
 
-        <!-- Bouton Ajouter -->
-        <Button layoutX="404.0" layoutY="477.0" onAction="#ajouterService" text="Ajouter Service" />
+            <!-- Date Fin du Service -->
+            <Label layoutX="110.0" layoutY="374.0" text="Date Fin:" />
+            <DatePicker fx:id="dateFinService" layoutX="270.0" layoutY="360.0" prefWidth="266.0" promptText="Choisir date de fin" />
+
+            <!-- Statut du Service (Actif/Inactif) -->
+            <Label layoutX="95.0" layoutY="428.0" text="Statut du Service:" />
+            <RadioButton fx:id="radioActif" layoutX="313.0" layoutY="431.0" selected="true" text="Actif" />
+            <RadioButton fx:id="radioInactif" layoutX="431.0" layoutY="429.0" text="Inactif" />
+
+            <!-- Bouton Ajouter -->
+            <Button layoutX="292.0" layoutY="503.0" onAction="#ajouterService" prefHeight="48.0" prefWidth="150.0" text="Ajouter Service" />
+
+
+             <!-- Icône -->
+             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="145.0">
+                 <Image url="@images/description-icon.png" />
+             </ImageView>
+        </Pane>
     </children>
 </AnchorPane>

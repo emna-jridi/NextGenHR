@@ -6,7 +6,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.models.Service;
 import tn.esprit.services.ServiceService;
-
 import java.time.LocalDate;
 
 public class AjouterService {
@@ -32,37 +31,31 @@ public class AjouterService {
     @FXML
     private RadioButton radioInactif;
 
-    private ServiceService serviceService = new ServiceService();
+    @FXML
+    private ToggleGroup statusGroup;
 
+    private final ServiceService serviceService = new ServiceService();
 
     private Runnable onServiceAdded;
-
 
     public void setOnServiceAdded(Runnable onServiceAdded) {
         this.onServiceAdded = onServiceAdded;
     }
 
     @FXML
-    private ToggleGroup statusGroup;
-
-    @FXML
-    void initialize() {
-
-        statusGroup = new ToggleGroup();
-        radioActif.setToggleGroup(statusGroup);
-        radioInactif.setToggleGroup(statusGroup);
-    }
-
-    @FXML
     void ajouterService(ActionEvent event) {
-
-        String nom = nomService.getText();
-        String description = descriptionService.getText();
-        String type = typeService.getText();
+        String nom = nomService.getText().trim();
+        String description = descriptionService.getText().trim();
+        String type = typeService.getText().trim();
         LocalDate dateDebut = dateDebutService.getValue();
         LocalDate dateFin = dateFinService.getValue();
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
 
+
+        if (nom.isEmpty() && description.isEmpty() && type.isEmpty() && dateDebut == null && dateFin == null) {
+            showAlert("Erreur", "Veuillez remplir tous les champs svp.");
+            return;
+        }
 
         if (nom.isEmpty()) {
             showAlert("Erreur", "Le nom du service est obligatoire.");
@@ -94,26 +87,16 @@ public class AjouterService {
             return;
         }
 
-
-
-
         Service service = new Service(nom, description, type, dateDebut, dateFin, status);
-
-
         serviceService.add(service);
-
-
-
 
         if (onServiceAdded != null) {
             onServiceAdded.run();
         }
 
-
         showAlert("Succès", "Le service a été ajouté avec succès.");
         closeWindow();
     }
-
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -123,10 +106,7 @@ public class AjouterService {
         alert.showAndWait();
     }
 
-
-
     private void closeWindow() {
-
-        ((Stage) typeService.getScene().getWindow()).close();
+        ((Stage) nomService.getScene().getWindow()).close();
     }
 }

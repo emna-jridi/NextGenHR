@@ -1,19 +1,26 @@
 package tn.esprit.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import org.controlsfx.control.CheckComboBox;
 import tn.esprit.models.Contrat;
+import tn.esprit.models.Service;
+import tn.esprit.models.TypeContrat;
 import tn.esprit.services.ServiceContrat;
-
+import tn.esprit.services.ServiceService;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AjouterContrat {
 
     @FXML
-    private TextField typeContrat;
+    private ComboBox<TypeContrat> comboTypeContrat;
 
     @FXML
     private DatePicker dateDebutContrat;
@@ -39,7 +46,16 @@ public class AjouterContrat {
     @FXML
     private ToggleGroup statusGroup;
 
+    @FXML
+    private Label emailValidationLabel;
+
+
+    /*@FXML
+    private CheckComboBox<Service> checkComboBoxServices;*/
+
+
     private ServiceContrat serviceContrat = new ServiceContrat();
+    private ServiceService serviceService = new ServiceService();
 
 
     private Runnable onContratAdded;
@@ -49,27 +65,71 @@ public class AjouterContrat {
         this.onContratAdded = onContratAdded;
     }
 
+
     @FXML
     void initialize() {
+// Remplir le ComboBox avec les valeurs de l'enum TypeContrat
+        comboTypeContrat.getItems().setAll(TypeContrat.values());
 
         statusGroup = new ToggleGroup();
         radioActif.setToggleGroup(statusGroup);
         radioInactif.setToggleGroup(statusGroup);
+
+        //loadServices();
+
+        /*// Définir un converter pour afficher uniquement le nom du service
+        checkComboBoxServices.setConverter(new StringConverter<Service>() {
+            @Override
+            public String toString(Service service) {
+                return service == null ? "" : service.getNomService();
+            }
+
+            @Override
+            public Service fromString(String string) {
+                return null;
+            }
+        });*/
+
+
+
+        emailClient.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                emailValidationLabel.setText("");
+            } else if (isValidEmail(newValue)) {
+                emailValidationLabel.setText("Email valide");
+                emailValidationLabel.setStyle("-fx-text-fill: #71e071;");
+            } else {
+                emailValidationLabel.setText("Email invalide");
+                emailValidationLabel.setStyle("-fx-text-fill: #dc5b5b;");
+            }
+        });
     }
+
+
+
+    /*private void loadServices() {
+        List<Service> services = serviceService.getAll();
+        ObservableList<Service> serviceList = FXCollections.observableArrayList(services);
+        checkComboBoxServices.getItems().setAll(serviceList);
+    }*/
+
 
     @FXML
     void ajouter(ActionEvent event) {
 
-        String type = typeContrat.getText();
+        TypeContrat type = comboTypeContrat.getValue();
         String montantStr = montantContrat.getText();
         String nom = nomClient.getText();
         String email = emailClient.getText();
-
-
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
 
+        if (type == null && montantStr.isEmpty() && nom.isEmpty() && email.isEmpty() &&
+                dateDebutContrat.getValue() == null && dateFinContrat.getValue() == null) {
+            showAlert("Erreur", "Veuillez remplir les champs svp.");
+            return;
+        }
 
-        if (type.isEmpty()) {
+        if (type == null) {
             showAlert("Erreur", "Le type du contrat est obligatoire.");
             return;
         }
@@ -109,8 +169,6 @@ public class AjouterContrat {
             return;
         }
 
-
-
         int montant = 0;
         try {
             montant = Integer.parseInt(montantStr);
@@ -119,28 +177,21 @@ public class AjouterContrat {
             return;
         }
 
-
         Contrat contrat = new Contrat(type, dateDebutContrat.getValue(), dateFinContrat.getValue(), status, montant, nom, email);
 
-
         serviceContrat.add(contrat);
-
 
         if (onContratAdded != null) {
             onContratAdded.run();
         }
 
-
         showAlert("Succès", "Le contrat a été ajouté avec succès.");
-
 
         closeWindow();
     }
 
 
-
     private boolean isValidEmail(String email) {
-
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
@@ -152,11 +203,11 @@ public class AjouterContrat {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+
         alert.showAndWait();
     }
 
     private void closeWindow() {
-
-        ((Stage) typeContrat.getScene().getWindow()).close();
+        ((Stage) comboTypeContrat.getScene().getWindow()).close();
     }
 }

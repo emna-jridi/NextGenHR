@@ -2,29 +2,26 @@ package tn.esprit.models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Contrat {
 
     private int idContrat;
-    private String typeContrat;
+    private TypeContrat typeContrat;
     private LocalDate dateDebutContrat;
     private LocalDate dateFinContrat;
     private String statusContrat;
     private int montantContrat;
     private String nomClient;
     private String emailClient;
-    //private int idService;
     private List<Service> services;
-
 
     // Constructeurs
 
     public Contrat() {
     }
 
-    public Contrat(int idContrat, String typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
+    public Contrat(int idContrat, TypeContrat typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
                    String statusContrat, int montantContrat, String nomClient, String emailClient) {
         this.idContrat = idContrat;
         this.typeContrat = typeContrat;
@@ -34,11 +31,10 @@ public class Contrat {
         this.montantContrat = montantContrat;
         this.nomClient = nomClient;
         this.emailClient = emailClient;
-        //this.idService = idService;
-        //this.services = new ArrayList<>();
+        this.services = new ArrayList<>();
     }
 
-    public Contrat(String typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
+    public Contrat(TypeContrat typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
                    String statusContrat, int montantContrat, String nomClient, String emailClient) {
         this.typeContrat = typeContrat;
         this.dateDebutContrat = dateDebutContrat;
@@ -47,11 +43,7 @@ public class Contrat {
         this.montantContrat = montantContrat;
         this.nomClient = nomClient;
         this.emailClient = emailClient;
-        //this.idService = idService;
-        //this.services = new ArrayList<>();
     }
-
-
 
     // Getters et Setters
     public int getIdContrat() {
@@ -62,11 +54,11 @@ public class Contrat {
         this.idContrat = idContrat;
     }
 
-    public String getTypeContrat() {
+    public TypeContrat getTypeContrat() {
         return typeContrat;
     }
 
-    public void setTypeContrat(String typeContrat) {
+    public void setTypeContrat(TypeContrat typeContrat) {
         this.typeContrat = typeContrat;
     }
 
@@ -118,7 +110,6 @@ public class Contrat {
         this.emailClient = emailClient;
     }
 
-
     public List<Service> getServices() {
         return services;
     }
@@ -127,24 +118,12 @@ public class Contrat {
         this.services = services;
     }
 
-
-    /*public int getIdService() {
-        return idService;
-    }
-
-    public void setIdService(int idService) {
-        this.idService = idService;
-    }*/
-
-
-
-
     //méthode toString
     @Override
     public String toString() {
         return "Contrat{" +
                 "idContrat=" + idContrat +
-                ", typeContrat='" + typeContrat + '\'' +
+                ", typeContrat=" + typeContrat +
                 ", dateDebutContrat=" + dateDebutContrat +
                 ", dateFinContrat=" + dateFinContrat +
                 ", statusContrat='" + statusContrat + '\'' +
@@ -152,7 +131,6 @@ public class Contrat {
                 ", nomClient='" + nomClient + '\'' +
                 ", emailClient='" + emailClient + '\'' +
                 ", services=" + services +
-                //", idService=" + idService +
                 '}';
     }
 }

@@ -4,58 +4,56 @@ import tn.esprit.models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.services.ServiceUser;
 import tn.esprit.utils.SessionManager;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
 
-public class ProfileController implements Initializable {
+public class ProfileController {
 
     @FXML
-    private TextField txtNom;
+    private TextField nom;
     @FXML
-    private TextField txtPrenom;
+    private TextField prenom;
     @FXML
-    private TextField txtEmail;
+    private TextField email;
     @FXML
-    private TextField txtTelephone;
+    private TextField telephone;
     @FXML
-    private PasswordField txtMotDePasse;
+    private TextField adresse;
     @FXML
     private DatePicker dateNaissance;
     @FXML
-    private Button btnMettreAJour;
+    private PasswordField mdp;
+    @FXML
+    private Button Back;
+
 
     private final ServiceUser userService = new ServiceUser();
     private User loggedInUser;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         loggedInUser = SessionManager.getInstance().getLoggedInUser();
+
         if (loggedInUser != null) {
             loadUserData();
         }
     }
 
     private void loadUserData() {
-        txtNom.setText(loggedInUser.getNomUser());
-        txtPrenom.setText(loggedInUser.getPrenomUser());
-        txtEmail.setText(loggedInUser.getEmailUser());
-        txtTelephone.setText(loggedInUser.getTelephoneUser());
-        txtMotDePasse.setText(loggedInUser.getPassword());
+        nom.setText(loggedInUser.getNomUser());
+        prenom.setText(loggedInUser.getPrenomUser());
+        email.setText(loggedInUser.getEmailUser());
+        telephone.setText(loggedInUser.getTelephoneUser());
+        adresse.setText(loggedInUser.getAdresseUser());
+        mdp.setText(loggedInUser.getPassword());
 
         if (loggedInUser.getDateNaissanceUser() != null) {
             dateNaissance.setValue(loggedInUser.getDateNaissanceUser());
@@ -63,27 +61,46 @@ public class ProfileController implements Initializable {
     }
 
     @FXML
-    private void mettreAJourUtilisateur(ActionEvent event) {
-        if (loggedInUser != null) {
-            loggedInUser.setNomUser(txtNom.getText());
-            loggedInUser.setPrenomUser(txtPrenom.getText());
-            loggedInUser.setEmailUser(txtEmail.getText());
-            loggedInUser.setPassword(txtMotDePasse.getText());
+    private void OnUpdateClicked(ActionEvent event) {
+        if (loggedInUser == null) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Utilisateur non connecté.");
+            return;
+        }
 
-            try {
-                loggedInUser.setTelephoneUser(txtTelephone.getText());
-            } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le téléphone doit être un nombre valide.");
-                return;
-            }
+        String nomInput = nom.getText().trim();
+        String prenomInput = prenom.getText().trim();
+        String emailInput = email.getText().trim();
+        String mdpInput = mdp.getText().trim();
+        String adresseInput = adresse.getText().trim();
+        String telephoneInput = telephone.getText().trim();
+        LocalDate dateNaissanceInput = dateNaissance.getValue();
 
-            LocalDate selectedDate = dateNaissance.getValue();
-            if (selectedDate != null) {
-                loggedInUser.setDateNaissanceUser(selectedDate);
-            }
+        if (nomInput.isEmpty() || prenomInput.isEmpty() || emailInput.isEmpty() || mdpInput.isEmpty() || adresseInput.isEmpty() || telephoneInput.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Tous les champs doivent être remplis.");
+            return;
+        }
 
+        if (!telephoneInput.matches("\\d+")) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Le téléphone doit être un nombre valide.");
+            return;
+        }
+
+        loggedInUser.setNomUser(nomInput);
+        loggedInUser.setPrenomUser(prenomInput);
+        loggedInUser.setEmailUser(emailInput);
+        loggedInUser.setPassword(mdpInput);
+        loggedInUser.setAdresseUser(adresseInput);
+        loggedInUser.setTelephoneUser(telephoneInput);
+
+        if (dateNaissanceInput != null) {
+            loggedInUser.setDateNaissanceUser(dateNaissanceInput);
+        }
+
+        try {
             userService.update(loggedInUser);
-            showAlert(Alert.AlertType.INFORMATION, "Mise à jour réussie", "Les informations ont été mises à jour avec succès.");
+            showAlert(Alert.AlertType.INFORMATION, "Mise à jour", "Les informations ont été mises à jour avec succès.");
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de la mise à jour.");
         }
     }
 
@@ -94,4 +111,20 @@ public class ProfileController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    @FXML
+    private void GoBack(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/UsersDashboard.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de retourner à la page d'accueil.");
+        }
+    }
 }
+

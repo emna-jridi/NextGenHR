@@ -7,10 +7,14 @@ import java.util.List;
 
 public class Offreemploi {
 
-    private int id, candidaturesrecues;
-    private String titre, description, experiencerequise, niveauEtudes, competences, typecontrat, localisation, niveaulangues;
+    private int id;
+    private String titre, description, competences, localisation;
     private LocalDateTime dateCreation, dateExpiration;
-    private String statut;
+
+    private experience experiencerequise;
+    private Niveauetudes niveauEtudes;
+    private Niveaulangues niveaulangues;
+    private TypeContrat typecontrat;
 
 
 
@@ -32,13 +36,7 @@ public class Offreemploi {
         this.id = id;
     }
 
-    public int getCandidaturesrecues() {
-        return candidaturesrecues;
-    }
 
-    public void setCandidaturesrecues(int candidaturesrecues) {
-        this.candidaturesrecues = candidaturesrecues;
-    }
 
     public String getTitre() {
         return titre;
@@ -56,19 +54,20 @@ public class Offreemploi {
         this.description = description;
     }
 
-    public String getExperiencerequise() {
+    public experience getExperiencerequise() {
         return experiencerequise;
     }
 
-    public void setExperiencerequise(String experiencerequise) {
+    public void setExperiencerequise(experience experiencerequise) {
         this.experiencerequise = experiencerequise;
     }
 
-    public String getNiveauEtudes() {
+    public Niveauetudes getNiveauEtudes() {
+
         return niveauEtudes;
     }
 
-    public void setNiveauEtudes(String niveauEtudes) {
+    public void setNiveauEtudes(Niveauetudes niveauEtudes) {
         this.niveauEtudes = niveauEtudes;
     }
 
@@ -80,11 +79,11 @@ public class Offreemploi {
         this.competences = competences;
     }
 
-    public String getTypecontrat() {
+    public TypeContrat getTypecontrat() {
         return typecontrat;
     }
 
-    public void setTypecontrat(String typecontrat) {
+    public void setTypecontrat(TypeContrat typecontrat) {
         this.typecontrat = typecontrat;
     }
 
@@ -96,11 +95,11 @@ public class Offreemploi {
         this.localisation = localisation;
     }
 
-    public String getNiveaulangues() {
+    public Niveaulangues getNiveaulangues() {
         return niveaulangues;
     }
 
-    public void setNiveaulangues(String niveaulangues) {
+    public void setNiveaulangues(Niveaulangues niveaulangues) {
         this.niveaulangues = niveaulangues;
     }
 
@@ -120,13 +119,7 @@ public class Offreemploi {
         this.dateExpiration = dateExpiration;
     }
 
-    public String getStatut() {
-        return statut;
-    }
 
-    public void setStatut(String statut) {
-        this.statut = statut;
-    }
 
 
 
@@ -146,8 +139,8 @@ public class Offreemploi {
 
 
 
-    public Offreemploi(int candidaturesrecues, String titre, String description, String experiencerequise, String niveauEtudes, String competences, String typecontrat, String localisation, String niveaulangues, LocalDateTime dateCreation, LocalDateTime dateExpiration, String statut,List<Candidature> candidatures) {
-        this.candidaturesrecues = candidaturesrecues;
+    public Offreemploi(String titre, String description, experience experiencerequise, Niveauetudes niveauEtudes, String competences, TypeContrat typecontrat, String localisation, Niveaulangues niveaulangues, LocalDateTime dateCreation, LocalDateTime dateExpiration,List<Candidature> candidatures) {
+
         this.titre = titre;
         this.description = description;
         this.experiencerequise = experiencerequise;
@@ -158,25 +151,24 @@ public class Offreemploi {
         this.niveaulangues = niveaulangues;
         this.dateCreation = dateCreation;
         this.dateExpiration = dateExpiration;
-        this.statut= statut;
-        this.candidatures = candidatures;
+
+
 
     }
     @Override
     public String toString() {
-        return "Offreemploi{" +
-                "candidaturesrecues=" + candidaturesrecues +
-                ", titre='" + titre + '\'' +
+        return "Offreemploi {" +
+
+                " titre='" + titre + '\'' +
                 ", description='" + description + '\'' +
+                ", competences='" + competences + '\'' +
                 ", experiencerequise='" + experiencerequise + '\'' +
                 ", niveauEtudes='" + niveauEtudes + '\'' +
-                ", competences='" + competences + '\'' +
+                ", niveaulangues='" + niveaulangues + '\'' +
                 ", typecontrat='" + typecontrat + '\'' +
                 ", localisation='" + localisation + '\'' +
-                ", niveaulangues='" + niveaulangues + '\'' +
                 ", dateCreation=" + dateCreation +
                 ", dateExpiration=" + dateExpiration +
-                ", statut=" + statut +
                 ", candidatures=" + candidatures +
 
                 '}';

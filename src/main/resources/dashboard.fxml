@@ -6,27 +6,39 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="633.0" prefWidth="1438.0" style="-fx-background-color: #E3EDF9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.UserController">
+
+<?import javafx.scene.chart.PieChart?>
+<AnchorPane prefHeight="700.0" prefWidth="1500.0" style="-fx-background-color: linear-gradient(to bottom, #E3EDF9, #AABEDC);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.UserController">
     <children>
         <!-- Header -->
-        <AnchorPane prefHeight="66.0" prefWidth="1438.0">
+        <AnchorPane prefHeight="80.0" prefWidth="1500.0" style="-fx-background-color: #121C3E; -fx-padding: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 5);">
             <children>
-                <Label layoutX="26.0" layoutY="24.0" style="-fx-font-size: 16px;" text="Rechercher :" />
-                <TextField fx:id="txtRecherche" layoutX="150.0" layoutY="20.0" prefHeight="27.0" prefWidth="1017.0" promptText="Nom, Prénom ou Email" style="-fx-background-radius: 5px; -fx-padding: 5px;" />
+                <Label layoutX="30.0" layoutY="25.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="🔍 Rechercher :" textFill="WHITE" />
+                <HBox layoutX="160.0" layoutY="20.0" spacing="10">
+                    <TextField fx:id="txtRecherche" promptText="Nom, Prénom ou Email" style="-fx-background-radius: 20px; -fx-padding: 10px; -fx-font-size: 14px; -fx-pref-width: 350px; -fx-border-color: #3F861E; -fx-border-radius: 20px; -fx-background-color: white;" />
+                    <Button fx:id="btnRefresh" onAction="#handleRefresh" style="-fx-background-color: #3F861E; -fx-text-fill: white; -fx-background-radius: 50%; -fx-font-size: 18px; -fx-min-width: 40px; -fx-min-height: 40px;" text="🔄" />
+                    <Button fx:id="btnSortByRole" onAction="#trierUtilisateursParRole" style="-fx-background-color: #FFC20E; -fx-text-fill: #121C3E; -fx-font-size: 16px; -fx-background-radius: 25px; -fx-padding: 10px 20px; -fx-font-weight: bold;" text="Trier par rôle" />
+                </HBox>
+                <Button fx:id="btnLogout" layoutX="1300.0" layoutY="25.0" onAction="#handleLogout" style="-fx-background-color: #FF3B30; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 25px; -fx-padding: 10px 20px; -fx-font-weight: bold;" text="Déconnexion" />
             </children>
         </AnchorPane>
 
         <!-- Liste des utilisateurs -->
-        <BorderPane layoutY="70.0" prefHeight="520.0" prefWidth="1438.0">
+        <BorderPane layoutY="100.0" prefHeight="530.0" prefWidth="1500.0">
             <center>
-                <VBox alignment="CENTER" prefWidth="1438.0" spacing="10" style="-fx-padding: 20px;">
-                    <ListView fx:id="listViewUsers" maxWidth="971.0" prefHeight="510.0" prefWidth="971.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #253D90; -fx-border-radius: 10px; -fx-padding: 10px;" />
+                <VBox alignment="CENTER" spacing="20" style="-fx-padding: 30px;">
+                    <VBox prefWidth="1200.0" spacing="10" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 7);">
+                        <Label text="Liste des utilisateurs" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #253D90; -fx-padding: 10px 0;" />
+                        <Rectangle width="1100" height="2" style="-fx-fill: #3F861E; -fx-margin: 10px 0;" />
+                        <ListView fx:id="listViewUsers" maxWidth="1410.0" prefHeight="440.0" prefWidth="1410.0" style="-fx-background-color: #F5F5F5; -fx-border-color: #DADADA; -fx-padding: 10px; -fx-font-size: 14px; -fx-border-radius: 10px;" />
+                    </VBox>
                 </VBox>
             </center>
         </BorderPane>
-
-        <!-- Bouton de déconnexion -->
     </children>
+
 </AnchorPane>

@@ -1,7 +1,6 @@
 package tn.esprit.services;
 
-import tn.esprit.models.Candidature;
-import tn.esprit.models.Offreemploi;
+import tn.esprit.models.*;
 import tn.esprit.interfaces.IService;
 import tn.esprit.utils.MyDatabase;
 
@@ -13,6 +12,7 @@ public class ServiceCandidature{
 
     private Connection cnx ;
     public ServiceCandidature() {
+
         cnx = MyDatabase.getInstance().getCnx();
     }
 
@@ -20,7 +20,7 @@ public class ServiceCandidature{
         String qry = "INSERT INTO candidature (dateCandidature, statut, cvUrl, lettreMotivation, offreId, Nom, Prenom, email, telephone) VALUES (?, ?, ?, ?, ?, ? , ? ,?, ?)";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
-            pstm.setString(2, candidature.getStatut());
+            pstm.setString(2, candidature.getStatut().name());
             pstm.setString(3, candidature.getCvUrl());
             pstm.setString(4, candidature.getLettreMotivation());
             if (candidature.getOffreemploi() != null) {
@@ -45,7 +45,7 @@ public class ServiceCandidature{
     public List<Candidature> getAll() {
 
             List<Candidature> candidatures = new ArrayList<>();
-            String qry = "SELECT * FROM candidature";
+        String qry = "SELECT * FROM candidature c JOIN offreemploi o ON c.offreId = o.id";
             try {
                 Statement stm = cnx.createStatement();
                 ResultSet rs = stm.executeQuery(qry);
@@ -56,15 +56,23 @@ public class ServiceCandidature{
                     candidature.setPrenom(rs.getString("prenom"));
                     candidature.setEmail(rs.getString("email"));
                     candidature.setTelephone(rs.getString("telephone"));
-                    candidature.setStatut(rs.getString("statut"));
+                    candidature.setStatut(Statut.valueOf(rs.getString("statut")));
                     candidature.setCvUrl(rs.getString("cvUrl"));
                     candidature.setLettreMotivation(rs.getString("lettreMotivation"));
                     candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
                     int offreId = rs.getInt("offreId");
                     Offreemploi offre = new Offreemploi();
                     offre.setId(offreId);
+                    offre.setTitre(rs.getString("titre"));
+                    offre.setDescription(rs.getString("description"));
+                    offre.setCompetences(rs.getString("competences"));
+                    offre.setExperiencerequise(experience.valueOf(rs.getString("experiencerequise")));
+                    offre.setNiveaulangues(Niveaulangues.valueOf(rs.getString("niveaulangues")));
+                    offre.setTypecontrat(TypeContrat.valueOf(rs.getString("typecontrat")));
+                    offre.setNiveauEtudes(Niveauetudes.valueOf(rs.getString("niveauEtudes")));
                     candidature.setOffreemploi(offre);
                     candidatures.add(candidature);
+
                 }
             } catch (SQLException e) {
                 System.out.println("Erreur lors de la récupération des candidatures : " + e.getMessage());
@@ -81,7 +89,7 @@ public class ServiceCandidature{
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
-            pstm.setString(2, candidature.getStatut());
+            pstm.setString(2, candidature.getStatut().name());
             pstm.setString(3, candidature.getCvUrl());
             pstm.setString(4, candidature.getLettreMotivation());
             pstm.setInt(5, offre.getId());
@@ -116,7 +124,7 @@ public class ServiceCandidature{
                 candidature = new Candidature();
                 candidature.setId(rs.getInt("id"));
                 candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
-                candidature.setStatut(rs.getString("statut"));
+                candidature.setStatut(Statut.valueOf(rs.getString("statut")));
                 candidature.setCvUrl(rs.getString("cvUrl"));
                 candidature.setLettreMotivation(rs.getString("lettreMotivation"));
                 candidature.setNom(rs.getString("Nom"));
@@ -133,11 +141,8 @@ public class ServiceCandidature{
 
         String qry = "DELETE FROM candidature WHERE id=?";
         try {
-            // Préparer la requête SQL avec les paramètres
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setInt(1, id);  // L'ID de la candidature à supprimer
-
-            // Exécution de la suppression
+            pstm.setInt(1, id);
             pstm.executeUpdate();
             System.out.println("Candidature supprimée avec succès !");
         } catch (SQLException e) {
@@ -150,7 +155,7 @@ public class ServiceCandidature{
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setTimestamp(1, Timestamp.valueOf(candidature.getDateCandidature()));
-            pstm.setString(2, candidature.getStatut());
+            pstm.setString(2, candidature.getStatut().name());
             pstm.setString(3, candidature.getCvUrl());
             pstm.setString(4, candidature.getLettreMotivation());
 

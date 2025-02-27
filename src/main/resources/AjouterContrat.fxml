@@ -1,56 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="717.0" prefWidth="969.0" stylesheets="@Css/TeletravailEm.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterContrat">
+<!--<?import org.controlsfx.control.CheckComboBox?>-->
+
+<AnchorPane prefHeight="717.0" prefWidth="969.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterContrat">
+
+   <stylesheets>
+      <URL value="@styles/styleajoutcontrat.css" />
+   </stylesheets>
 
    <children>
-      <!-- Titre -->
-      <Label layoutX="350.0" layoutY="24.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Contrat">
-         <font>
-            <Font size="24.0" />
-         </font></Label>
 
-      <!-- Type de contrat -->
-      <Label layoutX="136.0" layoutY="82.0" text="Type de Contrat:" />
-      <TextField fx:id="typeContrat" layoutX="339.0" layoutY="78.0" prefWidth="200.0" promptText="Saisir Type du contrat" />
+      <Pane layoutX="97.0" layoutY="34.0" prefHeight="633.0" prefWidth="782.0" styleClass="form-container">
+         <!-- Titre -->
+         <Label alignment="CENTER" layoutX="283.0" layoutY="8.0" prefHeight="62.0" prefWidth="216.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Contrat">
+            <font>
+               <Font size="36.0" />
+            </font>
+         </Label>
 
-      <!-- Date Début -->
-      <Label layoutX="148.0" layoutY="122.0" text="Date Début:" />
-      <DatePicker fx:id="dateDebutContrat" layoutX="330.0" layoutY="117.0" prefHeight="26.0" prefWidth="217.0" promptText="choisir date de début de contrat" />
+         <!--type de contrat-->
+         <Label layoutX="89.0" layoutY="110.0" text="Type de Contrat:" />
+         <ComboBox fx:id="comboTypeContrat" layoutX="273.0" layoutY="99.0" prefHeight="20.0" prefWidth="266.0" promptText="Choisir le type de contrat">
+            <!-- Remplir ce ComboBox avec les valeurs de l'Enum TypeContrat dans le contrôleur -->
+         </ComboBox>
 
-      <!-- Date Fin -->
-      <Label layoutX="156.0" layoutY="162.0" text="Date Fin:" />
-      <DatePicker fx:id="dateFinContrat" layoutX="330.0" layoutY="157.0" prefHeight="26.0" prefWidth="218.0" promptText="choisir date de fin de contrat" />
 
-      <!-- Montant du Contrat -->
-      <Label layoutX="155.0" layoutY="211.0" text="Montant:" />
-      <TextField fx:id="montantContrat" layoutX="339.0" layoutY="207.0" prefWidth="200.0" promptText="saisir montant du contrat" />
+         <!-- Date Début -->
+         <Label layoutX="120.0" layoutY="181.0" text="Date Début:" />
+         <DatePicker fx:id="dateDebutContrat" layoutX="273.0" layoutY="167.0" prefHeight="33.0" prefWidth="266.0" promptText="Choisir date de début de contrat" />
 
-      <!-- Nom du Client -->
-      <Label layoutX="147.0" layoutY="260.0" text="Nom Client:" />
-      <TextField fx:id="nomClient" layoutX="339.0" layoutY="256.0" prefWidth="200.0" promptText="saisir nom du client" />
+         <!-- Date Fin -->
+         <Label layoutX="131.0" layoutY="236.0" text="Date Fin:" />
+         <DatePicker fx:id="dateFinContrat" layoutX="276.0" layoutY="222.0" prefHeight="33.0" prefWidth="266.0" promptText="Choisir date de fin de contrat" />
 
-      <!-- Email du Client -->
-      <Label layoutX="148.0" layoutY="309.0" text="Email Client:" />
-      <TextField fx:id="emailClient" layoutX="339.0" layoutY="305.0" prefWidth="200.0" promptText="saisir l'email du client" />
+         <!-- Montant du Contrat -->
+         <Label layoutX="129.0" layoutY="303.0" text="Montant:" />
+         <HBox layoutX="284.0" layoutY="231.0" spacing="10.0" />
+         <TextField fx:id="montantContrat" alignment="CENTER" layoutX="276.0" layoutY="297.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir montant du contrat" />
 
-      <!-- Statut du Contrat (Actif/Inactif) -->
-      <Label layoutX="131.0" layoutY="359.0" text="Statut du Contrat:" />
-      <RadioButton fx:id="radioActif" layoutX="372.0" layoutY="359.0" selected="true" text="Actif" />
-      <RadioButton fx:id="radioInactif" layoutX="457.0" layoutY="359.0" text="Inactif" />
+         <!-- Nom du Client -->
+         <Label layoutX="121.0" layoutY="351.0" text="Nom Client(e):" />
+         <HBox layoutX="284.0" layoutY="270.0" spacing="10.0" />
+         <TextField fx:id="nomClient" alignment="CENTER" layoutX="273.0" layoutY="344.0" prefHeight="33.0" prefWidth="271.0" promptText="Saisir nom du client(e)" />
 
-      <!-- Liste des Services
-      <Label layoutX="134.0" layoutY="422.0" text="Services associés:" />
-      <ListView fx:id="serviceList" layoutX="339.0" layoutY="402.0" prefHeight="100.0" prefWidth="200.0" />-->
+         <!-- Email du Client -->
+         <Label layoutX="128.0" layoutY="399.0" text="Email Client(e):" />
+         <HBox layoutX="284.0" layoutY="313.0" spacing="10.0" />
+         <TextField fx:id="emailClient" alignment="CENTER" layoutX="273.0" layoutY="392.0" prefHeight="33.0" prefWidth="271.0" promptText="Saisir l'email du client(e)" />
+         <Label fx:id="emailValidationLabel" layoutX="273.0" layoutY="430.0" style="-fx-text-fill: red;" text="" />
 
-      <!-- Bouton Ajouter -->
-      <Button layoutX="389.0" layoutY="438.0" onAction="#ajouter" text="Ajouter Contrat" />
+
+
+         <!-- Statut du Contrat (Actif/Inactif) -->
+         <Label layoutX="109.0" layoutY="451.0" text="Statut du Contrat:" />
+         <RadioButton fx:id="radioActif" layoutX="331.0" layoutY="452.0" selected="true" text="Actif" />
+         <RadioButton fx:id="radioInactif" layoutX="427.0" layoutY="452.0" text="Inactif" />
+
+
+         <!-- Liste des Services
+         <Label layoutX="130.0" layoutY="438.0" text="Services :" />
+         <CheckComboBox fx:id="checkComboBoxServices" layoutX="276.0" layoutY="402.0" prefHeight="33.0" prefWidth="266.0"     />-->
+
+
+
+         <!-- Bouton Ajouter -->
+         <Button layoutX="331.0" layoutY="527.0" onAction="#ajouter" prefHeight="48.0" prefWidth="150.0" text="Ajouter Contrat" />
+
+         <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="237.0" layoutY="398.0">
+            <image>
+               <Image url="@images/email_icon.png" />
+            </image>
+         </ImageView>
+
+         <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="237.0" layoutY="350.0">
+            <image>
+               <Image url="@images/user_icon.png" />
+            </image>
+         </ImageView>
+
+         <ImageView fitHeight="20.0" fitWidth="30.0" layoutX="234.0" layoutY="303.0">
+            <image>
+               <Image url="@images/montant_icon.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="234.0" layoutY="105.0">
+            <image>
+               <Image url="@images/type_icon.png" />
+            </image>
+         </ImageView>
+         <Label layoutX="556.0" layoutY="399.0" text="Label" />
+      </Pane>
    </children>
 </AnchorPane>

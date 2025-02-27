@@ -8,11 +8,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="737.0" prefWidth="1343.0" stylesheets="@Css/TeletravailEm.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.TeletravailEmController">
+<AnchorPane prefHeight="737.0" prefWidth="1343.0" stylesheets="@styles/stylemodifservice.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.TeletravailEmController">
    <children>
-      <TextField fx:id="Id_Identifiant" layoutX="231.0" layoutY="211.0" promptText="Identifiant" />
-      <DatePicker fx:id="Id_date_debut" layoutX="219.0" layoutY="267.0" promptText="Date Debut" />
-      <DatePicker fx:id="Id_Date_Fin" layoutX="219.0" layoutY="335.0" promptText="Date Fin" />
+      <TextField fx:id="Id_Identifiant" layoutX="222.0" layoutY="211.0" promptText="Identifiant" />
+      <DatePicker fx:id="Id_date_debut" layoutX="200.0" layoutY="272.0" promptText="Date Debut" />
+      <DatePicker fx:id="Id_Date_Fin" layoutX="200.0" layoutY="336.0" promptText="Date Fin" />
       <TextArea fx:id="Id_Raison" layoutX="206.0" layoutY="390.0" prefHeight="108.0" prefWidth="200.0" promptText="Raison " />
       <Button layoutX="279.0" layoutY="515.0" mnemonicParsing="false" onAction="#AjouterTT" text="Envoyer" />
       <Button fx:id="IDmodifier" layoutX="463.0" layoutY="513.0" mnemonicParsing="false" onAction="#ModifierTT" prefHeight="38.0" prefWidth="191.0" text="Modifier" />

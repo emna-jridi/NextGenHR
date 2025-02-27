@@ -4,17 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import tn.esprit.models.Offreemploi;
+import javafx.scene.control.*;
+import tn.esprit.models.*;
 import tn.esprit.services.ServiceOffre;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AjouterOffreController {
 
@@ -22,9 +22,9 @@ public class AjouterOffreController {
 
     @FXML
     private TextField txtTitre;
-    @FXML
-    private TextField txtcandidatures;
 
+    @FXML
+    private TextField serarch;
     @FXML
     private TextField txtcompetences;
 
@@ -38,57 +38,77 @@ public class AjouterOffreController {
     private TextField txtdescription;
 
     @FXML
-    private TextField txtexperience;
+    private ChoiceBox<Niveauetudes> niveauetudeschoice;
+
+    @FXML
+    private ChoiceBox<Niveaulangues> niveaulangueschoice;
 
     @FXML
     private TextField txtlocalisation;
 
-    @FXML
-    private TextField txtniveauetudes;
+
 
     @FXML
-    private TextField txtnivlangues;
+    private ChoiceBox<experience> experiencechoice;
+
+
 
     @FXML
-    private TextField txtstatut;
-
-    @FXML
-    private TextField txttypecontrat;
+    private ChoiceBox<TypeContrat> typecontratbox;
 
     @FXML
     private ListView<Offreemploi> listOffre;
 
 
     private Offreemploi selectedOffre;
+    @FXML
+    private CheckBox trititre;
+    @FXML
+    private CheckBox triniveauetudes;
 
     @FXML
     void ajouteroffre(ActionEvent event) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        if (txtTitre.getText().isEmpty() || txtcompetences.getText().isEmpty() ||
-                txtniveauetudes.getText().isEmpty() || txtexperience.getText().isEmpty()) {
-            System.out.println("Tous les champs obligatoires doivent être remplis !");
-            return;
-        }
+        Niveauetudes niveauEtudes = niveauetudeschoice.getValue();
+        Niveaulangues niveauLangues = niveaulangueschoice.getValue();
+        experience experience = experiencechoice.getValue();
+        TypeContrat typecontrat = typecontratbox.getValue();
         LocalDateTime dateCreation = txtDateCreation.getValue().atStartOfDay();
         LocalDateTime dateExpiration = DateExpiration.getValue().atStartOfDay();
+        if (dateCreation.isAfter(dateExpiration)) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "La date de création doit être inférieure à la date d'expiration.");
+            return;
+        }
+        if (txtTitre.getText().isEmpty() || txtdescription.getText().isEmpty() || txtcompetences.getText().isEmpty() || typecontrat == null || txtlocalisation.getText().isEmpty() ||
+                niveauEtudes == null || niveauLangues == null || experience == null || dateCreation == null || dateExpiration == null) {
+            showAlert(Alert.AlertType.WARNING, "Attention", "Tous les champs sont obligatoires.");
+            return;
+        }
+
         Offreemploi offreemploi = new Offreemploi(
-                Integer.parseInt(txtcandidatures.getText()),
                 txtTitre.getText(),
                 txtdescription.getText(),
-                txtexperience.getText(),
-                txtniveauetudes.getText(),
+                 experience,
+                 niveauEtudes,
                 txtcompetences.getText(),
-                txttypecontrat.getText(),
+               typecontrat,
                 txtlocalisation.getText(),
-                txtnivlangues.getText(),
+               niveauLangues,
                 dateCreation,
                 dateExpiration,
-                txtstatut.getText(),
-                null //
-        );
+                null);
         serviceOffre.add(offreemploi);
+        loadOffres();
+        clearOffreFields();
+    }
 
 
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 
@@ -113,21 +133,24 @@ public class AjouterOffreController {
 
     @FXML
     void initialize() {
+        niveauetudeschoice.getItems().setAll(Niveauetudes.values());
+        niveaulangueschoice.getItems().setAll(Niveaulangues.values());
+        experiencechoice.getItems().setAll(experience.values());
+        typecontratbox.getItems().setAll(TypeContrat.values());
         listOffre.setOnMouseClicked(event -> {
             selectedOffre = listOffre.getSelectionModel().getSelectedItem();
             if (selectedOffre != null) {
-                System.out.println("Offre sélectionnée : " + selectedOffre.getTitre());//testi
+                System.out.println("Offre sélectionnée : " + selectedOffre.getTitre());
                 txtTitre.setText(selectedOffre.getTitre());
                 txtdescription.setText(selectedOffre.getDescription());
                 DateExpiration.setValue(selectedOffre.getDateExpiration().toLocalDate());
-                txtexperience.setText(selectedOffre.getExperiencerequise());
-                txtniveauetudes.setText(selectedOffre.getNiveauEtudes());
                 txtcompetences.setText(selectedOffre.getCompetences());
-                txttypecontrat.setText(selectedOffre.getTypecontrat());
                 txtlocalisation.setText(selectedOffre.getLocalisation());
-                txtnivlangues.setText(selectedOffre.getNiveaulangues());
                 txtDateCreation.setValue(selectedOffre.getDateCreation().toLocalDate());
-                txtstatut.setText(selectedOffre.getStatut());
+                niveauetudeschoice.setValue(selectedOffre.getNiveauEtudes());
+                niveaulangueschoice.setValue(selectedOffre.getNiveaulangues());
+                experiencechoice.setValue(selectedOffre.getExperiencerequise());
+                typecontratbox.setValue(selectedOffre.getTypecontrat());
             }
         });
         loadOffres();
@@ -138,22 +161,49 @@ public class AjouterOffreController {
         if (selectedOffre != null) {
             selectedOffre.setTitre(txtTitre.getText());
             selectedOffre.setDescription(txtdescription.getText());
-selectedOffre.setDateExpiration(DateExpiration.getValue().atStartOfDay());
-            selectedOffre.setExperiencerequise(txtexperience.getText());
-            selectedOffre.setNiveauEtudes(txtniveauetudes.getText());
+            selectedOffre.setDateExpiration(DateExpiration.getValue().atStartOfDay());
+            experience experiencerequise = experiencechoice.getValue();
+            Niveauetudes niveauEtudes = niveauetudeschoice.getValue();
+            Niveaulangues niveaulangues = niveaulangueschoice.getValue();
+            TypeContrat typecontrat = typecontratbox.getValue();
+            if (experiencerequise != null) {
+                selectedOffre.setExperiencerequise(experiencerequise);
+            } else {
+                System.out.println("Veuillez sélectionner une expérience requise.");
+                return;
+            }
+            if (niveauEtudes != null) {
+                selectedOffre.setNiveauEtudes(niveauEtudes);
+            } else {
+                System.out.println("Veuillez sélectionner un niveau d'études.");
+                return;
+            }
+
+            if (niveaulangues != null) {
+                selectedOffre.setNiveaulangues(niveaulangues);
+            } else {
+                System.out.println("Veuillez sélectionner un niveau de langue.");
+                return;
+            }
+
+            if (typecontrat != null) {
+                selectedOffre.setTypecontrat(typecontrat);
+            } else {
+                System.out.println("Veuillez sélectionner un type de contrat.");
+                return;
+            }
+
             selectedOffre.setCompetences(txtcompetences.getText());
-            selectedOffre.setTypecontrat(txttypecontrat.getText());
             selectedOffre.setLocalisation(txtlocalisation.getText());
-            selectedOffre.setNiveaulangues(txtnivlangues.getText());
             selectedOffre.setDateCreation(txtDateCreation.getValue().atStartOfDay());
-            selectedOffre.setStatut(txtstatut.getText());
             serviceOffre.update(selectedOffre);
-            loadOffres();
+            loadOffres();  // Rechargement des offres
             System.out.println("Offre d'emploi modifiée avec succès.");
         } else {
             System.out.println("Veuillez sélectionner une offre à modifier.");
         }
     }
+
 
 
 
@@ -175,6 +225,57 @@ selectedOffre.setDateExpiration(DateExpiration.getValue().atStartOfDay());
             System.out.println("Aucune offre sélectionnée pour suppression.");
         }
 
-    }}
+    }
+    private void clearOffreFields() {
+        txtTitre.clear();
+        txtdescription.clear();
+        txtcompetences.clear();
+
+        txtlocalisation.clear();
+        niveauetudeschoice.setValue(null);
+        niveaulangueschoice.setValue(null);
+        experiencechoice.setValue(null);
+        txtDateCreation.setValue(null);
+        DateExpiration.setValue(null);
+        typecontratbox.setValue(null);
+    }
+    Comparator<Offreemploi> triParTitre = Comparator.comparing(Offreemploi::getTitre);
+    Comparator<Offreemploi> triParNiveauEtude = Comparator.comparing(Offreemploi::getNiveauEtudes);
+
+    @FXML
+    void trititre(ActionEvent event) {
+        List<Offreemploi> offres = serviceOffre.getAll();
+        offres.sort(triParTitre);
+        ObservableList<Offreemploi> offresTriees = FXCollections.observableArrayList(offres);
+        listOffre.setItems(offresTriees);
+    }
+
+
+    @FXML
+    void triniveauetudes(ActionEvent event) {
+        List<Offreemploi> offres = serviceOffre.getAll();
+        Comparator<Offreemploi> triParNiveauEtude = Comparator.comparing(Offreemploi::getNiveauEtudes)
+                .reversed();
+
+        offres.sort(triParNiveauEtude);
+        ObservableList<Offreemploi> offresTriees = FXCollections.observableArrayList(offres);
+        listOffre.setItems(offresTriees);
+    }
+    @FXML
+    void rechercherid(ActionEvent event) {
+        List<Offreemploi> offres = serviceOffre.getAll();
+        String recherche = serarch.getText().toLowerCase();
+        List<Offreemploi> offresFiltrees = offres.stream()
+                .filter(offre -> offre.getTitre().toLowerCase().contains(recherche))
+                .collect(Collectors.toList());
+        ObservableList<Offreemploi> offresTriees = FXCollections.observableArrayList(offresFiltrees);
+        listOffre.setItems(offresTriees);
+
+    }
+
+
+}
+
+
 
 

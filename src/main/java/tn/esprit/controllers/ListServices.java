@@ -14,7 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import tn.esprit.models.Service;
 import tn.esprit.services.ServiceService;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -37,15 +36,12 @@ public class ListServices {
     private TableColumn<Service, String> colDateFin;
     @FXML
     private TableColumn<Service, String> colStatut;
-
     @FXML
     private Button btnModifier;
     @FXML
     private Button btnSupprimer;
-
     @FXML
     private TextField searchField;
-
     @FXML
     private CheckBox chkFiltrerType;
     @FXML
@@ -57,7 +53,7 @@ public class ListServices {
     @FXML
     public void initialize() {
 
-        colId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIdService()).asObject());
+        //colId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIdService()).asObject());
         colNom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomService()));
         colDescription.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescriptionService()));
         colType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeService()));
@@ -66,7 +62,6 @@ public class ListServices {
         colStatut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatusService()));
 
         loadServices();
-
 
         chkFiltrerType.setOnAction(this::filtrerTypeService);
         chkTriServicesActifs.setOnAction(this::filterActiveServices);
@@ -97,7 +92,6 @@ public class ListServices {
             stage.setTitle("Modifier Service");
             stage.setScene(new Scene(root));
             stage.showAndWait();
-
 
             loadServices();
         } catch (IOException e) {
@@ -132,12 +126,10 @@ public class ListServices {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterService.fxml"));
             Parent root = loader.load();
 
-
             Stage stage = new Stage();
             stage.setTitle("Ajouter un Service");
             stage.setScene(new Scene(root));
             stage.show();
-
 
             AjouterService ajouterServiceController = loader.getController();
             ajouterServiceController.setOnServiceAdded(this::loadServices);
@@ -171,9 +163,13 @@ public class ListServices {
     @FXML
     private void filtrerTypeService(ActionEvent event) {
         if (chkFiltrerType.isSelected()) {
+
+            chkTriServicesActifs.setSelected(false);
+
             List<Service> servicesTriesParType = serviceService.sortServicesByType();
             updateTableView(servicesTriesParType);
         } else {
+
             loadServices();
         }
     }
@@ -181,10 +177,15 @@ public class ListServices {
     @FXML
     private void filterActiveServices(ActionEvent event) {
         if (chkTriServicesActifs.isSelected()) {
+
+            chkFiltrerType.setSelected(false);
+
             List<Service> servicesActifs = serviceService.filterActiveServices();
             updateTableView(servicesActifs);
         } else {
+
             loadServices();
         }
     }
+
 }

@@ -5,7 +5,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.models.Service;
 import tn.esprit.services.ServiceService;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -50,14 +49,12 @@ public class ModifierService {
     public void setService(Service service) {
         this.serviceToModify = service;
 
-
         idServiceField.setText(String.valueOf(service.getIdService()));
         nomServiceField.setText(service.getNomService());
         descriptionServiceField.setText(service.getDescriptionService());
         typeServiceField.setText(service.getTypeService());
         dateDebutField.setValue(service.getDateDebutService());
         dateFinField.setValue(service.getDateFinService());
-
 
         if ("Actif".equals(service.getStatusService())) {
             statusActif.setSelected(true);
@@ -78,9 +75,23 @@ public class ModifierService {
             LocalDate dateFin = dateFinField.getValue();
             String statusService = statusActif.isSelected() ? "Actif" : "Inactif";
 
-
-            if (nomService.isEmpty() || descriptionService.isEmpty() || typeService.isEmpty()) {
+            if (nomService.isEmpty() && descriptionService.isEmpty() && typeService.isEmpty()) {
                 System.out.println("Erreur : Tous les champs doivent être remplis !");
+                return;
+            }
+
+            if (nomService.isEmpty()) {
+                showAlert("Erreur", "Le nom de service est obligatoire.");
+                return;
+            }
+
+            if (descriptionService.isEmpty()) {
+                showAlert("Erreur", "La description du service est obligatoire.");
+                return;
+            }
+
+            if (typeService.isEmpty()) {
+                showAlert("Erreur", "Le type du service est obligatoire.");
                 return;
             }
 
@@ -94,7 +105,6 @@ public class ModifierService {
                 return;
             }
 
-
             serviceToModify.setNomService(nomService);
             serviceToModify.setDescriptionService(descriptionService);
             serviceToModify.setTypeService(typeService);
@@ -102,15 +112,24 @@ public class ModifierService {
             serviceToModify.setDateFinService(dateFin);
             serviceToModify.setStatusService(statusService);
 
-
             serviceService.update(serviceToModify);
             System.out.println("Service mis à jour avec succès !");
-
 
             ((Stage) nomServiceField.getScene().getWindow()).close();
 
         } catch (DateTimeParseException e) {
             System.out.println("Erreur : Format de date invalide. Utiliser yyyy-MM-dd !");
         }
+    }
+
+
+
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
