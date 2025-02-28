@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.esprit.controllers.EmployeTest"
+            prefWidth="800" prefHeight="600">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <top>
+        <VBox spacing="15">
+            <Label fx:id="welcomeLabel" text="Bienvenue!" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <Separator/>
+        </VBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <!-- Vue des tests assignés -->
+            <VBox spacing="10">
+                <Label text="Tests Assignés" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+                <TableView fx:id="assignedTestsTable" VBox.vgrow="ALWAYS">
+                    <!-- Les colonnes sont définies dynamiquement dans le contrôleur -->
+                </TableView>
+            </VBox>
+
+            <!-- Vue du test en cours -->
+            <VBox fx:id="testBox" spacing="20" visible="false">
+                <HBox alignment="CENTER">
+                    <Label text="Test en cours" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                </HBox>
+
+                <Separator/>
+
+                <VBox spacing="15" VBox.vgrow="ALWAYS">
+                    <Label fx:id="questionLabel" wrapText="true" style="-fx-font-size: 16px;"/>
+
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                        <VBox fx:id="answersBox" spacing="15">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                        </VBox>
+                    </ScrollPane>
+
+                    <Label fx:id="resultLabel" wrapText="true" visible="false"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+                    <HBox alignment="CENTER_RIGHT">
+                        <Button fx:id="nextButton" text="Question Suivante"
+                                style="-fx-background-color: #2196F3; -fx-text-fill: white;"
+                                prefWidth="150"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

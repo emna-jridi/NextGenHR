@@ -64,6 +64,21 @@
                     <Insets bottom="10.0" />
                 </VBox.margin>
             </Button>
+            <Button onAction="#showFormationEm" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Formation ">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showListeOffre" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Offres d'emploi ">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showtest" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Test ">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
             <Button fx:id="btnLogout" alignment="BOTTOM_LEFT" onAction="#handleLogout" style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 16px; -fx-font-weight: bold;" stylesheets="@Css/MainView.css" text="Déconnexion">
                 <VBox.margin>
                     <Insets top="40.0" />

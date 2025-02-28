@@ -80,7 +80,12 @@
                     <Insets bottom="10.0" />
                 </VBox.margin>
             </Button>
-            <Button fx:id="formation" onAction="#showformation" prefHeight="10.0" prefWidth="194.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" stylesheets="@Css/MainView.css" text="🏢 Gestion des formations">
+            <Button onAction="#showFormation" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Formation ">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showTestRH" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Tests ">
                 <VBox.margin>
                     <Insets bottom="10.0" />
                 </VBox.margin>

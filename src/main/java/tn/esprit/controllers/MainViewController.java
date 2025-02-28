@@ -93,18 +93,32 @@ public class MainViewController {
     }
 
     @FXML
-    private void showtest() { switchView("/GestionTest.fxml");
+    private void showtest() { switchView("/EmployeTest.fxml");
     }
 
     @FXML
-    private void showformation() {switchView("/GestionFormation.fxml");
+    private void showTestRH() {
+        switchView("/RhTest.fxml");
     }
+
         @FXML
     private void handleProfile() {
         switchView("/Profile.fxml");
     }
 
+    @FXML
+    private void showFormation(){
+        switchView("/GestionFormationRh.fxml");
+    }
+    @FXML
+    private void showFormationEm(){
+        switchView("/GestionFormation.fxml");
+    }
 
+    @FXML
+    private void showListeOffre(){
+        switchView("/OFFRECandidat.fxml");
+    }
         @FXML
     private Text profilText;
 
@@ -114,7 +128,7 @@ public class MainViewController {
     private void switchView(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            AnchorPane pane = loader.load();
+            Parent pane = loader.load();
 
             // Ajout d'une animation de transition
             FadeTransition fadeIn = new FadeTransition(Duration.millis(300), pane);
