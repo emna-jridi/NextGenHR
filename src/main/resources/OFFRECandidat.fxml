@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="644.0" prefWidth="948.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.OFFRECandidatController">
+<AnchorPane fx:id="contentPanee" prefHeight="644.0" prefWidth="948.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.OFFRECandidatController">
    <children>
       <Label layoutX="78.0" layoutY="35.0" prefHeight="50.0" prefWidth="470.0" text="Nos Offres d'emplois :" textOverrun="WORD_ELLIPSIS">
          <font>
@@ -30,20 +29,7 @@
             <TableColumn fx:id="joursrestantsid" prefWidth="75.0" text="Jours Restants" />
         </columns>
       </TableView>
-       <Button fx:id="postulermaintenant"
-               layoutX="412.0"
-               layoutY="525.0"
-               mnemonicParsing="false"
-               onAction="#postulermaintenant"
-               text="Postuler Maintenant"
-               style="-fx-background-color: #253D90;
-               -fx-text-fill: white;
-               -fx-font-size: 14px;
-               -fx-font-weight: bold;
-               -fx-padding: 8px 16px;
-               -fx-border-radius: 5px;
-               -fx-background-radius: 5px;
-               -fx-cursor: hand;" />
+       <Button fx:id="postulermaintenant" layoutX="412.0" layoutY="525.0" mnemonicParsing="false" onAction="#postulermaintenant" style="-fx-background-color: #253D90;                -fx-text-fill: white;                -fx-font-size: 14px;                -fx-font-weight: bold;                -fx-padding: 8px 16px;                -fx-border-radius: 5px;                -fx-background-radius: 5px;                -fx-cursor: hand;" text="Postuler Maintenant" />
 
 
    </children>

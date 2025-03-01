@@ -1,17 +1,22 @@
 package tn.esprit.controllers;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import tn.esprit.models.Offreemploi;
 import tn.esprit.services.ServiceOffre;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -35,6 +40,8 @@ public class OFFRECandidatController {
 
     @FXML
     private TableColumn<Offreemploi, String> dateexpirationid;
+    @FXML
+    private AnchorPane contentPanee;
 
     @FXML
     private TableColumn<Offreemploi, String> descriptionid;
@@ -64,7 +71,6 @@ public class OFFRECandidatController {
 
     @FXML
     public void initialize() {
-        // Associer les colonnes aux attributs de l'entité Offreemploi
         titreid.setCellValueFactory(new PropertyValueFactory<>("titre"));
         descriptionid.setCellValueFactory(new PropertyValueFactory<>("description"));
         datecreationid.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
@@ -75,8 +81,6 @@ public class OFFRECandidatController {
         niveauetudesid.setCellValueFactory(new PropertyValueFactory<>("niveauEtudes"));
         niveaulangueid.setCellValueFactory(new PropertyValueFactory<>("niveaulangues"));
         typecontratid.setCellValueFactory(new PropertyValueFactory<>("typecontrat"));
-
-        // Correction de la colonne jours restants
         joursrestantsid.setCellValueFactory(cellData -> {
             Offreemploi offre = cellData.getValue();
             LocalDate today = LocalDate.now();
@@ -89,8 +93,6 @@ public class OFFRECandidatController {
                 return new SimpleIntegerProperty(0).asObject();
             }
         });
-
-// Appliquer un CellFactory pour la mise en couleur des cellules
         joursrestantsid.setCellFactory(column -> new TableCell<Offreemploi, Integer>() {
             @Override
             protected void updateItem(Integer joursRestants, boolean empty) {
@@ -113,9 +115,6 @@ public class OFFRECandidatController {
                 }
             }
         });
-
-
-        // Charger les offres
         loadOffres();
     }
 
@@ -127,13 +126,32 @@ public class OFFRECandidatController {
         tableoffres.setItems(offresAffichees);
     }
 
+    private void switchView(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            AnchorPane pane = loader.load();
 
+            // Ajout d'une animation de transition
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), pane);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+            fadeIn.play();
+
+            contentPanee.getChildren().setAll(pane);
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement de " + fxmlPath);
+            e.printStackTrace();
+        }
+    }
 
 
     @FXML
     void postulermaintenant(ActionEvent event) {
+        switchView("/DemandeCandidature.fxml");
+    }
+
 
     }
 
-    }
+
 

@@ -3,44 +3,23 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="725.0" prefWidth="887.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.CandidatureController">
+<AnchorPane fx:id="contentPane" prefHeight="725.0" prefWidth="887.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.CandidatureController">
    <children>
-      <Label layoutX="36.0" layoutY="66.0" text="Nom" />
-      <Label layoutX="36.0" layoutY="104.0" text="Prenom" />
-      <Label layoutX="28.0" layoutY="140.0" text="email" />
-      <Label layoutX="16.0" layoutY="198.0" text="telephone" />
-      <Label layoutX="27.0" layoutY="264.0" text="Date" />
-      <Label layoutX="24.0" layoutY="413.0" text="Statut" />
-      <Label layoutX="28.0" layoutY="306.0" text="CV" />
-      <Label layoutX="8.0" layoutY="354.0" text="Lettre de Motivation" />
-      <Label layoutX="28.0" layoutY="462.0" text="Offre" />
-      <TextField fx:id="txtNom" layoutX="90.0" layoutY="62.0" />
-      <TextField fx:id="txtPrenom" layoutX="106.0" layoutY="100.0" />
-      <TextField fx:id="txtEmail" layoutX="90.0" layoutY="136.0" />
-      <TextField fx:id="txtTelephone" layoutX="80.0" layoutY="194.0" />
-      <TextField fx:id="txtCv" layoutX="96.0" layoutY="302.0" />
-      <TextField fx:id="txtLettre" layoutX="127.0" layoutY="350.0" />
-      <Button layoutX="116.0" layoutY="516.0" mnemonicParsing="false" onAction="#Ajouter" text="Ajouter" />
-      <ComboBox fx:id="listeoffres" layoutX="81.0" layoutY="458.0" onAction="#selectionner" prefWidth="150.0" />
-      <DatePicker fx:id="dateCandidature" layoutX="83.0" layoutY="260.0" />
-      <ListView fx:id="listcandidats" layoutX="347.0" layoutY="113.0" prefHeight="453.0" prefWidth="406.0" />
-      <Button layoutX="522.0" layoutY="575.0" mnemonicParsing="false" onAction="#Afficher" text="Afficher" />
-      <Button layoutX="764.0" layoutY="109.0" mnemonicParsing="false" onAction="#Supprimer" text="Supprimer" />
-      <Button layoutX="769.0" layoutY="149.0" mnemonicParsing="false" onAction="#Modifier" text="Modifier" />
+      <Label layoutX="275.0" layoutY="645.0" text="Statut" />
+      <ListView fx:id="listcandidats" layoutX="65.0" layoutY="88.0" prefHeight="454.0" prefWidth="682.0" />
+      <Button layoutX="385.0" layoutY="561.0" mnemonicParsing="false" onAction="#Afficher" text="Afficher" />
+      <Button layoutX="553.0" layoutY="561.0" mnemonicParsing="false" onAction="#Supprimer" text="Supprimer" />
+      <Button layoutX="467.0" layoutY="561.0" mnemonicParsing="false" onAction="#Modifier" text="Modifier" />
       <Label fx:id="alertemail" layoutX="85.0" layoutY="166.0" prefHeight="18.0" prefWidth="249.0" />
       <Label fx:id="labeltelephone" layoutX="79.0" layoutY="230.0" prefHeight="18.0" prefWidth="250.0" />
-      <Button fx:id="importCV" layoutX="246.0" layoutY="302.0" mnemonicParsing="false" onAction="#importerCV" text="Importer" />
-      <Button fx:id="importLettre" layoutX="277.0" layoutY="350.0" mnemonicParsing="false" onAction="#importerLettre" text="Importer" />
-      <Button layoutX="774.0" layoutY="203.0" mnemonicParsing="false" onAction="#exportToPDF" text="Export to PDF" />
-      <CheckBox fx:id="tricandidature" layoutX="347.0" layoutY="53.0" mnemonicParsing="false" onAction="#triercand" text="CheckBox" />
-      <Label layoutX="347.0" layoutY="25.0" text="Trier les candidatures !" />
-      <ChoiceBox fx:id="statutchoice" layoutX="80.0" layoutY="409.0" prefWidth="150.0" />
+      <Button layoutX="647.0" layoutY="561.0" mnemonicParsing="false" onAction="#exportToPDF" text="Export to PDF" />
+      <CheckBox fx:id="tricandidature" layoutX="117.0" layoutY="55.0" mnemonicParsing="false" onAction="#triercand" text="Date" />
+      <Label layoutX="105.0" layoutY="24.0" text="Trier les candidatures !" />
+      <ChoiceBox fx:id="statutchoice" layoutX="338.0" layoutY="641.0" prefWidth="150.0" />
+      <Button layoutX="724.0" layoutY="667.0" mnemonicParsing="false" onAction="#archivecandidature" text="Candidatures archivées" />
    </children>
 </AnchorPane>

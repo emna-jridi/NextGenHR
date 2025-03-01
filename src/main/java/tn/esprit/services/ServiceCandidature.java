@@ -182,6 +182,36 @@ public class ServiceCandidature{
             System.out.println("Erreur lors de la mise à jour de la candidature : " + e.getMessage());
         }
     }
+    public List<Candidature> getByStatut(Statut statut) {
+        String qry = "SELECT * FROM candidature WHERE statut = ?";
+        List<Candidature> candidatures = new ArrayList<>();
+
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, statut.name()); // Récupère le statut en chaîne (enum)
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                Candidature candidature = new Candidature();
+                candidature.setId(rs.getInt("id"));
+                candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
+                candidature.setStatut(Statut.valueOf(rs.getString("statut")));
+                candidature.setCvUrl(rs.getString("cvUrl"));
+                candidature.setLettreMotivation(rs.getString("lettreMotivation"));
+                candidature.setNom(rs.getString("Nom"));
+                candidature.setPrenom(rs.getString("Prenom"));
+                candidature.setEmail(rs.getString("email"));
+                candidature.setTelephone(rs.getString("telephone"));
+
+                candidatures.add(candidature);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des candidatures par statut : " + e.getMessage());
+        }
+
+        return candidatures;
+    }
+
 
 
 }
