@@ -324,6 +324,49 @@ public class ServiceUser {
         user.setActive(rs.getBoolean("isActive"));
         return user;
     }
+    public boolean verifyResetCode(String resetCode) {
 
+
+        System.out.println("Code reçu pour vérification : " + resetCode);
+
+        String query = "SELECT ID_User FROM user WHERE LOWER(reset_code) = LOWER(?)"; // Vérifiez que le nom de la table est correct
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, resetCode.trim());
+            ResultSet rs = stmt.executeQuery();
+
+            boolean codeValide = rs.next(); // Si un résultat est trouvé, le code est valide
+            System.out.println("Code valide : " + codeValide);
+            return codeValide;
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL lors de la vérification du code : " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updatePassword(String resetCode, String newPassword) {
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            System.out.println("Mot de passe invalide");
+            return false;
+        }
+
+        String hashedPassword = hashPassword(newPassword); // Hachage du mot de passe
+        String query = "UPDATE user SET Password = ? WHERE reset_code = ?";
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, hashedPassword);
+            stmt.setString(2, resetCode.trim());
+            int rows = stmt.executeUpdate();
+            System.out.println("Mot de passe mis à jour, lignes affectées : " + rows);
+            return rows > 0;
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL lors de la mise à jour du mot de passe : " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private String hashPassword(String password) {
+        return org.mindrot.jbcrypt.BCrypt.hashpw(password, org.mindrot.jbcrypt.BCrypt.gensalt());
+    }
 
 }
