@@ -1,7 +1,6 @@
 package tn.esprit.test;
 
 import tn.esprit.services.ServiceFormation;
-import tn.esprit.services.ServiceTest;
 
 public class MainGestionComptences {
     public static void main(String[] args) {
@@ -27,7 +26,7 @@ public class MainGestionComptences {
         // Test
             //ADD
 
-        ServiceTest st = new ServiceTest();
+      //  ServiceTest st = new ServiceTest();
 //     Test t1= new Test(10, 2,Date.valueOf("2025-03-01"),"60min", Test.TypeTest.TECHNIQUE);
 //     st.add(t1);
 //        System.out.println(st.getAll());
@@ -41,7 +40,7 @@ public class MainGestionComptences {
 
 //        st.delete(t2);
 //        System.out.println(st.getAll());
-        System.out.println(st.getById(7));
+        //System.out.println(st.getById(7));
 
     }
 }

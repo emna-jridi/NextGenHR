@@ -71,18 +71,12 @@ public class GestionFormationRh  implements Initializable {
 // Initialiser les ChoiceBox
         Niveau_difficulte.getItems().addAll("Débutant", "Intermédiaire", "Avancé");
         tfThemeFormation.getItems().addAll("Développement", "Ressources Humaines", "Management", "Communication");
-
-        // Définir des valeurs par défaut
         Niveau_difficulte.setValue("Débutant");
         tfThemeFormation.setValue("Développement"); // Valeur par défaut
-
-
-        // Configurer les colonnes de la TableView
         nom.setCellValueFactory(new PropertyValueFactory<>("nomFormation"));
         theme.setCellValueFactory(new PropertyValueFactory<>("themeFormation"));
         date.setCellValueFactory(new PropertyValueFactory<>("dateFormation"));
 
-        // Rafraîchir la TableView
         rafraichirTableView();
     }
 
@@ -92,8 +86,6 @@ public class GestionFormationRh  implements Initializable {
             showAlert("Erreur", "Veuillez remplir tous les champs !");
             return;
         }
-
-        // Vérifier que le nom de la formation contient uniquement des lettres et des chiffres
         if (!tfNomFormation.getText().matches("[a-zA-Z0-9_]+")) {
             showAlert("Erreur", "Le nom de la formation doit contenir uniquement des lettres et des chiffres.");
             return;
@@ -106,16 +98,11 @@ public class GestionFormationRh  implements Initializable {
             showAlert("Erreur", "L'url de l'image  n'est pas valide !");
             return;
         }
-
-
-        // Vérifier que la date est valide
         LocalDate today = LocalDate.now();
         if (pdate.getValue().isBefore(today)) {
             showAlert("Erreur", "La date de la formation doit être supérieure à la date d'aujourd'hui.");
             return;
         }
-
-        // Créer une nouvelle formation
         Formation formation = new Formation();
         formation.setNomFormation(tfNomFormation.getText());
         formation.setThemeFormation(tfThemeFormation.getValue().toString()); // Récupérer la valeur du ChoiceBox
@@ -123,13 +110,8 @@ public class GestionFormationRh  implements Initializable {
         formation.setLien_formation(lien.getText());
         formation.setDescription(description.getText());
         formation.setNiveauDifficulte(Niveau_difficulte.getValue());
-
-
-        // Ajouter la formation
         sf.add(formation);
         System.out.println(formation);
-
-        // Rafraîchir la TableView et effacer les champs
         rafraichirTableView();
         clearFields();
         showAlert("Succès", "Formation ajoutée avec succès !");
@@ -142,8 +124,6 @@ public class GestionFormationRh  implements Initializable {
             showAlert("Erreur", "Veuillez sélectionner une formation !");
             return;
         }
-
-        // Remplir les champs avec les données de la formation sélectionnée
         id = selectedFormation.getIdFormation();
         tfNomFormation.setText(selectedFormation.getNomFormation());
         tfThemeFormation.setValue(selectedFormation.getThemeFormation()); // Définir la valeur du ChoiceBox
@@ -177,33 +157,23 @@ public class GestionFormationRh  implements Initializable {
 
     @FXML
     void modifierFormation(ActionEvent event) {
-        // Vérifier que tous les champs sont remplis
         if (tfNomFormation.getText().isEmpty() || tfThemeFormation.getValue() == null || pdate.getValue() == null) {
             showAlert("Erreur", "Veuillez remplir tous les champs !");
             return;
-        }
-
-        // Vérifier que le nom de la formation contient uniquement des lettres et des chiffres
-        if (!tfNomFormation.getText().matches("[a-zA-Z0-9_]+")) {
+        }if (!tfNomFormation.getText().matches("[a-zA-Z0-9_]+")) {
             showAlert("Erreur", "Le nom de la formation doit contenir uniquement des lettres et des chiffres.");
             return;
         }
-
-        // Vérifier que la date est valide
         LocalDate today = LocalDate.now();
         if (pdate.getValue().isBefore(today)) {
             showAlert("Erreur", "La date de la formation doit être supérieure à la date d'aujourd'hui.");
             return;
         }
-
-        // Récupérer la formation sélectionnée
         Formation selectedFormation = tvFormation.getSelectionModel().getSelectedItem();
         if (selectedFormation == null) {
             showAlert("Erreur", "Veuillez sélectionner une formation à modifier !");
             return;
         }
-
-        // Mettre à jour les propriétés de la formation
         selectedFormation.setNomFormation(tfNomFormation.getText());
         selectedFormation.setThemeFormation(tfThemeFormation.getValue().toString());
         selectedFormation.setDateFormation(Date.valueOf(pdate.getValue()));
@@ -212,14 +182,7 @@ public class GestionFormationRh  implements Initializable {
         selectedFormation.setNiveauDifficulte(Niveau_difficulte.getValue());
         selectedFormation.setImageUrl(imageUrl.getText());
         selectedFormation.setDuree(Integer.parseInt(duree.getText()));
-
-
-
-
-        // Mettre à jour la formation dans la base de données
         sf.update(selectedFormation);
-
-        // Rafraîchir la TableView et effacer les champs
         rafraichirTableView();
         clearFields();
         showAlert("Succès", "Formation modifiée avec succès !");
@@ -251,17 +214,13 @@ public class GestionFormationRh  implements Initializable {
     private List<Formation> searchList(String searchNom, List<Formation> listOfFormations) {
 
         List<String> searchNomArray = Arrays.asList(searchNom.trim().split(" "));
-
-
         return listOfFormations.stream()
                 .filter(formation -> {
-
                     return searchNomArray.stream().allMatch(word ->
                             formation.getNomFormation().toLowerCase().contains(word.toLowerCase()));
                 })
                 .collect(Collectors.toList());
     }
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

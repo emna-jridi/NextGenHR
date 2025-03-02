@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.esprit.Controller.ResultTestEmp"
+            prefHeight="400.0" prefWidth="600.0">
+    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+        <Label text="Mes Résultats de Tests" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+        <TableView fx:id="resultsTableView" prefHeight="300.0" prefWidth="580.0">
+            <columns>
+                <TableColumn fx:id="testCategoryCol" text="Catégorie" prefWidth="100" />
+                <TableColumn fx:id="totalQuestionsCol" text="Questions Totales" prefWidth="100" />
+                <TableColumn fx:id="correctAnswersCol" text="Réponses Correctes" prefWidth="120" />
+                <TableColumn fx:id="scoreCol" text="Score" prefWidth="80" />
+                <TableColumn fx:id="testDateCol" text="Date du Test" prefWidth="120" />
+            </columns>
+        </TableView>
+
+        <!-- Bouton pour rafraîchir les résultats -->
+        <Button text="Rafraîchir" fx:id="refreshButton" onAction="#handleRefresh" />
+    </VBox>
+</AnchorPane>

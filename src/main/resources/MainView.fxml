@@ -18,10 +18,12 @@
 
         <Button onAction="#showHome" prefHeight="30.0" prefWidth="196.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="🏠 Accueil" />
         <Button onAction="#showFormation" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Formation " />
-        <Button onAction="#showTest" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Test" />
 
         <Button onAction="#showFormationRh" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Formation Rh " />
-
+        <Button onAction="#showTestRh" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="test Rh " />
+        <Button onAction="#showTestemp" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="test emp " />
+        <Button onAction="#showResultTestRh" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text=" res test Rh " />
+        <Button onAction="#showResultTestemp" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text=" res test emp " />
 
     </VBox>
 

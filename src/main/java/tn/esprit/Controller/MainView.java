@@ -28,15 +28,29 @@ public class MainView {
         switchView("/GestionFormation.fxml");
     }
 
-    @FXML
-    private void showTest() {
-        switchView("/Test.fxml");
-    }
+
     @FXML
     private void showFormationRh() {
         switchView("/GestionFormationRh.fxml");
     }
+    @FXML
+    private void showTestRh() {
+        switchView("/RhTest.fxml");
+    }
 
+    @FXML
+    private void showTestemp() {
+        switchView("/EmployeTest.fxml");
+    }
+    @FXML
+    private void showResultTestRh() {
+        switchView("/ResultTestRh.fxml");
+    }
+
+    @FXML
+    private void showResultTestemp() {
+        switchView("/ResultTestEmp.fxml");
+    }
 
 
     private void switchView(String fxmlPath) {
