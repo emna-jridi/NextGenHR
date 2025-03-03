@@ -3,14 +3,23 @@
     -fx-background-color: linear-gradient(to bottom, #ffffff, #f4f4f4);
 }
 
-/* Style du titre */
-.label {
-    -fx-text-fill: #FFCC00;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 3, 0, 0, 2);
+/* Style pour le titre */
+.title-label {
+    -fx-font-size: 32px; /* Taille de la police */
+    -fx-font-weight: bold; /* Gras */
+    -fx-text-fill: #070771; /* Couleur différente pour le texte */
+    -fx-font-family: "Times New Roman", serif;
+    /* Police moderne */
 }
+
+/* Style pour les autres labels */
+.standard-label {
+    -fx-font-size: 16px; /* Taille de police plus petite */
+    -fx-font-weight: normal; /* Poids normal */
+    -fx-text-fill: #333; /* Couleur plus sombre */
+    -fx-font-family: "Open Sans", sans-serif;
+}
+
 
 /* Barre de recherche */
 .text-field {
@@ -121,10 +130,8 @@
 .button {
     -fx-background-color: linear-gradient(to right, #FFCC00, #FFA500);
     -fx-text-fill: white;
-    -fx-font-size: 15px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-border-color: #003366;
-    -fx-border-width: 2px;
     -fx-padding: 12px 25px;
     -fx-background-radius: 30px;
     -fx-border-radius: 30px;
@@ -164,6 +171,7 @@
 #btnSupprimer:hover {
     -fx-background-color: #c9302c;
 }
+
 
 /* Style du conteneur principal */
 .form-container {

@@ -117,24 +117,27 @@ public class ServiceService implements IServices<Service> {
     //supprimer service//
     @Override
     public void delete(int idService) {
-
-        /*if (getById(service.getIdService()) == null) {
-            System.out.println("Erreur : Le service n'existe pas !");
-            return;
-        }*/
-
-        String qry = "DELETE FROM services WHERE IdService = ?";
+        // Supprimer d'abord la relation dans contrat_services
+        String deleteContractServiceQry = "DELETE FROM contrat_services WHERE idService = ?";
 
         try {
+            // Supprimer la relation dans contrat_services
+            PreparedStatement deleteContractServiceStmt = cnx.prepareStatement(deleteContractServiceQry);
+            deleteContractServiceStmt.setInt(1, idService);
+            deleteContractServiceStmt.executeUpdate();
 
-            PreparedStatement pstm = cnx.prepareStatement(qry);
+            // Puis supprimer le service de la table services
+            String deleteServiceQry = "DELETE FROM services WHERE IdService = ?";
+            PreparedStatement pstm = cnx.prepareStatement(deleteServiceQry);
             pstm.setInt(1, idService);
             pstm.executeUpdate();
-            System.out.println("Service supprimé avec succés !");
+
+            System.out.println("Service et relation avec contrat supprimés avec succès !");
         } catch (SQLException e) {
             System.out.println("Erreur lors de la suppression du service : " + e.getMessage());
         }
     }
+
 
 
 

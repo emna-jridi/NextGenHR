@@ -42,6 +42,24 @@ public class AjouterService {
         this.onServiceAdded = onServiceAdded;
     }
 
+
+
+    @FXML
+    void clearFields(ActionEvent event) {
+        dateDebutService.setValue(null);
+        dateFinService.setValue(null);
+        typeService.clear();
+        nomService.clear();
+        descriptionService.clear();
+        radioActif.setSelected(true);
+        radioInactif.setSelected(false);
+
+        /*// Réinitialiser les labels de validation
+        emailValidationLabel.setText("");
+        numTelValidationLabel.setText("");
+        montantValidationLabel.setText("");*/
+    }
+
     @FXML
     void ajouterService(ActionEvent event) {
         String nom = nomService.getText().trim();

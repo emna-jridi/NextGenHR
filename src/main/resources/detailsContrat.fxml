@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="630.0" prefWidth="736.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.DetailsContrat">
+    <stylesheets>
+        <URL value="@styles/styledetailsContrat.css" />
+    </stylesheets>
+    <children>
+        <Label layoutX="47.0" layoutY="14.0" prefHeight="34.0" prefWidth="189.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" styleClass="title-label" text="Détails du Contrat" />
+        <VBox layoutX="41.0" layoutY="59.0" prefHeight="531.0" prefWidth="658.0" spacing="10" styleClass="vbox-container">
+            <HBox spacing="5">
+                <Label styleClass="label-bold" text="Nom du Client(e) :" />
+                <Label fx:id="lblNomClient" styleClass="label-normal" />
+                <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="156.0" layoutY="155.0">
+                    <image>
+                        <Image url="@images/user_icon.png" />
+                    </image>
+                </ImageView>
+            </HBox>
+            <HBox spacing="5">
+                <Label styleClass="label-bold" text="Email du Client(e) :" />
+                <Label fx:id="lblEmailClient" styleClass="label-normal" />
+            </HBox>
+            <HBox spacing="5">
+                <Label styleClass="label-bold" text="Numéro Téléphone du Client(e) :" />
+                <Label fx:id="lblNumTelClient" styleClass="label-normal" />
+            </HBox>
+            <HBox spacing="5">
+                <Label styleClass="label-bold" text="Date Début du Contrat :" />
+                <Label fx:id="lblDateDebut" prefHeight="33.0" prefWidth="132.0" styleClass="label-normal" />
+            </HBox>
+
+            <HBox spacing="5">
+                <Label styleClass="label-bold" text="Date Fin du Contrat :" />
+                <Label fx:id="lblDateFin" prefHeight="33.0" prefWidth="130.0" styleClass="label-normal" />
+            </HBox>
+
+            <HBox spacing="5">
+                <Label styleClass="label-bold" text="Montant :" />
+                <Label fx:id="lblMontant" styleClass="label-normal" />
+            </HBox>
+
+            <HBox spacing="5">
+                <Label styleClass="label-bold" text="Statut du Contrat :" />
+                <Label fx:id="lblStatut" styleClass="label-normal" />
+            </HBox>
+
+            <Label styleClass="label-bold" text="Services associés :" />
+            <Label fx:id="lblServices" styleClass="label-normal" />
+        </VBox>
+    </children>
+</AnchorPane>

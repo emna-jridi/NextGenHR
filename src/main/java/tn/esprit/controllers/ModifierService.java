@@ -16,7 +16,7 @@ public class ModifierService {
     @FXML
     private TextField nomServiceField;
     @FXML
-    private TextField descriptionServiceField;
+    private TextArea descriptionServiceField;
     @FXML
     private TextField typeServiceField;
     @FXML
@@ -29,6 +29,7 @@ public class ModifierService {
     private RadioButton statusInactif;
 
     private final ServiceService serviceService;
+    private ListServices listServicesController;
     private Service serviceToModify;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private ToggleGroup statusGroup;
@@ -46,10 +47,29 @@ public class ModifierService {
     }
 
 
-    public void setService(Service service) {
+
+
+    @FXML
+    private void handleCancel() {
+        // Appeler la méthode dans ListServices pour afficher le formulaire AjouterService
+        listServicesController.showAjouterServiceForm();
+        ((Stage) nomServiceField.getScene().getWindow()).close();
+    }
+
+
+
+
+    public void setListServicesController(ListServices controller) {
+        this.listServicesController = controller;
+    }
+
+
+
+
+    public void setService(Service service, ListServices listServicesController) {
         this.serviceToModify = service;
 
-        idServiceField.setText(String.valueOf(service.getIdService()));
+        //idServiceField.setText(String.valueOf(service.getIdService()));
         nomServiceField.setText(service.getNomService());
         descriptionServiceField.setText(service.getDescriptionService());
         typeServiceField.setText(service.getTypeService());
@@ -114,6 +134,8 @@ public class ModifierService {
 
             serviceService.update(serviceToModify);
             System.out.println("Service mis à jour avec succès !");
+            // Appeler la méthode dans ListContrats pour afficher le formulaire AjouterContrat
+            listServicesController.showAjouterServiceForm();
 
             ((Stage) nomServiceField.getScene().getWindow()).close();
 

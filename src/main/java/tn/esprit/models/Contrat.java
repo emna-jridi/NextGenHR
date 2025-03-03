@@ -7,7 +7,6 @@ import java.util.List;
 public class Contrat {
 
     private int idContrat;
-    private TypeContrat typeContrat;
     private LocalDate dateDebutContrat;
     private LocalDate dateFinContrat;
     private String statusContrat;
@@ -15,34 +14,37 @@ public class Contrat {
     private String nomClient;
     private String emailClient;
     private List<Service> services;
+    private String telephoneClient;
 
     // Constructeurs
 
     public Contrat() {
-    }
-
-    public Contrat(int idContrat, TypeContrat typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
-                   String statusContrat, int montantContrat, String nomClient, String emailClient) {
-        this.idContrat = idContrat;
-        this.typeContrat = typeContrat;
-        this.dateDebutContrat = dateDebutContrat;
-        this.dateFinContrat = dateFinContrat;
-        this.statusContrat = statusContrat;
-        this.montantContrat = montantContrat;
-        this.nomClient = nomClient;
-        this.emailClient = emailClient;
         this.services = new ArrayList<>();
     }
 
-    public Contrat(TypeContrat typeContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
-                   String statusContrat, int montantContrat, String nomClient, String emailClient) {
-        this.typeContrat = typeContrat;
+    public Contrat(int idContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
+                   String statusContrat, int montantContrat, String nomClient, String emailClient, String telephoneClient) {
+        this.idContrat = idContrat;
         this.dateDebutContrat = dateDebutContrat;
         this.dateFinContrat = dateFinContrat;
         this.statusContrat = statusContrat;
         this.montantContrat = montantContrat;
         this.nomClient = nomClient;
         this.emailClient = emailClient;
+        this.telephoneClient = telephoneClient;
+        this.services = new ArrayList<>();
+    }
+
+    public Contrat( LocalDate dateDebutContrat, LocalDate dateFinContrat,
+                   String statusContrat, int montantContrat, String nomClient, String emailClient, String telephoneClient) {
+        this.dateDebutContrat = dateDebutContrat;
+        this.dateFinContrat = dateFinContrat;
+        this.statusContrat = statusContrat;
+        this.montantContrat = montantContrat;
+        this.nomClient = nomClient;
+        this.emailClient = emailClient;
+        this.telephoneClient = telephoneClient;
+        this.services = new ArrayList<>();
     }
 
     // Getters et Setters
@@ -52,14 +54,6 @@ public class Contrat {
 
     public void setIdContrat(int idContrat) {
         this.idContrat = idContrat;
-    }
-
-    public TypeContrat getTypeContrat() {
-        return typeContrat;
-    }
-
-    public void setTypeContrat(TypeContrat typeContrat) {
-        this.typeContrat = typeContrat;
     }
 
     public LocalDate getDateDebutContrat() {
@@ -110,6 +104,10 @@ public class Contrat {
         this.emailClient = emailClient;
     }
 
+    public String getTelephoneClient() {return telephoneClient;}
+
+    public void setTelephoneClient(String telephoneClient) {this.telephoneClient = telephoneClient;}
+
     public List<Service> getServices() {
         return services;
     }
@@ -123,14 +121,14 @@ public class Contrat {
     public String toString() {
         return "Contrat{" +
                 "idContrat=" + idContrat +
-                ", typeContrat=" + typeContrat +
                 ", dateDebutContrat=" + dateDebutContrat +
                 ", dateFinContrat=" + dateFinContrat +
                 ", statusContrat='" + statusContrat + '\'' +
                 ", montantContrat=" + montantContrat +
                 ", nomClient='" + nomClient + '\'' +
                 ", emailClient='" + emailClient + '\'' +
-                ", services=" + services +
+                ", telephoneClient='" + telephoneClient + '\'' +
+                ", services=" + (services != null ? services.toString() : "Aucun service associé") +
                 '}';
     }
 }

@@ -20,57 +20,79 @@
     </stylesheets>
 
     <children>
-        <Pane layoutX="100.0" layoutY="50.0" prefHeight="600.0" prefWidth="750.0" styleClass="form-container">
+        <Pane layoutX="297.0" layoutY="42.0" prefHeight="570.0" prefWidth="478.0" styleClass="form-container">
 
             <!-- Titre -->
-            <Label alignment="CENTER" layoutX="276.0" layoutY="22.0" prefHeight="33.0" prefWidth="183.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Service" />
+            <Label alignment="CENTER" layoutX="144.0" layoutY="31.0" prefHeight="33.0" prefWidth="183.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Service" />
 
             <!-- Nom du Service -->
-            <Label layoutX="86.0" layoutY="90.0" text="Nom du Service:" />
-            <TextField fx:id="nomService" alignment="CENTER" layoutX="270.0" layoutY="84.0" prefWidth="266.0" promptText="Saisir nom du service" />
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="85.0">
+            <Label layoutX="24.0" layoutY="90.0" text="Nom du Service:" />
+            <TextField fx:id="nomService" alignment="CENTER" layoutX="180.0" layoutY="84.0" prefWidth="266.0" promptText="Saisir nom du service" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" layoutY="85.0">
                 <image>
                     <Image url="@images/service_icon.png" />
                 </image>
             </ImageView>
 
             <!-- Description du Service -->
-            <Label layoutX="100.0" layoutY="150.0" text="Description:" />
+            <Label layoutX="38.0" layoutY="150.0" text="Description:" />
+            <!-- Icône pour la Description -->
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" layoutY="152.0">
+                <image>
+                    <Image url="@images/description-icon.png" />
+                </image>
+            </ImageView>
+
             <HBox spacing="10" />
             <!-- Champ TextArea -->
-            <TextArea fx:id="descriptionService" layoutX="270.0" layoutY="140.0" prefHeight="100" prefWidth="266.0" promptText="donner une description du service" />
+            <TextArea fx:id="descriptionService" layoutX="180.0" layoutY="145.0" prefHeight="100" prefWidth="266.0" promptText="donner une description du service" />
+
 
 
             <!-- Type du Service -->
-            <Label layoutX="86.0" layoutY="270.0" text="Type de Service:" />
-            <TextField fx:id="typeService" alignment="CENTER" layoutX="270.0" layoutY="264.0" prefWidth="266.0" promptText="Saisir type du service" />
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="265.0">
+            <Label layoutX="24.0" layoutY="270.0" text="Type de Service:" />
+            <TextField fx:id="typeService" alignment="CENTER" layoutX="180.0" layoutY="264.0" prefWidth="266.0" promptText="Saisir type du service" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" layoutY="265.0">
                 <image>
                     <Image url="@images/type_icon.png" />
                 </image>
             </ImageView>
 
             <!-- Date Début du Service -->
-            <Label layoutX="100.0" layoutY="320.0" text="Date Début:" />
-            <DatePicker fx:id="dateDebutService" layoutX="270.0" layoutY="306.0" prefWidth="266.0" promptText="Choisir date de début" />
+            <Label layoutX="20.0" layoutY="320.0" text="Date Début du Service:" />
+            <DatePicker fx:id="dateDebutService" editable="false" layoutX="180.0" layoutY="306.0" prefWidth="266.0" promptText="Choisir date de début" />
 
             <!-- Date Fin du Service -->
-            <Label layoutX="110.0" layoutY="374.0" text="Date Fin:" />
-            <DatePicker fx:id="dateFinService" layoutX="270.0" layoutY="360.0" prefWidth="266.0" promptText="Choisir date de fin" />
+            <Label layoutX="30.0" layoutY="374.0" text="Date Fin du Service:" />
+            <DatePicker fx:id="dateFinService" editable="false" layoutX="180.0" layoutY="360.0" prefWidth="266.0" promptText="Choisir date de fin" />
 
             <!-- Statut du Service (Actif/Inactif) -->
-            <Label layoutX="95.0" layoutY="428.0" text="Statut du Service:" />
-            <RadioButton fx:id="radioActif" layoutX="313.0" layoutY="431.0" selected="true" text="Actif" />
-            <RadioButton fx:id="radioInactif" layoutX="431.0" layoutY="429.0" text="Inactif" />
+            <Label layoutX="30.0" layoutY="428.0" text="Statut du Service:" />
+            <RadioButton fx:id="radioActif" layoutX="236.0" layoutY="429.0" selected="true" text="Actif" />
+            <RadioButton fx:id="radioInactif" layoutX="327.0" layoutY="429.0" text="Inactif" />
 
             <!-- Bouton Ajouter -->
-            <Button layoutX="292.0" layoutY="503.0" onAction="#ajouterService" prefHeight="48.0" prefWidth="150.0" text="Ajouter Service" />
+            <Button fx:id="btnAjouter" layoutX="114.0" layoutY="489.0" onAction="#ajouterService" prefHeight="48.0" prefWidth="132.0" text="Ajouter">
+                <graphic>
+                    <ImageView fx:id="addIcon" fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@images/add_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="btnClear" layoutX="225.0" layoutY="489.0" onAction="#clearFields" prefHeight="48.0" prefWidth="151.0" text="Réinitialiser">
+                <graphic>
+                    <ImageView fx:id="clearIcon" fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@images/reset_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
 
 
-             <!-- Icône -->
-             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="145.0">
-                 <Image url="@images/description-icon.png" />
-             </ImageView>
+
         </Pane>
     </children>
 </AnchorPane>
