@@ -112,6 +112,19 @@ public class ProfileController {
         alert.showAndWait();
     }
 
-    
+    @FXML
+    private void GoBack(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/UsersDashboard.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de retourner à la page d'accueil.");
+        }
+    }
 }
 
