@@ -32,15 +32,15 @@
 /* Styles pour les cartes de formation */
 .formation-card {
     -fx-background-color: white;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
     -fx-background-radius: 5;
-    -fx-padding: 10;
+    -fx-padding: 15;
     -fx-cursor: hand;
-    -fx-transition: all 0.2s ease;
+    -fx-transition: all 0.3s;
 }
 
 .formation-card:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 0);
     -fx-translate-y: -2;
 }
 
@@ -120,4 +120,26 @@
 .titled-pane > .content {
     -fx-background-color: white;
     -fx-border-color: transparent;
+}
+/* À ajouter dans votre fichier style.css */
+.pagination-controls {
+    -fx-padding: 10 0 0 0;
+}
+
+.pagination-controls .page {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 3;
+}
+
+.pagination-controls .page:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.pagination-controls .page:selected {
+    -fx-background-color: #4285f4;
+    -fx-text-fill: white;
+}
+
+.pagination-controls .arrow {
+    -fx-background-color: #4285f4;
 }

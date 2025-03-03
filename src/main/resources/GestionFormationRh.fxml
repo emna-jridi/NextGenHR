@@ -50,8 +50,11 @@
         <Label text="Durée (jours):" GridPane.columnIndex="0" GridPane.rowIndex="6" />
         <TextField fx:id="duree" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
 
-        <Label text="URL de l'image:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-        <TextField fx:id="imageUrl" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+        <Label text="Image:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
+            <TextField fx:id="imagePath" editable="false" HBox.hgrow="ALWAYS" promptText="Aucune image sélectionnée" />
+            <Button fx:id="btnUploadImage" text="Parcourir..." onAction="#uploadImage" />
+        </HBox>
 
         <columnConstraints>
             <ColumnConstraints />

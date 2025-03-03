@@ -1,9 +1,8 @@
 package tn.esprit.Controller;
-
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,7 +10,6 @@ import javafx.scene.layout.*;
 import tn.esprit.models.Formation;
 import tn.esprit.services.ServiceFormation;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +33,10 @@ public class GestionFormation implements Initializable {
     @FXML private CheckBox debutantCheckBox;
     @FXML private CheckBox intermediaireCheckBox;
     @FXML private CheckBox avanceCheckBox;
-
+    @FXML private Pagination pagination;
     private List<Formation> allFormations = new ArrayList<>();
     private List<Formation> filteredFormations = new ArrayList<>();
+    private final int FORMATIONS_PER_PAGE = 6;
 
     private ServiceFormation serviceFormation = new ServiceFormation();
 
@@ -48,6 +47,7 @@ public class GestionFormation implements Initializable {
             applyFilters();
         });
         displayFormations(allFormations);
+        setupPagination();
     }
 
     private void loadFormationsFromDatabase() {
@@ -56,6 +56,41 @@ public class GestionFormation implements Initializable {
         filteredFormations = new ArrayList<>(allFormations);
     }
 
+    private void setupPagination() {
+        // Calculer le nombre de pages nécessaires
+        int pageCount = (int) Math.ceil((double) filteredFormations.size() / FORMATIONS_PER_PAGE);
+        pagination.setPageCount(pageCount);
+
+        // Définir le gestionnaire de pages
+        pagination.setPageFactory(this::createPage);
+
+        // Assurer que la page actuelle est valide
+        if (pagination.getCurrentPageIndex() >= pageCount) {
+            pagination.setCurrentPageIndex(0);
+        }
+    }
+    private Node createPage(int pageIndex) {
+        // Calculer l'index de début et de fin pour cette page
+        int fromIndex = pageIndex * FORMATIONS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + FORMATIONS_PER_PAGE, filteredFormations.size());
+
+        // Obtenir les formations pour cette page
+        List<Formation> pageFormations = filteredFormations.subList(fromIndex, toIndex);
+
+        // Afficher ces formations
+        formationsContainer.getChildren().clear();
+
+        for (Formation formation : pageFormations) {
+            try {
+                VBox card = createFormationCard(formation);
+                formationsContainer.getChildren().add(card);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return formationsContainer;
+    }
     @FXML
     private void searchFormations() {
         applyFilters();
@@ -75,6 +110,7 @@ public class GestionFormation implements Initializable {
         avanceCheckBox.setSelected(false);
         searchField.clear();
         filteredFormations = new ArrayList<>(allFormations);
+       // setupPagination();
         displayFormations(filteredFormations);
     }
 
@@ -140,26 +176,44 @@ public class GestionFormation implements Initializable {
     }
 
     private VBox createFormationCard(Formation formation) {
+
         VBox card = new VBox();
         card.getStyleClass().add("formation-card");
         card.setPrefWidth(250);
         card.setMaxWidth(250);
         card.setSpacing(10);
-
+       // card.setPadding(new Insets(10));
+        VBox.setMargin(card, new Insets(0, 0, 0, 15));
         ImageView imageView = new ImageView();
+
         try {
             if (formation.getImageUrl() != null && !formation.getImageUrl().isEmpty()) {
-                Image image = new Image(formation.getImageUrl());
-                imageView.setImage(image);
+                // Pour les chemins locaux (images uploadées)
+                if (formation.getImageUrl().startsWith("resources/") || formation.getImageUrl().startsWith("/resources/")) {
+                    // Utiliser le fichier local
+                    Image image = new Image("file:" + formation.getImageUrl());
+                    imageView.setImage(image);
+                } else {
+                    // Pour les URL web
+                    Image image = new Image(formation.getImageUrl());
+                    imageView.setImage(image);
+                }
             } else {
                 // Image par défaut
                 Image defaultImage = new Image(getClass().getResourceAsStream("/images/default-formation.png"));
                 imageView.setImage(defaultImage);
             }
         } catch (Exception e) {
+            System.out.println("Erreur de chargement d'image: " + e.getMessage());
+            // Image par défaut en cas d'erreur
             Image defaultImage = new Image(getClass().getResourceAsStream("/images/default-formation.png"));
             imageView.setImage(defaultImage);
         }
+
+        card.setOnMouseClicked(event -> {
+            openFormationLink(formation);
+        });
+        card.setStyle("-fx-cursor: hand;");
 
         imageView.setFitWidth(250);
         imageView.setFitHeight(150);
@@ -225,5 +279,18 @@ public class GestionFormation implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    private void openFormationLink(Formation formation) {
+        if (formation.getLien_formation() != null && !formation.getLien_formation().isEmpty()) {
+            try {
+                // Ouvrir le lien dans le navigateur par défaut
+                java.awt.Desktop.getDesktop().browse(new java.net.URI(formation.getLien_formation()));
+            } catch (Exception e) {
+                showAlert("Erreur", "Impossible d'ouvrir le lien : " + formation.getLien_formation());
+                e.printStackTrace();
+            }
+        } else {
+            showAlert("Information", "Aucun lien disponible pour cette formation.");
+        }
     }
 }

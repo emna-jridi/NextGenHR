@@ -11,7 +11,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="tn.esprit.Controller.GestionFormation"
             prefHeight="600.0" prefWidth="900.0"
-            stylesheets="@style.css">
+            stylesheets="@./style.css">
 
     <left>
         <VBox spacing="10" styleClass="sidebar" minWidth="200">
@@ -61,9 +61,9 @@
                 <Button text="Rechercher" fx:id="searchButton" onAction="#searchFormations"/>
             </HBox>
 
-            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
-                <FlowPane fx:id="formationsContainer" vgap="15" hgap="15"/>
-            </ScrollPane>
+
+            <FlowPane fx:id="formationsContainer" vgap="20" hgap="20" />
+            <Pagination fx:id="pagination" styleClass="pagination-controls" />
         </VBox>
     </center>
 </BorderPane>

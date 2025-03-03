@@ -8,11 +8,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Formation;
 import tn.esprit.services.ServiceFormation;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -60,7 +67,7 @@ public class GestionFormationRh  implements Initializable {
     private TextField duree;
 
     @FXML
-    private TextField imageUrl;
+    private TextField imagePath;
 
 
 
@@ -82,7 +89,7 @@ public class GestionFormationRh  implements Initializable {
 
     @FXML
     void ajouterFormation(ActionEvent event) {
-        if (tfNomFormation.getText().trim().isEmpty() || tfThemeFormation.getValue() == null || pdate.getValue() == null ||duree.getText().trim().isEmpty() || imageUrl.getText().trim().isEmpty() || lien.getText().trim().isEmpty()) {
+        if (tfNomFormation.getText().trim().isEmpty() || tfThemeFormation.getValue() == null || pdate.getValue() == null ||duree.getText().trim().isEmpty() || imagePath.getText().trim().isEmpty() || lien.getText().trim().isEmpty()) {
             showAlert("Erreur", "Veuillez remplir tous les champs !");
             return;
         }
@@ -90,14 +97,16 @@ public class GestionFormationRh  implements Initializable {
             showAlert("Erreur", "Le nom de la formation doit contenir uniquement des lettres et des chiffres.");
             return;
         }
-        if (!lien.getText().matches("\"^(https?://)?([\\\\da-z.-]+)\\\\.([a-z.]{2,6})([/\\\\w .-]*)*/?$\"")) {
+        if (!lien.getText().matches("^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w .-]*)*/?$"))
+        {
             showAlert("Erreur", "Le lien n'est pas valide !");
             return;
         }
-        if (!imageUrl.getText().matches("^(https?://)?([\\\\da-z.-]+)\\\\.([a-z.]{2,6})([/\\\\w .-]*)*\\\\.(jpg|jpeg|png|gif)$\"")) {
-            showAlert("Erreur", "L'url de l'image  n'est pas valide !");
+        if (!imagePath.getText().matches("^(https?://[^\\s]+\\.(jpg|jpeg|png|gif))|([^\\s]+\\.(jpg|jpeg|png|gif))$")) {
+            showAlert("Erreur", "L'URL ou le chemin de l'image n'est pas valide !");
             return;
         }
+
         LocalDate today = LocalDate.now();
         if (pdate.getValue().isBefore(today)) {
             showAlert("Erreur", "La date de la formation doit être supérieure à la date d'aujourd'hui.");
@@ -180,7 +189,7 @@ public class GestionFormationRh  implements Initializable {
         selectedFormation.setDescription(description.getText());
         selectedFormation.setLien_formation(lien.getText());
         selectedFormation.setNiveauDifficulte(Niveau_difficulte.getValue());
-        selectedFormation.setImageUrl(imageUrl.getText());
+        selectedFormation.setImageUrl(imagePath.getText());
         selectedFormation.setDuree(Integer.parseInt(duree.getText()));
         sf.update(selectedFormation);
         rafraichirTableView();
@@ -227,6 +236,51 @@ public class GestionFormationRh  implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    @FXML
+    public void uploadImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sélectionner une image");
+
+        // Filtrer pour n'afficher que les images
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        // Afficher la boîte de dialogue de sélection de fichier
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            try {
+                // Définir le répertoire de destination
+                String uploadDir = "resources/images/formations";
+                Path uploadPath = Paths.get(uploadDir);
+
+                // Créer le répertoire s'il n'existe pas
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // Générer un nom de fichier unique
+                String fileName = System.currentTimeMillis() + "_" + selectedFile.getName();
+                Path destination = uploadPath.resolve(fileName);
+
+                // Copier le fichier vers le répertoire de destination
+                Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+                // Mettre à jour le champ de texte avec le chemin
+                imagePath.setText(uploadDir + "/" + fileName);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Afficher une alerte d'erreur
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText("Erreur lors de l'importation de l'image");
+                alert.setContentText("Une erreur s'est produite: " + e.getMessage());
+                alert.showAndWait();
+            }
+        }
     }
 }
 
