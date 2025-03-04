@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="cardRoot" prefWidth="250.0" prefHeight="300.0" styleClass="formation-card"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+
+    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"
+          AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+
+        <!-- Image Display -->
+        <ImageView fx:id="imageFormation" fitWidth="250" fitHeight="140" preserveRatio="true"/>
+
+        <!-- Formation Details -->
+        <Label fx:id="nomFormation" styleClass="card-title"/>
+        <Label fx:id="themeFormation" styleClass="card-subtitle"/>
+
+        <HBox spacing="10">
+            <Label fx:id="dateFormation" styleClass="card-date"/>
+            <Label fx:id="niveauDifficulte" styleClass="card-difficulty"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

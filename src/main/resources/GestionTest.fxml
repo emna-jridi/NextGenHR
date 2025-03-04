@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" stylesheets="@Css/TeletravailEm.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
+    <padding>
+        <Insets />
+    </padding>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Titre du test:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="titreTest" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextArea fx:id="descriptionTest" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Durée (minutes):" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="dureeTest" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+    <TitledPane expanded="true" text="Questions">
+        <VBox spacing="10">
+            <ListView fx:id="questionsList" VBox.vgrow="ALWAYS" />
+
+            <HBox spacing="10">
+                <Button text="Ajouter Question" />
+                <Button text="Modifier Question" />
+                <Button text="Supprimer Question" />
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button text="Enregistrer Test" />
+        <Button text="Annuler" />
+    </HBox>
+
+    <Label text="Question:" />
+    <TextArea fx:id="questionText" VBox.vgrow="ALWAYS" />
+
+    <Label text="Type de réponse:" />
+    <ComboBox fx:id="typeReponse">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Checkbox (Choix multiple)" />
+                <String fx:value="ComboBox (Choix unique)" />
+                <String fx:value="Texte libre" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <TitledPane fx:id="optionsPane" text="Options de réponse">
+        <VBox spacing="5">
+            <ListView fx:id="optionsList" VBox.vgrow="ALWAYS" />
+            <HBox spacing="10">
+                <TextField fx:id="nouvelleOption" HBox.hgrow="ALWAYS" />
+                <Button text="+" />
+                <Button text="-" />
+            </HBox>
+            <CheckBox fx:id="multipleCorrect" text="Autoriser plusieurs réponses correctes" />
+        </VBox>
+    </TitledPane>
+
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button text="Valider" />
+        <Button text="Annuler" />
+    </HBox>
+
+    <padding>
+        <Insets />
+    </padding>
+</VBox>

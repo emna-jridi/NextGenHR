@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="contentPane" prefHeight="725.0" prefWidth="887.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.CandidatureController">
+   <children>
+      <Label layoutX="275.0" layoutY="645.0" text="Statut" />
+      <ListView fx:id="listcandidats" layoutX="65.0" layoutY="88.0" prefHeight="454.0" prefWidth="682.0" />
+      <Button layoutX="385.0" layoutY="561.0" mnemonicParsing="false" onAction="#Afficher" text="Afficher" />
+      <Button layoutX="553.0" layoutY="561.0" mnemonicParsing="false" onAction="#Supprimer" text="Supprimer" />
+      <Button layoutX="467.0" layoutY="561.0" mnemonicParsing="false" onAction="#Modifier" text="Modifier" />
+      <Label fx:id="alertemail" layoutX="85.0" layoutY="166.0" prefHeight="18.0" prefWidth="249.0" />
+      <Label fx:id="labeltelephone" layoutX="79.0" layoutY="230.0" prefHeight="18.0" prefWidth="250.0" />
+      <Button layoutX="647.0" layoutY="561.0" mnemonicParsing="false" onAction="#exportToPDF" text="Export to PDF" />
+      <CheckBox fx:id="tricandidature" layoutX="117.0" layoutY="55.0" mnemonicParsing="false" onAction="#triercand" text="Date" />
+      <Label layoutX="105.0" layoutY="24.0" text="Trier les candidatures !" />
+      <ChoiceBox fx:id="statutchoice" layoutX="338.0" layoutY="641.0" prefWidth="150.0" />
+      <Button layoutX="724.0" layoutY="667.0" mnemonicParsing="false" onAction="#archivecandidature" text="Candidatures archivées" />
+   </children>
+</AnchorPane>

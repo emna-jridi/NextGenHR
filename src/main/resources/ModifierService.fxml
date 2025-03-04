@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="703.0" prefWidth="934.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ModifierService">
+
+
+    <stylesheets>
+        <URL value="@styles/stylemodifservice.css" />
+    </stylesheets>
+
+    <children>
+        <!-- Cadre autour du formulaire -->
+        <Pane layoutX="103.0" layoutY="52.0" prefHeight="600.0" prefWidth="750.0" styleClass="form-container">
+
+            <!-- Titre -->
+            <Label alignment="CENTER" layoutX="262.0" layoutY="14.0" prefHeight="66.0" prefWidth="227.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Modifier Service">
+                <font>
+                    <Font size="36.0" />
+                </font>
+            </Label>
+
+            <!-- ID Service (Non éditable) -->
+            <Label layoutX="99.0" layoutY="106.0" text="ID Service:" />
+            <TextField fx:id="idServiceField" alignment="CENTER" editable="false" layoutX="267.0" layoutY="99.0" prefHeight="33.0" prefWidth="273.0" promptText="id service" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="225.0" layoutY="101.0">
+                <image>
+                    <Image url="@images/id_icon.png" />
+                </image>
+            </ImageView>
+
+            <!-- Nom Service -->
+            <Label layoutX="92.0" layoutY="156.0" text="Nom Service:" />
+            <TextField fx:id="nomServiceField" alignment="CENTER" layoutX="267.0" layoutY="149.0" prefHeight="33.0" prefWidth="273.0" promptText="Saisir nom du service" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="225.0" layoutY="151.0">
+                <image>
+                    <Image url="@images/service_icon.png" />
+                </image>
+            </ImageView>
+
+            <!-- Description -->
+            <Label layoutX="94.0" layoutY="217.0" text="Description:" />
+            <TextField fx:id="descriptionServiceField" alignment="CENTER" layoutX="267.0" layoutY="210.0" prefHeight="33.0" prefWidth="273.0" promptText="Saisir la description" />
+
+            <!-- Type Service -->
+            <Label layoutX="116.0" layoutY="272.0" text="Type:" />
+            <TextField fx:id="typeServiceField" alignment="CENTER" layoutX="267.0" layoutY="265.0" prefHeight="33.0" prefWidth="273.0" promptText="Saisir le type" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="225.0" layoutY="267.0">
+                <image>
+                    <Image url="@images/type_icon.png" />
+                </image>
+            </ImageView>
+
+            
+            <!-- Date Début -->
+            <Label layoutX="96.0" layoutY="324.0" text="Date Début:" />
+            <DatePicker fx:id="dateDebutField" layoutX="270.0" layoutY="310.0" prefHeight="33.0" prefWidth="266.0" promptText="date début du service" />
+
+            <!-- Date Fin -->
+            <Label layoutX="105.0" layoutY="374.0" text="Date Fin:" />
+            <DatePicker fx:id="dateFinField" layoutX="270.0" layoutY="360.0" prefHeight="33.0" prefWidth="266.0" promptText="date fin du service" />
+
+            <!-- Statut du Service -->
+            <Label layoutX="113.0" layoutY="423.0" text="Statut:" />
+            <RadioButton fx:id="statusActif" layoutX="320.0" layoutY="424.0" selected="true" text="Actif" />
+            <RadioButton fx:id="statusInactif" layoutX="438.0" layoutY="424.0" text="Inactif" />
+
+            <!-- Bouton Enregistrer -->
+            <Button layoutX="300.0" layoutY="488.0" onAction="#handleSave" prefHeight="48.0" prefWidth="150.0" text="Enregistrer" />
+        </Pane>
+    </children>
+</AnchorPane>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="500.0" minWidth="800.0" prefHeight="958.0" prefWidth="1704.0" style="-fx-background-color: #E3EDF9;" stylesheets="@styles/stylelistcontrats.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.MainViewController">
+
+    <!-- Barre supérieure -->
+    <top>
+        <AnchorPane prefHeight="79.0" prefWidth="1742.0" style="-fx-background-color: #253D90;" stylesheets="@Css/MainView.css">
+            <children>
+                <HBox alignment="CENTER_LEFT" layoutX="1515.0" layoutY="14.0" prefHeight="65.0" prefWidth="185.0" spacing="10" style="-fx-background-color: #FFC20E; -fx-background-radius: 30; -fx-padding: 5px;" stylesheets="@Css/MainView.css">
+                    <children>
+                        <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@images/User_icon-cp.png" />
+                            </image>
+                        </ImageView>
+                        <Button fx:id="profileButton" onAction="#handleProfile" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-text-fill: #232423; -fx-font-size: 18px; -fx-font-weight: bold;" stylesheets="@Css/MainView.css" text="Profil" />
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </top>
+
+    <!-- Menu latéral -->
+    <left>
+        <VBox prefHeight="879.0" prefWidth="289.0" style="-fx-background-color: #253D90; -fx-padding: 20px;">
+            <Button fx:id="accueil" onAction="#showHome" prefHeight="19.0" prefWidth="194.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" stylesheets="@Css/MainView.css" text="🏠 Accueil">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button fx:id="TTem" onAction="#showTeletravailEm" prefHeight="34.0" prefWidth="203.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" stylesheets="@Css/MainView.css" text="💼 Télétravail Employé">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button fx:id="ResSalle" onAction="#showReserationSalle" prefHeight="34.0" prefWidth="241.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" stylesheets="@Css/MainView.css" text="🏢 Réserver une salle">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button fx:id="Congé" onAction="#showConge" prefHeight="34.0" prefWidth="244.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" stylesheets="@Css/MainView.css" text="🏢 Gestion des congés">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button fx:id="Reunion" onAction="#showReunion" prefHeight="34.0" prefWidth="248.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" stylesheets="@Css/MainView.css" text="🏢 Gestion des réunions">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button fx:id="candidatures" onAction="#showCandidature" prefHeight="34.0" prefWidth="239.0" style="-fx-background-color: #E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: white; -fx-border-width: 2px;" stylesheets="@Css/MainView.css" text="🏢 Gestion des candidatures">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showFormationEm" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Formation ">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showListeOffre" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Offres d'emploi ">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button onAction="#showtest" prefHeight="34.0" prefWidth="180.0" style="-fx-background-color: E3EDF9; -fx-text-fill: black; -fx-font-size: 14px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;" text="Test ">
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Button>
+            <Button fx:id="btnLogout" alignment="BOTTOM_LEFT" onAction="#handleLogout" style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 16px; -fx-font-weight: bold;" stylesheets="@Css/MainView.css" text="Déconnexion">
+                <VBox.margin>
+                    <Insets top="40.0" />
+                </VBox.margin>
+            </Button>
+        </VBox>
+    </left>
+
+    <!-- Contenu principal -->
+    <center>
+        <AnchorPane fx:id="contentPane" prefHeight="879.0" prefWidth="1369.0" style="-fx-background-color: #E3EDF9;">
+            <VBox fx:id="homePage" alignment="CENTER" prefHeight="389.0" prefWidth="1352.0" spacing="20.0">
+                <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="262.0" prefWidth="1636.0" style="-fx-font-size: 180px; -fx-text-fill: #2C3E50;" stylesheets="@Css/MainView.css" text="NextGenHR" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="9.0" />
+                    </font>
+                </Label>
+            </VBox>
+            <Label layoutX="146.0" layoutY="502.0" prefHeight="71.0" prefWidth="1097.0" style="-fx-font-size: 50px; -fx-text-fill: #34495E;" stylesheets="@Css/MainView.css" text="Gérez toutes les opérations RH avec confort.">
+            <font>
+               <Font size="11.0" />
+            </font></Label>
+        </AnchorPane>
+    </center>
+</BorderPane>

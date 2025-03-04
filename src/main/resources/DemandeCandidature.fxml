@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane fx:id="contentPane" prefHeight="636.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.DemandeCandidature">
+   <children>
+      <Label layoutX="116.0" layoutY="66.0" prefHeight="18.0" prefWidth="344.0" text="Veuillez saisir vos informations ici :" />
+      <TextField fx:id="txtNom" layoutX="225.0" layoutY="103.0" />
+      <TextField fx:id="txtPrenom" layoutX="225.0" layoutY="155.0" />
+      <TextField fx:id="txtEmail" layoutX="225.0" layoutY="196.0" />
+      <TextField fx:id="txtTelephone" layoutX="225.0" layoutY="254.0" />
+      <DatePicker fx:id="dateCandidature" layoutX="225.0" layoutY="305.0" />
+      <TextField fx:id="txtCv" layoutX="225.0" layoutY="354.0" />
+      <Button fx:id="importCV" layoutX="375.0" layoutY="354.0" mnemonicParsing="false" onAction="#importerCV" text="Importer" />
+      <TextField fx:id="txtLettre" layoutX="225.0" layoutY="406.0" />
+      <Button fx:id="importLettre" layoutX="375.0" layoutY="406.0" mnemonicParsing="false" onAction="#importerLettre" text="Importer" />
+      <ComboBox fx:id="listeoffres" layoutX="202.0" layoutY="464.0" onAction="#selectionner" prefWidth="150.0" />
+      <Label layoutX="128.0" layoutY="107.0" text="Votre Nom" />
+      <Label layoutX="128.0" layoutY="159.0" text="Votre Prènom" />
+      <Label layoutX="116.0" layoutY="200.0" text="Votre adresse mail" />
+      <Label layoutX="16.0" layoutY="258.0" text="Votre numéro de téléphone joignable" />
+      <Label layoutX="128.0" layoutY="309.0" text="Date" />
+      <Label layoutX="128.0" layoutY="358.0" text="Votre CV" />
+      <Label layoutX="70.0" layoutY="410.0" text="Votre Lettre de Motivation" />
+      <Label layoutX="104.0" layoutY="468.0" text="L'offre choisie" />
+      <Pane layoutX="509.0" layoutY="95.0" prefHeight="394.0" prefWidth="314.0" />
+      <Label fx:id="alertemail" layoutX="175.0" layoutY="231.0" prefHeight="18.0" prefWidth="249.0" />
+      <Label fx:id="labeltelephone" layoutX="216.0" layoutY="283.0" prefHeight="18.0" prefWidth="250.0" />
+      <Button fx:id="enregistrer" layoutX="374.0" layoutY="540.0" mnemonicParsing="false" onAction="#enregistrer" text="enregistrer votre candidature" />
+      <Button fx:id="revenirid" layoutX="16.0" layoutY="14.0" mnemonicParsing="false" onAction="#revenir" text="page précedente" />
+   </children>
+</AnchorPane>

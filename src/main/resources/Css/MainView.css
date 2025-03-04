@@ -1,0 +1,88 @@
+/* Style général */
+.root {
+    -fx-font-family: 'Arial';
+    -fx-background-color: #E3EDF9;
+}
+
+/* Barre supérieure */
+AnchorPane {
+    -fx-background-color: #253D90;
+}
+
+/* Bouton Profil */
+#profileButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #232423;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+#profileButton:hover {
+    -fx-text-fill: #FFC20E;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Menu latéral */
+VBox {
+    -fx-background-color: #253D90;
+    -fx-padding: 20px;
+}
+
+/* Boutons du menu */
+Button {
+    -fx-background-color: #E3EDF9;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+Button:hover {
+    -fx-background-color: #FFC20E;
+    -fx-text-fill: white;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Bouton Déconnexion */
+#btnLogout {
+    -fx-background-color: #D9534F;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15px;
+    -fx-padding: 10px;
+}
+#btnLogout:hover {
+    -fx-background-color: #C9302C;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Contenu principal */
+#contentPane {
+    -fx-background-color: #E3EDF9;
+    -fx-padding: 20px;
+}
+
+/* Titre principal */
+Label {
+    -fx-font-size: 24px;
+    -fx-text-fill: #2C3E50;
+}
+
+/* Animation pour les boutons */
+@keyframes scaleUp {
+    0% { -fx-scale-x: 1; -fx-scale-y: 1; }
+    50% { -fx-scale-x: 1.05; -fx-scale-y: 1.05; }
+    100% { -fx-scale-x: 1; -fx-scale-y: 1; }
+}
+
+Button:hover {
+    -fx-animation: scaleUp 0.3s ease-in-out;
+}
