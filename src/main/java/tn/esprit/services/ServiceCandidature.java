@@ -140,11 +140,97 @@ public class ServiceCandidature{
             }
             return candidatures;
         }
+   /* public List<Candidature> getCandidaturesByUserId(int userId) {
+        List<Candidature> candidatures = new ArrayList<>();
+        String query = "SELECT c.*, o.titre AS offreTitre " + // On récupère tout de `candidature` et seulement `titre` de `offreemploi`
+                "FROM candidature c " +
+                "JOIN offreemploi o ON c.offreId = o.id " +
+                "WHERE c.candidat_id = ?";
+
+        ;
+
+        try (Connection con = MyDatabase.getInstance().getCnx();
+             PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, userId);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Candidature candidature = new Candidature();
+                    // Récupérer les données de la candidature depuis ResultSet et ajouter à la liste
+                    candidature.setId(rs.getInt("id"));
+                    candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
+                    candidature.setStatut(Statut.valueOf(rs.getString("Statut")));
+                    candidature.setCvUrl(rs.getString("cvUrl"));
+                    candidature.setLettreMotivation(rs.getString("lettreMotivation"));
+                    candidature.setNom(rs.getString("Nom"));
+                    candidature.setPrenom(rs.getString("Prenom"));
+                    candidature.setEmail(rs.getString("email"));
+                    candidature.setTelephone(rs.getString("telephone"));
+                    Offreemploi offre = new Offreemploi();
+                    offre.setTitre(rs.getString("offreTitre")); // On ne récupère que le titre
+                    candidature.setOffreemploi(offre);
+
+                    candidatures.add(candidature);
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Les candidatures : " + candidatures.toString());
+
+        return candidatures;
+    }*/
+   public List<Candidature> getCandidaturesByUserId(int userId) {
+       List<Candidature> candidatures = new ArrayList<>();
+       String query = "SELECT c.*, o.titre AS offreTitre " +
+               "FROM candidature c " +
+               "JOIN offreemploi o ON c.offreId = o.id " +
+               "WHERE c.candidat_id = ?";
+
+       Connection con = null;
+       PreparedStatement pst = null;
+       ResultSet rs = null;
+
+       try {
+           con = MyDatabase.getInstance().getCnx(); // Récupération de la connexion
+           pst = con.prepareStatement(query);
+           pst.setInt(1, userId); // Remplacement du `?` par la valeur `userId`
+           rs = pst.executeQuery();
+
+           while (rs.next()) {
+               Candidature candidature = new Candidature();
+               candidature.setId(rs.getInt("id"));
+               candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
+               candidature.setStatut(Statut.valueOf(rs.getString("statut")));
+               candidature.setCvUrl(rs.getString("cvUrl"));
+               candidature.setLettreMotivation(rs.getString("lettreMotivation"));
+               candidature.setNom(rs.getString("nom"));
+               candidature.setPrenom(rs.getString("prenom"));
+               candidature.setEmail(rs.getString("email"));
+               candidature.setTelephone(rs.getString("telephone"));
+
+               Offreemploi offre = new Offreemploi();
+               offre.setTitre(rs.getString("offreTitre")); // On ne récupère que le titre
+               candidature.setOffreemploi(offre);
+
+               candidatures.add(candidature);
+           }
+       } catch (SQLException e) {
+           System.out.println("Erreur lors de la récupération des candidatures : " + e.getMessage());
+       } finally {
+           // Fermeture des ressources
+           try {
+               if (rs != null) rs.close();
+               if (pst != null) pst.close();
+           } catch (SQLException e) {
+               System.out.println("Erreur lors de la fermeture des ressources : " + e.getMessage());
+           }
+           return candidatures;
+       }};
 
 
 
-
-    public void updatee (Candidature candidature, Offreemploi offre) {
+           public void updatee (Candidature candidature, Offreemploi offre) {
         String qry = "UPDATE candidature SET dateCandidature=?, statut=?, cvUrl=?, lettreMotivation=?, offreId=?, Nom=?, Prenom=?, email=?, telephone=? WHERE id=?";
 
         try {
@@ -198,7 +284,7 @@ public class ServiceCandidature{
         }
         return candidature;
     }
-    public void delete(int id) {
+   public void delete(int id) {
 
         String qry = "DELETE FROM candidature WHERE id=?";
         try {
@@ -210,6 +296,8 @@ public class ServiceCandidature{
             System.out.println("Erreur lors de la suppression de la candidature : " + e.getMessage());
         }
     }
+
+
     public void update(Candidature candidature) {
         String qry = "UPDATE candidature SET dateCandidature=?, statut=?, cvUrl=?, lettreMotivation=?, offreId=?, Nom=?, Prenom=?, email=?, telephone=? WHERE id=?";
 
@@ -272,6 +360,7 @@ public class ServiceCandidature{
 
         return candidatures;
     }
+
 
 
 

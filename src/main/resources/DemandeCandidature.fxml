@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 
 <AnchorPane fx:id="contentPane" prefHeight="636.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.DemandeCandidature">
    <children>
@@ -29,10 +29,14 @@
       <Label layoutX="128.0" layoutY="358.0" text="Votre CV" />
       <Label layoutX="70.0" layoutY="410.0" text="Votre Lettre de Motivation" />
       <Label layoutX="104.0" layoutY="468.0" text="L'offre choisie" />
-      <Pane layoutX="509.0" layoutY="95.0" prefHeight="394.0" prefWidth="314.0" />
       <Label fx:id="alertemail" layoutX="175.0" layoutY="231.0" prefHeight="18.0" prefWidth="249.0" />
       <Label fx:id="labeltelephone" layoutX="216.0" layoutY="283.0" prefHeight="18.0" prefWidth="250.0" />
       <Button fx:id="enregistrer" layoutX="374.0" layoutY="540.0" mnemonicParsing="false" onAction="#enregistrer" text="enregistrer votre candidature" />
       <Button fx:id="revenirid" layoutX="16.0" layoutY="14.0" mnemonicParsing="false" onAction="#revenir" text="page précedente" />
+      <ButtonBar layoutX="572.0" layoutY="533.0" prefHeight="40.0" prefWidth="200.0">
+         <buttons>
+            <Button mnemonicParsing="false" onAction="#MesCandidatures" text="Vos Candidatures" />
+         </buttons>
+      </ButtonBar>
    </children>
 </AnchorPane>

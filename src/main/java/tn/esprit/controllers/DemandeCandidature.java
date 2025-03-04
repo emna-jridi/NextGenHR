@@ -282,6 +282,11 @@ public class DemandeCandidature {
         switchView("/OFFRECandidat.fxml");
 
     }
+    @FXML
+    void MesCandidatures(ActionEvent event) {
+        switchView(("/MesCandidatures.fxml"));
+
+    }
 
 
 }
