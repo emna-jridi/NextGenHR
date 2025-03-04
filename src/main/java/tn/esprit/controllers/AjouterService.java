@@ -12,27 +12,21 @@ public class AjouterService {
 
     @FXML
     private TextField nomService;
-
     @FXML
     private TextArea descriptionService;
-
     @FXML
     private TextField typeService;
-
     @FXML
     private DatePicker dateDebutService;
-
     @FXML
     private DatePicker dateFinService;
-
     @FXML
     private RadioButton radioActif;
-
     @FXML
     private RadioButton radioInactif;
-
     @FXML
     private ToggleGroup statusGroup;
+
 
     private final ServiceService serviceService = new ServiceService();
 
@@ -43,7 +37,7 @@ public class AjouterService {
     }
 
 
-
+    //réinitialiser les champs en cliquant sur bouton clear
     @FXML
     void clearFields(ActionEvent event) {
         dateDebutService.setValue(null);
@@ -53,13 +47,15 @@ public class AjouterService {
         descriptionService.clear();
         radioActif.setSelected(true);
         radioInactif.setSelected(false);
-
         /*// Réinitialiser les labels de validation
         emailValidationLabel.setText("");
         numTelValidationLabel.setText("");
         montantValidationLabel.setText("");*/
     }
 
+
+
+    //ajouter service
     @FXML
     void ajouterService(ActionEvent event) {
         String nom = nomService.getText().trim();
@@ -68,7 +64,6 @@ public class AjouterService {
         LocalDate dateDebut = dateDebutService.getValue();
         LocalDate dateFin = dateFinService.getValue();
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
-
 
         if (nom.isEmpty() && description.isEmpty() && type.isEmpty() && dateDebut == null && dateFin == null) {
             showAlert("Erreur", "Veuillez remplir tous les champs svp.");
@@ -113,7 +108,20 @@ public class AjouterService {
         }
 
         showAlert("Succès", "Le service a été ajouté avec succès.");
-        closeWindow();
+        resetForm();
+    }
+
+
+    private void resetForm() {
+        // Réinitialisation des TextField
+        nomService.clear();
+        descriptionService.clear();
+        typeService.clear();
+        dateDebutService.setValue(null);
+        dateFinService.setValue(null);
+        radioActif.setSelected(false);
+        radioInactif.setSelected(false);
+
     }
 
     private void showAlert(String title, String message) {
@@ -123,6 +131,8 @@ public class AjouterService {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
 
     private void closeWindow() {
         ((Stage) nomService.getScene().getWindow()).close();

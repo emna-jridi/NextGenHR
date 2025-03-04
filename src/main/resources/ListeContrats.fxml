@@ -123,6 +123,7 @@
                 <TableColumn fx:id="colDateFin" prefWidth="100.0" text="Date Fin" />
                 <TableColumn fx:id="colMontant" prefWidth="80.0" text="Montant" />
                 <TableColumn fx:id="colStatut" text="Statut" />
+                <TableColumn fx:id="colModePaiement" text="Mode Paiement" />
                 <TableColumn fx:id="colDetails" text="Détails" />
 
 

@@ -13,6 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.scene.control.ComboBox?>
 <AnchorPane prefHeight="703.0" prefWidth="934.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ModifierContrat">
 
 
@@ -22,7 +23,7 @@
 
     <children>
         <!-- Cadre autour du formulaire -->
-        <Pane layoutX="297.0" layoutY="42.0" prefHeight="570.0" prefWidth="478.0" styleClass="form-container">
+        <Pane layoutX="297.0" layoutY="42.0" prefHeight="640.0" prefWidth="478.0" styleClass="form-container">
 
             <!-- Titre -->
             <Label alignment="CENTER" layoutX="131.0" layoutY="14.0" prefHeight="62.0" prefWidth="216.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Modifier Contrat">
@@ -44,8 +45,8 @@
 
             <!-- Statut du Contrat -->
             <Label layoutX="43.0" layoutY="410.0" text="Statut du Contrat:" />
-            <RadioButton fx:id="statusActif" layoutX="239.0" layoutY="411.0" selected="true" text="Actif" />
-            <RadioButton fx:id="statusInactif" layoutX="347.0" layoutY="411.0" text="Inactif" />
+            <RadioButton fx:id="statusActif" layoutX="250.0" layoutY="415.0" selected="true" text="Actif" />
+            <RadioButton fx:id="statusInactif" layoutX="352.0" layoutY="415.0" text="Inactif" />
 
             <!-- Montant -->
             <Label layoutX="56.0" layoutY="360.0" text="Montant:" />
@@ -84,11 +85,17 @@
 
 
             <!-- Liste des Services-->
-            <Label layoutX="44.0" layoutY="430.0" text="Services :" />
-            <CheckComboBox fx:id="checkComboBoxServices" layoutX="200.0" layoutY="430.0" prefHeight="33.0" prefWidth="266.0"     />
+            <Label layoutX="44.0" layoutY="440.0" text="Services :" />
+            <CheckComboBox fx:id="checkComboBoxServices" layoutX="200.0" layoutY="440.0" prefHeight="33.0" prefWidth="266.0"     />
+
+            <!-- Mode de Paiement -->
+            <Label layoutX="44.0" layoutY="490.0" text="Mode de Paiement :" />
+            <ComboBox fx:id="comboBoxModePaiement" layoutX="200.0" layoutY="490.0" prefHeight="33.0" prefWidth="266.0" />
+
+
 
             <!-- Bouton Enregistrer -->
-            <Button fx:id="btnSave" layoutX="108.0" layoutY="476.0" onAction="#handleSave" prefHeight="48.0" prefWidth="144.0" text="Enregistrer">
+            <Button fx:id="btnSave" layoutX="108.0" layoutY="550.0" onAction="#handleSave" prefHeight="48.0" prefWidth="144.0" text="Enregistrer">
                 <graphic>
                     <ImageView fx:id="saveIcon" fitHeight="20.0" fitWidth="20.0">
                         <image>
@@ -97,7 +104,7 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="btnIgnore" layoutX="229.0" layoutY="476.0" onAction="#handleCancel" prefHeight="48.0" prefWidth="131.0" text="Annuler">
+            <Button fx:id="btnIgnore" layoutX="229.0" layoutY="550.0" onAction="#handleCancel" prefHeight="48.0" prefWidth="131.0" text="Annuler">
                 <graphic>
                     <ImageView fx:id="cancelIcon" fitHeight="20.0" fitWidth="20.0">
                         <image>

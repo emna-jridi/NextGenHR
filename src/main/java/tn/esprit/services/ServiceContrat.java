@@ -2,6 +2,7 @@ package tn.esprit.services;
 
 import tn.esprit.interfaces.IServices;
 import tn.esprit.models.Contrat;
+import tn.esprit.models.ModePaiement;
 import tn.esprit.models.Service;
 import tn.esprit.utils.MyDatabase;
 import java.sql.*;
@@ -28,7 +29,7 @@ public class ServiceContrat implements IServices<Contrat> {
             return;
         }
 
-        String qry = "INSERT INTO `contrat`( `dateDebutContrat`, `dateFinContrat`, `statusContrat`, `montantContrat`, `nomClient`, `emailClient`, `telephoneClient`) VALUES (?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `contrat`( `dateDebutContrat`, `dateFinContrat`, `statusContrat`, `montantContrat`, `nomClient`, `emailClient`, `telephoneClient`, `modePaiement`) VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry, Statement.RETURN_GENERATED_KEYS);
             pstm.setDate(1, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
@@ -38,6 +39,7 @@ public class ServiceContrat implements IServices<Contrat> {
             pstm.setString(5, contrat.getNomClient());
             pstm.setString(6, contrat.getEmailClient());
             pstm.setString(7, contrat.getTelephoneClient());
+            pstm.setString(8, contrat.getModeDePaiement().name());
 
             pstm.executeUpdate();
 
@@ -86,6 +88,13 @@ public class ServiceContrat implements IServices<Contrat> {
                 c.setEmailClient(rs.getString("emailClient"));
                 c.setTelephoneClient(rs.getString("telephoneClient"));
 
+                // Conversion du mode de paiement (String → Enum)
+                String modePaiementStr = rs.getString("modePaiement");
+                if (modePaiementStr != null) {
+                    c.setModeDePaiement(ModePaiement.valueOf(modePaiementStr));
+                }
+
+
                 // Récupérer les services associés à ce contrat
                 String serviceQry = "SELECT s.* FROM `services` s " +
                         "JOIN `contrat_services` cs ON s.idService = cs.service_id " +
@@ -120,7 +129,7 @@ public class ServiceContrat implements IServices<Contrat> {
     //Mettre à jour un contrat//
     @Override
     public void update(Contrat contrat) {
-        String qry = "UPDATE `contrat` SET `dateDebutContrat` = ?, `dateFinContrat` = ?, `statusContrat` = ?, `montantContrat` = ?, `nomClient` = ?, `emailClient` = ?, `telephoneClient` = ? WHERE `idContrat` = ?";
+        String qry = "UPDATE `contrat` SET `dateDebutContrat` = ?, `dateFinContrat` = ?, `statusContrat` = ?, `montantContrat` = ?, `nomClient` = ?, `emailClient` = ?, `telephoneClient` = ?, `modePaiement` = ? WHERE `idContrat` = ?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setDate(1, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
@@ -130,7 +139,9 @@ public class ServiceContrat implements IServices<Contrat> {
             pstm.setString(5, contrat.getNomClient());
             pstm.setString(6, contrat.getEmailClient());
             pstm.setString(7, contrat.getTelephoneClient());
-            pstm.setInt(8, contrat.getIdContrat());
+            // Ajouter le mode de paiement (Enum → String)
+            pstm.setString(8, contrat.getModeDePaiement().name());
+            pstm.setInt(9, contrat.getIdContrat());
 
             pstm.executeUpdate();
 
@@ -162,7 +173,7 @@ public class ServiceContrat implements IServices<Contrat> {
     @Override
     public void delete(int idContrat) {
         // 1. Supprimer d'abord les services associés à ce contrat dans la table de jointure
-        String deleteServicesQry = "DELETE FROM `contrat_services` WHERE `idContrat` = ?";
+        String deleteServicesQry = "DELETE FROM `contrat_services` WHERE `contrat_id` = ?";
 
         try {
             // Supprimer les services associés au contrat
@@ -235,7 +246,11 @@ public class ServiceContrat implements IServices<Contrat> {
                 contrat.setNomClient(rs.getString("nomClient"));
                 contrat.setEmailClient(rs.getString("emailClient"));
                 contrat.setTelephoneClient(rs.getString("telephoneClient"));
-                //contrat.setIdService(rs.getInt("idService"));
+                // Récupérer le mode de paiement (Enum)
+                String modePaiementStr = rs.getString("modePaiement");
+                if (modePaiementStr != null) {
+                    contrat.setModeDePaiement(ModePaiement.valueOf(modePaiementStr));
+                }
 
                 return contrat;
             }
@@ -273,7 +288,11 @@ public class ServiceContrat implements IServices<Contrat> {
                 c.setNomClient(rs.getString("nomClient"));
                 c.setEmailClient(rs.getString("emailClient"));
                 c.setTelephoneClient(rs.getString("telephoneClient"));
-                //c.setIdService(rs.getInt("idService"));
+                // Récupérer le mode de paiement (Enum)
+                String modePaiementStr = rs.getString("modePaiement");
+                if (modePaiementStr != null) {
+                    c.setModeDePaiement(ModePaiement.valueOf(modePaiementStr));
+                }
 
                 contrats.add(c);
             }

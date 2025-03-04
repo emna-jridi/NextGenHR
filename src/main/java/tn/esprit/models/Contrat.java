@@ -15,6 +15,7 @@ public class Contrat {
     private String emailClient;
     private List<Service> services;
     private String telephoneClient;
+    private ModePaiement modeDePaiement;
 
     // Constructeurs
 
@@ -23,7 +24,7 @@ public class Contrat {
     }
 
     public Contrat(int idContrat, LocalDate dateDebutContrat, LocalDate dateFinContrat,
-                   String statusContrat, int montantContrat, String nomClient, String emailClient, String telephoneClient) {
+                   String statusContrat, int montantContrat, String nomClient, String emailClient, String telephoneClient, ModePaiement modeDePaiement) {
         this.idContrat = idContrat;
         this.dateDebutContrat = dateDebutContrat;
         this.dateFinContrat = dateFinContrat;
@@ -33,10 +34,11 @@ public class Contrat {
         this.emailClient = emailClient;
         this.telephoneClient = telephoneClient;
         this.services = new ArrayList<>();
+        this.modeDePaiement = modeDePaiement;
     }
 
     public Contrat( LocalDate dateDebutContrat, LocalDate dateFinContrat,
-                   String statusContrat, int montantContrat, String nomClient, String emailClient, String telephoneClient) {
+                   String statusContrat, int montantContrat, String nomClient, String emailClient, String telephoneClient, ModePaiement modeDePaiement) {
         this.dateDebutContrat = dateDebutContrat;
         this.dateFinContrat = dateFinContrat;
         this.statusContrat = statusContrat;
@@ -45,6 +47,7 @@ public class Contrat {
         this.emailClient = emailClient;
         this.telephoneClient = telephoneClient;
         this.services = new ArrayList<>();
+        this.modeDePaiement = modeDePaiement;
     }
 
     // Getters et Setters
@@ -116,6 +119,13 @@ public class Contrat {
         this.services = services;
     }
 
+    public ModePaiement getModeDePaiement() {
+        return modeDePaiement;  // Getter pour récupérer le mode de paiement
+    }
+
+    public void setModeDePaiement(ModePaiement modeDePaiement) {
+        this.modeDePaiement = modeDePaiement;  // Setter pour définir le mode de paiement
+    }
     //méthode toString
     @Override
     public String toString() {
@@ -129,6 +139,7 @@ public class Contrat {
                 ", emailClient='" + emailClient + '\'' +
                 ", telephoneClient='" + telephoneClient + '\'' +
                 ", services=" + (services != null ? services.toString() : "Aucun service associé") +
+                ", modeDePaiement=" + modeDePaiement +
                 '}';
     }
 }

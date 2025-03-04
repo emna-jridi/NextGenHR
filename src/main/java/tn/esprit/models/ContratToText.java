@@ -1,10 +1,19 @@
 package tn.esprit.models;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContratToText {
 
     public static String generateContract(Contrat contrat) {
+
+        List<String> serviceNames = contrat.getServices().stream()
+                .map(Service::getNomService)
+                .collect(Collectors.toList());
+
+        String servicesList = String.join(", ", serviceNames);
+
         return "<html>" +
                 "<head>" +
                 "<meta charset='UTF-8'>" +
@@ -14,8 +23,7 @@ public class ContratToText {
                 "h2 { text-align: center; color: #333; }" +
                 "h3 { color: #555; border-bottom: 2px solid #ddd; padding-bottom: 5px; }" +
                 "p { margin: 10px 0; }" +
-
-
+                ".blue-text { color: blue; }" +
                 ".signatures-container { display: flex; justify-content: space-between; margin-top: 50px; padding: 0 50px; }" +
                 ".signature { text-align: center; width: 45%; }" +
                 ".signature p { font-weight: bold; margin-bottom: 5px; }" +
@@ -28,17 +36,23 @@ public class ContratToText {
                 "<h2>CONTRAT DE TRAVAIL</h2>" +
                 "<p><strong>Entre les soussignés :</strong></p>" +
                 "<p><strong>La société :</strong> NextGenHR, Adresse: 123 Rue de l'Entreprise, Numéro SIRET: 987654321.</p>" +
-                "<p><strong>Le/La Client(e) :</strong> " + contrat.getNomClient() + ", <strong>Email:</strong> " + contrat.getEmailClient() + ", <strong>Num Tel:</strong> " + contrat.getTelephoneClient() +  ".</p>" +
+                "<p><strong>Le/La Client(e) :</strong> <span class='blue-text'>" + contrat.getNomClient() + "</span> , <strong>Email:</strong> <span class='blue-text'>" + contrat.getEmailClient() + "</span> , <strong>Num Tel:</strong> <span class='blue-text'>" + contrat.getTelephoneClient() +  "</span> .</p>" +
                 "<h3>PRÉAMBULE </h3>" +
-                "<p>La société NextGenHR s'engage à fournir des services à" + contrat.getNomClient() + "selon les termes et conditions décrites dans ce contrat. Le client accepte les conditions énoncées dans le présent contrat pour bénéficier des services mentionnés ci-dessous. : " + ".</p>" +
+                "<p>La société <strong>NextGenHR</strong> s'engage à fournir des services à <span class='blue-text'>" + contrat.getNomClient() + "</span> selon les termes et conditions décrites dans ce contrat. Le/la client(e) accepte les conditions énoncées dans le présent contrat pour bénéficier des services mentionnés ci-dessous : " + "</p>" +
+                "<p>" +servicesList+ " " + ".</p>" +
                 "<h3>Article 1 : Objet du contrat</h3>" +
-                "<p>Le présent contrat a pour objet la fourniture des services suivants par la société NextGenHR au client(e)" + contrat.getNomClient() + ": " + ".</p>" +
+                "<p>Le présent contrat a pour objet la fourniture des services suivants par la société <strong>NextGenHR</strong> au client(e) <span class='blue-text'>" + contrat.getNomClient() + "</span> " + ".</p>" +
                 "<h3>Article 2 : Durée du Contrat</h3>" +
-                "<p>Le présent contrat débute le " + contrat.getDateDebutContrat() + "jusqu'au" + contrat.getDateFinContrat() + ", sauf résiliation anticipée conformément aux dispositions de l'article 6 du présent contrat. " + ".</p>" +
+                "<p>Le présent contrat débute le <span class='blue-text'>" + contrat.getDateDebutContrat() + "</span> jusqu'au <span class='blue-text'>" + contrat.getDateFinContrat() + "</span> , sauf résiliation anticipée conformément aux dispositions de l'article 6 du présent contrat. " + ".</p>" +
                 "<h3>Article 3 : Montant et Mode de Paiement</h3>" +
-                "<p>En contrepartie des services fournis par la société NextGenHR, le/la client(e) s'engage à payer la somme suivante :" + contrat.getMontantContrat() +" Mode de paiement " + ".</p>" +
+                "<p>En contrepartie des services fournis par la société <strong>NextGenHR</strong>, le/la client(e) s'engage à payer la somme suivante : <span class='blue-text'>" + contrat.getMontantContrat() +"</span> . Mode de paiement <span class='blue-text'>" + contrat.getModeDePaiement()  + "</span> .</p>" +
                 "<h3>Article 4 : Obligations de la Société</h3>" +
-                "<p>La société NextGenHR s'engage à :  Fournir les services définis dans le contrat dans les délais convenus, S'assurer de la qualité et de la conformité des services fournis, Fournir au client(e) toute l'assistance nécessaire pendant la durée du contrat " + ".</p>" +
+                "<p>La société <strong>NextGenHR</strong> s'engage à :  Fournir les services définis dans le contrat dans les délais convenus, S'assurer de la qualité et de la conformité des services fournis, Fournir au client(e) toute l'assistance nécessaire pendant la durée du contrat " + ".</p>" +
+                "<br>"+
+                "<br>"+
+                "<br>"+
+                "<br>"+
+                "<br>"+
                 "<h3>Article 5 : Obligations du Client</h3>" +
                 "<p>Le/la client(e) s'engage à : Payer la somme convenue dans les délais prévus, Fournir à la société toutes les informations nécessaires à la bonne exécution des services, Respecter les conditions et instructions liées à l'exécution des services " + ".</p>" +
                 "<h3>Article 6 : Résiliation du Contrat</h3>" +
@@ -46,20 +60,12 @@ public class ContratToText {
                 "<h3>Article 7 : Confidentialité</h3>" +
                 "<p>Les parties conviennent de garder strictement confidentielles toutes les informations obtenues dans le cadre de ce contrat. Cela comprend, sans s'y limiter, les informations commerciales, les informations sensibles sur les services et les données personnelles " + ".</p>" +
 
-                "<br>"+
-                "<br>"+
-                "<br>"+
-                "<br>"+
-                "<br>"+
-                "<br>"+
-                "<br>"+
-                "<br>"+
 
                 "<h3>Article 8 : Signatures</h3>" +
 
                 "<br>"+
 
-                "<p>Fait à Tunis, le " + LocalDate.now() + ".</p>" +
+                "<p>Fait à Tunis, le <span class='blue-text'>" + LocalDate.now() + "</span> .</p>" +
 
                 "<div class='signatures-container'>" +
                 "<div class='signature'>" +

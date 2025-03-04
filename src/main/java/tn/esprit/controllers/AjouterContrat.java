@@ -8,58 +8,47 @@ import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 import tn.esprit.models.Contrat;
+import tn.esprit.models.ModePaiement;
 import tn.esprit.models.Service;
 import tn.esprit.services.ServiceContrat;
 import tn.esprit.services.ServiceService;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+
+
 public class AjouterContrat {
 
     @FXML
     private DatePicker dateDebutContrat;
-
     @FXML
     private DatePicker dateFinContrat;
-
     @FXML
     private TextField montantContrat;
-
     @FXML
     private TextField nomClient;
-
     @FXML
     private TextField emailClient;
-
     @FXML
     private TextField numTelClient;
-
     @FXML
     private Label numTelValidationLabel;
-
-
     @FXML
     private RadioButton radioActif;
-
     @FXML
     private RadioButton radioInactif;
-
     @FXML
     private ToggleGroup statusGroup;
-
     @FXML
     private Label emailValidationLabel;
-
     @FXML
     private Label montantValidationLabel;
-
-
-
     @FXML
     private CheckComboBox<Service> checkComboBoxServices;
+    @FXML
+    private ComboBox<ModePaiement> comboBoxModePaiement;
 
 
     private ServiceContrat serviceContrat = new ServiceContrat();
@@ -72,6 +61,7 @@ public class AjouterContrat {
     public void setOnContratAdded(Runnable onContratAdded) {
         this.onContratAdded = onContratAdded;
     }
+
 
 
     @FXML
@@ -89,7 +79,6 @@ public class AjouterContrat {
             public String toString(Service service) {
                 return service == null ? "" : service.getNomService();
             }
-
             @Override
             public Service fromString(String string) {
                 return null;
@@ -97,7 +86,7 @@ public class AjouterContrat {
         });
 
 
-//écouteur de validation de email
+      //écouteur de validation de email
         emailClient.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.isEmpty()) {
                 emailValidationLabel.setText("");
@@ -111,7 +100,7 @@ public class AjouterContrat {
         });
 
 
-//écouteur de validation de num Tel
+      //écouteur de validation de num Tel
         numTelClient.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.isEmpty()) {
                 numTelValidationLabel.setText("");
@@ -130,7 +119,7 @@ public class AjouterContrat {
             }
         });
 
-//écouteur de validation du montant
+       //écouteur de validation du montant
         montantContrat.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.isEmpty()) {
                 montantValidationLabel.setText("");
@@ -147,11 +136,18 @@ public class AjouterContrat {
         });
 
 
+
+        // Ajouter les valeurs de l'énumération dans la ComboBox
+        comboBoxModePaiement.getItems().setAll(ModePaiement.values());
+        // Optionnel : définir une valeur par défaut
+       // comboBoxModePaiement.setValue(ModePaiement.CHEQUE);
+
+
     }
 
 
 
-
+//réinitialiser les champs en cliquant sur bouton clear
     @FXML
     void clearFields(ActionEvent event) {
         dateDebutContrat.setValue(null);
@@ -162,9 +158,8 @@ public class AjouterContrat {
         numTelClient.clear();
         radioActif.setSelected(true);
         radioInactif.setSelected(false);
-
-
-
+        checkComboBoxServices.getCheckModel().clearChecks();
+        comboBoxModePaiement.setValue(null);
         // Réinitialiser les labels de validation
         emailValidationLabel.setText("");
         numTelValidationLabel.setText("");
@@ -173,7 +168,7 @@ public class AjouterContrat {
 
 
 
-
+//remplir le checkcombobox avec les services existants
     private void loadServices() {
         List<Service> services = serviceService.getAll();
         ObservableList<Service> serviceList = FXCollections.observableArrayList(services);
@@ -181,6 +176,8 @@ public class AjouterContrat {
     }
 
 
+
+    //ajouter un contrat
     @FXML
     void ajouter(ActionEvent event) {
 
@@ -189,6 +186,8 @@ public class AjouterContrat {
         String email = emailClient.getText();
         String telClient = numTelClient.getText();
         String status = radioActif.isSelected() ? "Actif" : "Inactif";
+        ModePaiement modePaiementSelectionne = comboBoxModePaiement.getValue();
+
 
         if (montantStr.isEmpty() && nom.isEmpty() && email.isEmpty() && telClient.isEmpty() &&
                 dateDebutContrat.getValue() == null && dateFinContrat.getValue() == null) {
@@ -247,6 +246,11 @@ public class AjouterContrat {
             return;
         }
 
+        if (modePaiementSelectionne == null) {
+            showAlert("Erreur", "Veuillez sélectionner un mode de paiement.");
+            return;
+        }
+
         int montant = Integer.parseInt(montantStr);
 
         if (montant <= 0) {
@@ -254,7 +258,7 @@ public class AjouterContrat {
             return;
         }
 
-        Contrat contrat = new Contrat(dateDebutContrat.getValue(), dateFinContrat.getValue(), status, montant, nom, email, telClient);
+        Contrat contrat = new Contrat(dateDebutContrat.getValue(), dateFinContrat.getValue(), status, montant, nom, email, telClient, modePaiementSelectionne);
 
         // Récupérer les services sélectionnés
         ObservableList<Service> selectedServices = checkComboBoxServices.getCheckModel().getCheckedItems();
@@ -271,8 +275,6 @@ public class AjouterContrat {
 
         // Réinitialisation des champs du formulaire
         resetForm();
-
-        //closeWindow();
     }
 
 
@@ -282,15 +284,16 @@ public class AjouterContrat {
         nomClient.clear();
         emailClient.clear();
         numTelClient.clear();
-
-        // Réinitialisation des DatePicker
         dateDebutContrat.setValue(null);
         dateFinContrat.setValue(null);
-
-        // Réinitialisation des RadioButton
         radioActif.setSelected(false);
         radioInactif.setSelected(false);
+        checkComboBoxServices.getCheckModel().clearChecks();
+        comboBoxModePaiement.setValue(null);
     }
+
+
+
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -299,16 +302,16 @@ public class AjouterContrat {
         return matcher.matches();
     }
 
+
+
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-
         alert.showAndWait();
     }
 
-    /*private void closeWindow() {
-        ((Stage) comboTypeContrat.getScene().getWindow()).close();
-    }*/
+
 }

@@ -7,10 +7,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import tn.esprit.models.Contrat;
+import tn.esprit.models.ModePaiement;
 import tn.esprit.models.Service;
 import tn.esprit.services.ServiceContrat;
 import tn.esprit.services.ServiceService;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+
 
 public class ModifierContrat {
 
@@ -46,7 +46,8 @@ public class ModifierContrat {
     private Label montantValidationLabel;
     @FXML
     private CheckComboBox<String> checkComboBoxServices;
-
+    @FXML
+    private ComboBox<ModePaiement> comboBoxModePaiement;
 
     private Contrat contratToModify;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -57,6 +58,8 @@ public class ModifierContrat {
     private ServiceContrat contratService = new ServiceContrat();
     private ServiceService serviceService = new ServiceService();
 
+
+
     @FXML
     public void initialize() {
 
@@ -65,10 +68,7 @@ public class ModifierContrat {
         statusInactif.setToggleGroup(statusGroup);
 
         loadServices();
-
-
-
-
+        loadModePaiement();
 
 
         // Validation de l'email
@@ -83,7 +83,6 @@ public class ModifierContrat {
                 emailValidationLabel.setStyle("-fx-text-fill: #dc5b5b;");
             }
         });
-
 
 
         // Validation du numéro de téléphone
@@ -129,16 +128,21 @@ public class ModifierContrat {
     private void loadServices() {
         // Récupérer tous les services
         List<Service> services = serviceService.getAll();
-
         // Extraire uniquement les noms des services dans une liste ObservableList
         ObservableList<String> serviceNames = FXCollections.observableArrayList();
         for (Service service : services) {
             serviceNames.add(service.getNomService());
         }
-
         // Ajouter les noms des services au CheckComboBox
         checkComboBoxServices.getItems().setAll(serviceNames);
     }
+
+
+    private void loadModePaiement() {
+        ObservableList<ModePaiement> modePaiements = FXCollections.observableArrayList(ModePaiement.values());
+        comboBoxModePaiement.setItems(modePaiements);
+    }
+
 
 
 
@@ -147,7 +151,7 @@ public class ModifierContrat {
     private void handleCancel() {
         // Appeler la méthode dans ListContrats pour afficher le formulaire AjouterContrat
         listContratsController.showAjouterContratForm();
-        ((Stage) statusActif.getScene().getWindow()).close();
+        ((Stage) nomClientField.getScene().getWindow()).close();
     }
 
 
@@ -156,6 +160,8 @@ public class ModifierContrat {
     public void setListContratsController(ListContrats controller) {
         this.listContratsController = controller;
     }
+
+
 
     public void setContrat(Contrat contrat, ListContrats listContratsController) {
         this.contratToModify = contrat;
@@ -176,7 +182,7 @@ public class ModifierContrat {
 
 
 
-// Charger les services associés à ce contrat
+     // Charger les services associés à ce contrat
         List<Service> services = contratService.getServicesByContratId(contrat.getIdContrat());
         ObservableList<String> selectedServices = FXCollections.observableArrayList();
 
@@ -191,14 +197,27 @@ public class ModifierContrat {
         // Cocher les services associés au contrat
         for (int i = 0; i < checkComboBoxServices.getItems().size(); i++) {
             if (selectedServices.contains(checkComboBoxServices.getItems().get(i))) {
-                checkComboBoxServices.getCheckModel().check(i); // Cocher l'élément à l'index correspondant
+                checkComboBoxServices.getCheckModel().check(i);
             }
+        }
+
+
+
+
+        // Sélectionner le mode de paiement actuel dans le ComboBox
+        ModePaiement modePaiement = contrat.getModeDePaiement();
+        if (modePaiement != null) {
+            comboBoxModePaiement.setValue(modePaiement); // Sélectionner la valeur du mode de paiement actuel
         }
 
 
 
     }
 
+
+
+
+    //enregistrer les modifications
     @FXML
     private void handleSave() {
         try {
@@ -210,7 +229,7 @@ public class ModifierContrat {
             String emailClient = emailClientField.getText();
             String numTelClient = numTelClientField.getText();
 
-            // Validation des champs
+
             if (nomClient.isEmpty() && emailClient.isEmpty() && numTelClient.isEmpty() &&
                     dateDebut == null && dateFin == null) {
                 showAlert("Erreur", "Veuillez remplir les champs svp.");
@@ -247,9 +266,12 @@ public class ModifierContrat {
                 return;
             }
 
-
-            // Récupérer les services sélectionnés dans le CheckComboBox
-            //List<String> selectedServices = checkComboBoxServices.getCheckModel().getCheckedItems();
+            // Récupérer le mode de paiement sélectionné dans le ComboBox
+            ModePaiement modePaiement = comboBoxModePaiement.getValue();
+            if (modePaiement == null) {
+                showAlert("Erreur", "Le mode de paiement est obligatoire.");
+                return;
+            }
 
 
             // Mise à jour des données
@@ -260,17 +282,15 @@ public class ModifierContrat {
             contratToModify.setNomClient(nomClient);
             contratToModify.setEmailClient(emailClient);
             contratToModify.setTelephoneClient(numTelClient);
-
-
-
+            contratToModify.setModeDePaiement(modePaiement);
 
 
                 // Récupérer les services sélectionnés dans le CheckComboBox
                 List<Service> selectedServices = new ArrayList<>();
                 for (String serviceName : checkComboBoxServices.getCheckModel().getCheckedItems()) {
-                    int serviceId = getServiceIdByName(serviceName); // Récupérer l'ID du service
+                    int serviceId = getServiceIdByName(serviceName);
                     if (serviceId != -1) {
-                        Service service = serviceService.getById(serviceId); // Récupérer le service par ID
+                        Service service = serviceService.getById(serviceId);
                         selectedServices.add(service);
                     }
                 }

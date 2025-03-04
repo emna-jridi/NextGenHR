@@ -1,6 +1,5 @@
 package tn.esprit.controllers;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,14 +8,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import tn.esprit.models.Contrat;
 import tn.esprit.models.Service;
@@ -45,24 +43,20 @@ public class ListServices {
     private TableColumn<Service, String> colDateFin;
     @FXML
     private TableColumn<Service, String> colStatut;
-    /*@FXML
-    private Button btnModifier;
-    @FXML
-    private Button btnSupprimer;*/
     @FXML
     private TextField searchField;
-    @FXML
-    private CheckBox chkFiltrerType;
-    @FXML
-    private CheckBox chkTriServicesActifs;
     @FXML
     private ComboBox<String> comboTri;
     @FXML
     private AnchorPane anchorPaneForm;
+    @FXML
+    private ImageView refreshIcon;
 
 
     private final ServiceService serviceService = new ServiceService();
     private ObservableList<Service> serviceList;
+
+
 
     @FXML
     public void initialize() {
@@ -124,11 +118,10 @@ public class ListServices {
                 };
             }
         });
-
+        refreshIcon.setOnMouseClicked(event -> loadServices());
         loadServices();
 
-        /*chkFiltrerType.setOnAction(this::filtrerTypeService);
-        chkTriServicesActifs.setOnAction(this::filterActiveServices);*/
+
     }
 
     private void loadServices() {
@@ -230,6 +223,16 @@ public class ListServices {
 
     private void updateTableView(List<Service> services) {
         ObservableList<Service> observableServices = FXCollections.observableArrayList(services);
+        tableView.setItems(observableServices);
+    }
+
+
+    @FXML
+    private void refreshTable() {
+        // Récupère de nouvelles données pour la table, par exemple depuis une base de données ou une autre source
+        ObservableList<Service> observableServices = FXCollections.observableArrayList();
+
+        // Mettre à jour la TableView
         tableView.setItems(observableServices);
     }
 

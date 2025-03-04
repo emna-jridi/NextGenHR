@@ -52,6 +52,11 @@
                 <Label fx:id="lblStatut" styleClass="label-normal" />
             </HBox>
 
+            <HBox spacing="5">
+                <Label styleClass="label-bold" text="Mode Paiement :" />
+                <Label fx:id="lblModePaie" styleClass="label-normal" />
+            </HBox>
+
             <Label styleClass="label-bold" text="Services associés :" />
             <Label fx:id="lblServices" styleClass="label-normal" />
         </VBox>

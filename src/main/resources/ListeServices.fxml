@@ -78,7 +78,11 @@
             </graphic>
         </Button>
 
-
+        <ImageView fx:id="refreshIcon" fitHeight="24" fitWidth="24" layoutX="88.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#refreshTable">
+            <image>
+                <Image url="@/images/refresh.png" />
+            </image>
+        </ImageView>
 
 
         <!-- Icône de recherche -->

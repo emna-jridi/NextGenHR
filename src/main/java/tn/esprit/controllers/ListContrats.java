@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -26,9 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import javafx.stage.Stage;
-import tn.esprit.models.Contrat;
-import tn.esprit.models.ContratToText;
-import tn.esprit.models.PDFShiftService;
+import tn.esprit.models.*;
 import tn.esprit.services.ServiceContrat;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -60,6 +59,8 @@ public class ListContrats {
     @FXML
     private TableColumn<Contrat, Void> colDetails;
     @FXML
+    private Button btnSupprimer;
+    @FXML
     private TextField searchField;
     @FXML
     private AnchorPane anchorPaneForm;
@@ -67,11 +68,16 @@ public class ListContrats {
     private ComboBox<String> comboTri;
     @FXML
     private ImageView refreshIcon;
+    @FXML
+    private TableColumn<Contrat, String> colModePaiement;
 
 
 
     private final ServiceContrat contratService = new ServiceContrat();
     private ObservableList<Contrat> contratList;
+
+
+
 
     @FXML
     public void initialize() {
@@ -82,6 +88,7 @@ public class ListContrats {
         colDateFin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateFinContrat().toString()));
         colMontant.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMontantContrat()).asObject());
         colStatut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatusContrat()));
+        colModePaiement.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getModeDePaiement().name()));
         // Créer une TableCell personnalisée pour la colonne Statut
         colStatut.setCellFactory(new Callback<TableColumn<Contrat, String>, TableCell<Contrat, String>>() {
             @Override
@@ -96,10 +103,8 @@ public class ListContrats {
                         } else {
                             // Créer un StackPane pour superposer l'ellipse et le texte
                             StackPane stackPane = new StackPane();
-
                             // Créer une ellipse au lieu d'un cercle pour élargir la forme
                             Ellipse ellipse = new Ellipse(25, 15); // (largeur, hauteur)
-
                             // Mettre à jour la couleur de l'ellipse en fonction du statut
                             if (status.equals("Actif")) {
                                 ellipse.setFill(Color.rgb(144, 238, 144));  // Vert clair pour "Actif"
@@ -108,7 +113,6 @@ public class ListContrats {
                             } else {
                                 ellipse.setFill(Color.GRAY);  // Gris pour les autres statuts
                             }
-
                             // Créer un Label pour afficher le texte à l'intérieur de l'ellipse
                             Label label = new Label(status);
                             if (status.equals("Actif")) {
@@ -118,13 +122,10 @@ public class ListContrats {
                             } else {
                                 label.setTextFill(Color.BLACK);  // Texte noir pour les autres statuts
                             }
-
                             label.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;"); // Style du texte
-
                             // Ajouter l'ellipse et le texte au StackPane
                             stackPane.getChildren().addAll(ellipse, label);
                             StackPane.setAlignment(label, Pos.CENTER);
-
                             // Mettre le StackPane dans la cellule
                             setGraphic(stackPane);
                         }
@@ -134,8 +135,6 @@ public class ListContrats {
         });
 
         refreshIcon.setOnMouseClicked(event -> loadContrats());
-
-
 
 
         loadContrats();
@@ -469,7 +468,7 @@ public class ListContrats {
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         Row headerRow = sheet.createRow(0);
-        String[] columns = {"ID Contrat", "Nom Client(e)", "Email Client(e)", "NumTel Client(e)", "Date Début", "Date Fin", "Montant", "Statut"};
+        String[] columns = {"ID Contrat", "Nom Client(e)", "Email Client(e)", "NumTel Client(e)", "Date Début", "Date Fin", "Montant", "Statut", "Mode Paiement", "Services"};
         for (int i = 0; i < columns.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columns[i]);
@@ -495,6 +494,15 @@ public class ListContrats {
             row.createCell(5).setCellValue(contrat.getDateFinContrat().toString());
             row.createCell(6).setCellValue(contrat.getMontantContrat());
             row.createCell(7).setCellValue(contrat.getStatusContrat());
+            row.createCell(8).setCellValue(contrat.getModeDePaiement().toString());
+
+            // Get services for each contract and join them into a comma-separated string
+            List<Service> services = contrat.getServices();
+            String serviceNames = services.stream()
+                    .map(Service::getNomService)
+                    .collect(Collectors.joining(", "));
+            row.createCell(9).setCellValue(serviceNames);
+
 
             for (int i = 0; i < columns.length; i++) {
                 row.getCell(i).setCellStyle(dataStyle);

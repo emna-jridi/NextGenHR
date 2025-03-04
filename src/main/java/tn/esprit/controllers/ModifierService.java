@@ -11,8 +11,7 @@ import java.time.format.DateTimeParseException;
 
 public class ModifierService {
 
-    @FXML
-    private TextField idServiceField;
+
     @FXML
     private TextField nomServiceField;
     @FXML
@@ -133,7 +132,7 @@ public class ModifierService {
             serviceToModify.setStatusService(statusService);
 
             serviceService.update(serviceToModify);
-            System.out.println("Service mis à jour avec succès !");
+            showAlert("Succès", "Le service a été mise à jour avec succès.");
             // Appeler la méthode dans ListContrats pour afficher le formulaire AjouterContrat
             listServicesController.showAjouterServiceForm();
 

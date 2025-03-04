@@ -118,7 +118,7 @@ public class ServiceService implements IServices<Service> {
     @Override
     public void delete(int idService) {
         // Supprimer d'abord la relation dans contrat_services
-        String deleteContractServiceQry = "DELETE FROM contrat_services WHERE idService = ?";
+        String deleteContractServiceQry = "DELETE FROM contrat_services WHERE service_id = ?";
 
         try {
             // Supprimer la relation dans contrat_services
