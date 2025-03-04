@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #F4F7FC;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+
+    <!-- Left Panel -->
+    <HBox prefHeight="500.0" prefWidth="800.0">
+        <VBox prefWidth="350.0" alignment="CENTER" spacing="20" style="-fx-background-color: #253D90; -fx-padding: 30px;" >
+            <Label text="Plateforme de gestion RH" style="-fx-font-size: 20px; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <Label text="Gérer tous les opérations RH chez vous avec tout le confort" wrapText="true" textAlignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+        </VBox>
+
+        <!-- Right Panel (Login Form) -->
+        <VBox prefWidth="450.0" alignment="CENTER" spacing="15" style="-fx-padding: 30px;">
+            <Label text="Bienvenue" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #121C3E;" />
+
+            <TextField fx:id="emailField" promptText="Adresse Email" prefWidth="300" style="-fx-background-radius: 5px; -fx-padding: 10px;" />
+            <PasswordField fx:id="passwordField" promptText="Mot de passe" prefWidth="300" style="-fx-background-radius: 5px; -fx-padding: 10px;" />
+
+            <Button text="Se connecter" onAction="#handleLogin" style="-fx-background-color: #253D90; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5px; -fx-padding: 10px;" prefWidth="300" />
+
+            <!-- Bouton Mot de passe oublié -->
+            <Hyperlink text="Mot de passe oublié ?" onAction="#handleForgotPassword" style="-fx-text-fill: #D9534F; -fx-font-size: 14px;" />
+
+            <Label fx:id="errorLabel" textFill="red" style="-fx-font-size: 12px;" />
+
+            <Hyperlink text="Pas encore de compte ? S'inscrire" onAction="#goToSignUp" style="-fx-text-fill: #3F861E; -fx-font-size: 14px;" />
+        </VBox>
+    </HBox>
+</AnchorPane>
