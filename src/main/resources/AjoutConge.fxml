@@ -18,7 +18,8 @@
             <Label text="📅 Date fin:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
             <DatePicker fx:id="datefin" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-padding: 8px;"/>
             <Label text="🔖 Statut:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
-            <TextField fx:id="status" promptText="Entrez le statut" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-padding: 8px;"/>
+            <TextField fx:id="status" text="En attente" editable="false" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-padding: 8px;"/>
+
         </GridPane>
     </center>
     <bottom>

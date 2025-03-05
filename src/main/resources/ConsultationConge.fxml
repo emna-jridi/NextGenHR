@@ -23,12 +23,17 @@
 
     <!-- BUTTONS -->
     <bottom>
-        <HBox spacing="20" alignment="CENTER" style="-fx-padding: 15;">
-
-            <Button text="📅 Trier" onAction="#handleSortByDateDebutAction" style="-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;"/>
-            <Button text="✏️ Modifier" onAction="#handleUpdateAction" style="-fx-background-color: #FFC107; -fx-text-fill: black; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;"/>
-            <Button text="🗑️ Supprimer" onAction="#handleDeleteAction" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;"/>
-            <Button text="📊 Statistiques" onAction="#handleStatistiqueAction" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;"/>
-        </HBox>
+        <VBox spacing="10" style="-fx-padding: 15;" alignment="CENTER">
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="✅ Accepter" fx:id="btnAccepter" onAction="#handleAccepterAction" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;" disable="true"/>
+                <Button text="❌ Refuser" fx:id="btnRefuser" onAction="#handleRefuserAction" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;" disable="true"/>
+            </HBox>
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="📅 Trier" onAction="#handleSortByDateDebutAction" style="-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;"/>
+                <Button text="✏️ Modifier" onAction="#handleUpdateAction" style="-fx-background-color: #FFC107; -fx-text-fill: black; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;"/>
+                <Button text="🗑️ Supprimer" onAction="#handleDeleteAction" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;"/>
+                <Button text="📊 Statistiques" onAction="#handleStatistiqueAction" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px;"/>
+            </HBox>
+        </VBox>
     </bottom>
 </BorderPane>

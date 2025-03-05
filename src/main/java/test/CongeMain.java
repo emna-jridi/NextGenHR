@@ -1,5 +1,7 @@
 package test;
 
+import controllers.GoogleCalendarService;
+import controllers.ReunionController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,8 +25,9 @@ public class CongeMain extends Application {
             DBConnection db = DBConnection.getInstance();
 
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutConge.fxml"));
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsultationConge .fxml"));
+            ReunionController reunionController = new ReunionController();
+            reunionController.planifierReunion("Réunion d'équipe", "Discussion sur les mises à jour du projet.");
 
             Parent root = loader.load();
 
@@ -32,9 +35,13 @@ public class CongeMain extends Application {
             stage.setTitle("Gestion reunion");
             stage.setScene(scene);
             stage.show();
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
 
     }
 }

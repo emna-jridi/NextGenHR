@@ -10,34 +10,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="505.0" prefWidth="787.0" style="-fx-background-color: #f4f4f4; -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReunionController">
+<AnchorPane prefHeight="442.0" prefWidth="953.0" style="-fx-background-color: #f4f4f4; -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReunionController">
    <children>
       <!-- Navigation Bar -->
-      <HBox alignment="CENTER_LEFT" layoutX="0" layoutY="0" prefHeight="62.0" prefWidth="1140.0" style="-fx-background-color: #253D90; -fx-padding: 15;">
+      <HBox alignment="CENTER_LEFT" layoutX="0" layoutY="0" prefHeight="62.0" prefWidth="964.0" style="-fx-background-color: #253D90; -fx-padding: 15;">
          <Label style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" text="📅 Gestion des Réunions" />
          <TextField fx:id="searchField" layoutX="140.0" layoutY="60.0" onKeyReleased="#handleSearchAction" prefHeight="30.0" prefWidth="200.0" promptText="Rechercher une réunion..." />
       </HBox>
-
       <!-- Champs de saisie -->
       <Label layoutX="58.0" layoutY="101.0" style="-fx-font-size: 15px; -fx-font-weight: bold;" text="🏷️ Titre:" />
       <TextField fx:id="titre" layoutX="140.0" layoutY="95.0" prefHeight="30.0" prefWidth="200.0" style="-fx-padding: 8px; -fx-border-radius: 5px;" />
-
       <Label layoutX="63.0" layoutY="151.0" style="-fx-font-size: 15px; -fx-font-weight: bold;" text="📆 Date:" />
       <DatePicker fx:id="dat" layoutX="140.0" layoutY="141.0" prefHeight="30.0" prefWidth="200.0" style="-fx-padding: 8px; -fx-border-radius: 5px;" />
-
       <Label layoutX="62.0" layoutY="201.0" style="-fx-font-size: 15px; -fx-font-weight: bold;" text="📌 Type:" />
       <ComboBox fx:id="typ" layoutX="140.0" layoutY="191.0" prefWidth="200.0" promptText="Sélectionner un type" style="-fx-padding: 8px; -fx-border-radius: 5px;" />
-
       <Label layoutX="32.0" layoutY="250.0" prefHeight="22.0" prefWidth="108.0" style="-fx-font-size: 15px; -fx-font-weight: bold;" text="📝 Description:" />
       <TextField fx:id="description" layoutX="140.0" layoutY="235.0" prefHeight="80.0" prefWidth="200.0" style="-fx-padding: 8px; -fx-border-radius: 5px;" />
-
       <!-- Boutons -->
       <HBox alignment="CENTER" layoutX="20.0" layoutY="340.0" spacing="20">
          <Button onAction="#handelSubmitAction" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px; -fx-border-radius: 5px;" text="➕ Ajouter" />
-         <Button fx:id="btnAfficher" onAction="#handleAfficherAction" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10px 20px; -fx-border-radius: 5px;" text="👀 Afficher" />
          <Button fx:id="btnTrier" layoutX="350.0" layoutY="60.0" onAction="#handleSortByDate" style="-fx-background-color: #FFC107; -fx-text-fill: black;                -fx-font-size: 14px; -fx-font-weight: bold;                -fx-padding: 10px 20px; -fx-border-radius: 5px;" text="Trier" />
       </HBox>
-
       <!-- Liste des réunions -->
       <VBox layoutX="469.0" layoutY="95.0" prefHeight="358.0" prefWidth="366.0" spacing="10" style="-fx-border-color: lightgray; -fx-border-radius: 5px; -fx-padding: 10px;">
          <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="📋 Liste des Réunions" />

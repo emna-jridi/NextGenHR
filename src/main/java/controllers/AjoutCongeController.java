@@ -2,10 +2,15 @@ package controllers;
 
 import entities.conge;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import services.ServiceConge;
-import java.time.LocalDate;
 
+import java.io.IOException;
+import java.time.LocalDate;
 
 
 public class AjoutCongeController {
@@ -34,28 +39,38 @@ public class AjoutCongeController {
     @FXML
     public void initialize() {
         typeCon.getItems().addAll("Congé annuel", "Congé obligatoire", "Congé spécial", "Congé de maternité ou parental");
+        status.setText("En attente"); // Définit "En attente" par défaut
     }
+
+
 
     @FXML
     private void handelSubmitAction() {
         String typeConge = typeCon.getValue();
         LocalDate dateDebut = datedep.getValue();
         LocalDate dateFin = datefin.getValue();
-        String statusText = status.getText().trim();
+        String statusText = "En attente";
 
-        if (!validateInputs(typeConge, dateDebut, dateFin, statusText)) {
+        if (!validateInputs(typeConge, dateDebut, dateFin)) {
             return;
         }
 
         conge newConge = new conge(typeConge, dateDebut, dateFin, statusText);
         serviceConge.add(newConge);
+
+        showSuccessAlert();
         clearForm();
-        System.out.println("Congé ajouté avec succès !");
+
+        // 🔹 Afficher immédiatement le congé ajouté
+
     }
 
 
-    private boolean validateInputs(String typeConge, LocalDate dateDebut, LocalDate dateFin, String statusText) {
-        if (typeConge == null || dateDebut == null || dateFin == null || statusText.isEmpty()) {
+
+
+
+    private boolean validateInputs(String typeConge, LocalDate dateDebut, LocalDate dateFin) {
+        if (typeConge == null || dateDebut == null || dateFin == null) {
             showAlert("Erreur", "Tous les champs doivent être remplis !");
             return false;
         }
@@ -80,6 +95,13 @@ public class AjoutCongeController {
         typeCon.setValue(null);
         datedep.setValue(null);
         datefin.setValue(null);
-        status.clear();
     }
+    private void showSuccessAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
+        alert.setHeaderText(null);
+        alert.setContentText("Congé ajouté avec succès !");
+        alert.showAndWait();
+    }
+
 }

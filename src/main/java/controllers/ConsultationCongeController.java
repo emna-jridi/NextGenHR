@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import services.ServiceConge;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.VBox;
@@ -25,6 +26,11 @@ public class ConsultationCongeController {
     private ListView<String> listViewConge;
     @FXML
     private TextField searchField;
+    @FXML
+    private Button btnAccepter;
+
+    @FXML
+    private Button btnRefuser;
 
     private ServiceConge serviceConge = new ServiceConge();
     private int selectedCongeId = -1;
@@ -32,6 +38,9 @@ public class ConsultationCongeController {
     @FXML
     public void initialize() {
         handleAfficherAction(); // Afficher la liste des congés au chargement
+    }
+    private void configureListView() {
+
     }
 
     @FXML
@@ -91,7 +100,11 @@ public class ConsultationCongeController {
         String selectedItem = listViewConge.getSelectionModel().getSelectedItem();
         if (selectedItem == null) return;
         selectedCongeId = extractId(selectedItem);
+
+        btnAccepter.setDisable(false);
+        btnRefuser.setDisable(false);
     }
+
 
 
 
@@ -122,8 +135,9 @@ public class ConsultationCongeController {
     private String formatConge(conge c) {
         return "ID: " + c.getId() + " | Type: " + c.getType_conge() +
                 " | Début: " + c.getDate_debut() + " | Fin: " + c.getDate_fin() +
-                " | Statut: " + c.getStatus();
+                " | Statut: " + c.getStatus() + " | ";
     }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -132,6 +146,8 @@ public class ConsultationCongeController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
     @FXML
     private void handleUpdateAction() {
         if (selectedCongeId == -1) {
@@ -176,6 +192,41 @@ public class ConsultationCongeController {
             e.printStackTrace();
         }
     }
+    private void handleValidateConge(conge selectedConge) {
+        updateStatus(selectedConge, "Validé");
+    }
+
+    private void handleInvalidateConge(conge selectedConge) {
+        updateStatus(selectedConge, "Invalidé");
+    }
+
+    private void updateStatus(conge selectedConge, String newStatus) {
+        selectedConge.setStatus(newStatus);
+        serviceConge.update(selectedConge, selectedConge.getId());
+        handleAfficherAction();
+    }
+    @FXML
+    private void handleAccepterAction() {
+        if (selectedCongeId != -1) {
+            conge selectedConge = serviceConge.getById(selectedCongeId);
+            if (selectedConge != null) {
+                updateStatus(selectedConge, "Accepté");
+            }
+        }
+    }
+
+    @FXML
+    private void handleRefuserAction() {
+        if (selectedCongeId != -1) {
+            conge selectedConge = serviceConge.getById(selectedCongeId);
+            if (selectedConge != null) {
+                updateStatus(selectedConge, "Refusé");
+            }
+        }
+    }
+
+
+
 
 
 
