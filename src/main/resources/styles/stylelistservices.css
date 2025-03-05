@@ -142,7 +142,7 @@
 
 /* Style des boutons */
 .button {
-    -fx-background-color: linear-gradient(to right, #FFCC00, #FFA500);
+    -fx-background-color: linear-gradient(to right, #FFCC00, #EEAA44);
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
@@ -171,11 +171,11 @@
 
 /* Style des boutons Modifier et Supprimer */
 #btnModifier {
-    -fx-background-color: linear-gradient(to right, #FFA500, #FF8700);
+    -fx-background-color: linear-gradient(to right, #FFA500, #EEAA44);
 }
 
 #btnModifier:hover {
-    -fx-background-color: #e69500;
+    -fx-background-color: #EEAA44;
 }
 
 #btnSupprimer {
@@ -187,16 +187,7 @@
 }
 
 
-/* Style du conteneur principal */
-.form-container {
-    -fx-background-color: rgba(0, 51, 102, 0.9); /* Bleu marine avec opacité */
-    -fx-border-color: #FFCC00;
-    -fx-border-width: 3px;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-    -fx-padding: 25px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
-}
+
 
 
 

@@ -90,10 +90,10 @@ public class ModifierContrat {
             if (newValue.isEmpty()) {
                 numTelValidationLabel.setText("");
             } else if (!newValue.matches("\\d*")) {
-                numTelValidationLabel.setText("Le numéro ne doit contenir que des chiffres.");
+                numTelValidationLabel.setText("Le numéro doit contenir des chiffres.");
                 numTelValidationLabel.setStyle("-fx-text-fill: #dc5b5b;");
             } else if (newValue.length() < 8) {
-                numTelValidationLabel.setText("Le numéro doit contenir exactement 8 chiffres.");
+                numTelValidationLabel.setText("Le numéro doit contenir 8 chiffres.");
                 numTelValidationLabel.setStyle("-fx-text-fill: #dc5b5b;");
             } else if (newValue.length() == 8) {
                 numTelValidationLabel.setText("Numéro valide");
@@ -110,10 +110,10 @@ public class ModifierContrat {
             if (newValue.isEmpty()) {
                 montantValidationLabel.setText("");
             } else if (!newValue.matches("\\d+")) { // Vérifie que ce sont uniquement des chiffres
-                montantValidationLabel.setText("Le montant doit contenir uniquement des chiffres.");
+                montantValidationLabel.setText("Le montant doit contenir des chiffres.");
                 montantValidationLabel.setStyle("-fx-text-fill: #dc5b5b;");
             } else if (Integer.parseInt(newValue) <= 0) { // Vérifie que le montant est strictement positif
-                montantValidationLabel.setText("Le montant doit être supérieur à 0.");
+                montantValidationLabel.setText("Le montant doit être > à 0.");
                 montantValidationLabel.setStyle("-fx-text-fill: #dc5b5b;");
             } else {
                 montantValidationLabel.setText("Montant valide");

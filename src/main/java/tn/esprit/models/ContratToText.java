@@ -1,5 +1,6 @@
 package tn.esprit.models;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,12 @@ public class ContratToText {
                 .collect(Collectors.toList());
 
         String servicesList = String.join(", ", serviceNames);
+
+
+
+
+
+
 
         return "<html>" +
                 "<head>" +
@@ -33,7 +40,8 @@ public class ContratToText {
                 "</head>" +
                 "<body>" +
                 "<div class='contract-container'>" +
-                "<h2>CONTRAT DE TRAVAIL</h2>" +
+
+        "<h2>CONTRAT DE TRAVAIL</h2>" +
                 "<p><strong>Entre les soussignés :</strong></p>" +
                 "<p><strong>La société :</strong> NextGenHR, Adresse: 123 Rue de l'Entreprise, Numéro SIRET: 987654321.</p>" +
                 "<p><strong>Le/La Client(e) :</strong> <span class='blue-text'>" + contrat.getNomClient() + "</span> , <strong>Email:</strong> <span class='blue-text'>" + contrat.getEmailClient() + "</span> , <strong>Num Tel:</strong> <span class='blue-text'>" + contrat.getTelephoneClient() +  "</span> .</p>" +

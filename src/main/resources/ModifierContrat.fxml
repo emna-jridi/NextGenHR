@@ -22,7 +22,7 @@
     </stylesheets>
 
     <children>
-        <!-- Cadre autour du formulaire -->
+
         <Pane layoutX="297.0" layoutY="42.0" prefHeight="640.0" prefWidth="478.0" styleClass="form-container">
 
             <!-- Titre -->
@@ -31,33 +31,6 @@
                     <Font size="36.0" />
                 </font>
             </Label>
-
-
-
-
-            <!-- Date Début -->
-            <Label layoutX="26.0" layoutY="256.0" text="Date Début du Contrat:" />
-            <DatePicker fx:id="dateDebutField" editable="false" layoutX="191.0" layoutY="242.0" prefHeight="33.0" prefWidth="266.0" promptText="date début du contrat" />
-
-            <!-- Date Fin -->
-            <Label layoutX="37.0" layoutY="303.0" text="Date Fin du Contrat:" />
-            <DatePicker fx:id="dateFinField" editable="false" layoutX="191.0" layoutY="289.0" prefHeight="33.0" prefWidth="266.0" promptText="date fin du contrat" />
-
-            <!-- Statut du Contrat -->
-            <Label layoutX="43.0" layoutY="410.0" text="Statut du Contrat:" />
-            <RadioButton fx:id="statusActif" layoutX="250.0" layoutY="415.0" selected="true" text="Actif" />
-            <RadioButton fx:id="statusInactif" layoutX="352.0" layoutY="415.0" text="Inactif" />
-
-            <!-- Montant -->
-            <Label layoutX="56.0" layoutY="360.0" text="Montant:" />
-            <TextField fx:id="montantField" alignment="CENTER" layoutX="191.0" layoutY="354.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir montant du contrat" />
-            <Label fx:id="montantValidationLabel" layoutX="273.0" layoutY="390.0" style="-fx-text-fill: red;" text="" />
-            <ImageView fitHeight="20.0" fitWidth="30.0" layoutX="152.0" layoutY="360.0">
-                <image>
-                    <Image url="@images/montant_icon.png" />
-                </image>
-            </ImageView>
-
             <!-- Nom Client -->
             <Label layoutX="38.0" layoutY="93.0" text="Nom Client:" />
             <TextField fx:id="nomClientField" alignment="CENTER" layoutX="188.0" layoutY="86.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir nom du client" />
@@ -71,16 +44,44 @@
             <Label layoutX="36.0" layoutY="139.0" text="Email Client:" />
             <TextField fx:id="emailClientField" alignment="CENTER" layoutX="188.0" layoutY="132.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir l'email du client" />
             <Label fx:id="emailValidationLabel" layoutX="200.0" layoutY="170.0" style="-fx-text-fill: red;" text="" />
-
-
-
-
             <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="155.0" layoutY="139.0">
                 <image>
                     <Image url="@images/email_icon.png" />
                 </image>
             </ImageView>
 
+            <!-- Tel Client -->
+            <TextField fx:id="numTelClientField" alignment="CENTER" layoutX="188.0" layoutY="192.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir numéro de téléphone du client(e)" />
+            <Label layoutX="27.0" layoutY="199.0" text="Num Tel Client(e):" />
+            <Label fx:id="numTelValidationLabel" layoutX="240.0" layoutY="220.0" style="-fx-text-fill: red;" text="" />
+            <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="150.0" layoutY="199.0">
+                <image>
+                    <Image url="@images/phone.png" />
+                </image>
+            </ImageView>
+
+
+            <!-- Date Début -->
+            <Label layoutX="26.0" layoutY="256.0" text="Date Début du Contrat:" />
+            <DatePicker fx:id="dateDebutField" editable="false" layoutX="191.0" layoutY="242.0" prefHeight="33.0" prefWidth="266.0" promptText="date début du contrat" />
+
+            <!-- Date Fin -->
+            <Label layoutX="37.0" layoutY="303.0" text="Date Fin du Contrat:" />
+            <DatePicker fx:id="dateFinField" editable="false" layoutX="191.0" layoutY="289.0" prefHeight="33.0" prefWidth="266.0" promptText="date fin du contrat" />
+            <!-- Montant -->
+            <Label layoutX="56.0" layoutY="360.0" text="Montant:" />
+            <TextField fx:id="montantField" alignment="CENTER" layoutX="191.0" layoutY="354.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir montant du contrat" />
+            <Label fx:id="montantValidationLabel" layoutX="230.0" layoutY="390.0" style="-fx-text-fill: red;" text="" />
+            <ImageView fitHeight="20.0" fitWidth="30.0" layoutX="152.0" layoutY="360.0">
+                <image>
+                    <Image url="@images/montant_icon.png" />
+                </image>
+            </ImageView>
+
+            <!-- Statut du Contrat -->
+            <Label layoutX="43.0" layoutY="410.0" text="Statut du Contrat:" />
+            <RadioButton fx:id="statusActif" layoutX="250.0" layoutY="415.0" selected="true" text="Actif" />
+            <RadioButton fx:id="statusInactif" layoutX="352.0" layoutY="415.0" text="Inactif" />
 
 
 
@@ -114,14 +115,7 @@
                 </graphic>
             </Button>
 
-            <TextField fx:id="numTelClientField" alignment="CENTER" layoutX="188.0" layoutY="192.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir numéro de téléphone du client(e)" />
-         <Label layoutX="27.0" layoutY="199.0" text="Num Tel Client(e):" />
-            <Label fx:id="numTelValidationLabel" layoutX="273.0" layoutY="230.0" style="-fx-text-fill: red;" text="" />
-            <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="150.0" layoutY="199.0">
-                <image>
-                    <Image url="@images/phone.png" />
-                </image>
-            </ImageView>
+
         </Pane>
     </children>
 </AnchorPane>

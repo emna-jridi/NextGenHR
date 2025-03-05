@@ -66,7 +66,7 @@
             </graphic>
         </Button>
 
-        <!--<Button fx:id="btnGenererPDF" layoutX="851.0" layoutY="104.0" onAction="#genererContratPDF" prefHeight="40.0" prefWidth="100.0" text="Générer contrat PDF" />-->
+
         <!-- Icône de génération de PDF (remplaçant le bouton) -->
         <ImageView fx:id="genererPDFIcon" fitHeight="40.0" fitWidth="40.0" layoutX="839.0" layoutY="111.0" onMouseClicked="#genererContratPDF" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -101,11 +101,11 @@
 
 
         <!-- Formulaire AjouterContrat à droite du TableView -->
-        <AnchorPane fx:id="anchorPaneForm" layoutX="708.0" layoutY="143.0" prefHeight="718.0" prefWidth="706.0">
+        <AnchorPane fx:id="anchorPaneForm" layoutX="708.0" layoutY="130.0" prefHeight="718.0" prefWidth="706.0">
             <fx:include source="AjouterContrat.fxml" />
         </AnchorPane>
 
-
+        <!-- refresh table view -->
         <ImageView fx:id="refreshIcon" fitHeight="24" fitWidth="24" layoutX="88.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#refreshTable">
             <image>
                 <Image url="@/images/refresh.png" />
@@ -125,8 +125,6 @@
                 <TableColumn fx:id="colStatut" text="Statut" />
                 <TableColumn fx:id="colModePaiement" prefWidth="120.0" text="Mode Paiement" />
                 <TableColumn fx:id="colDetails" text="Détails" />
-
-
             </columns>
         </TableView>
 
@@ -137,6 +135,8 @@
                  <Font size="11.0" />
              </font>
          </TextField>
+
+
          <!-- ComboBox pour choisir le tri -->
          <ComboBox fx:id="comboTri" layoutX="451.0" layoutY="111.0" onAction="#handleTriSelection" prefWidth="200.0" promptText="Filtrer Contrats">
              <items>

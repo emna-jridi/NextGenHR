@@ -64,7 +64,7 @@
 
 /* Style des boutons */
 .button {
-    -fx-background-color: linear-gradient(to right, #F4C430, #FFA500);
+    -fx-background-color: linear-gradient(to right, #F4C430, #EEAA44);
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
@@ -96,11 +96,11 @@
 
 /* Style des boutons Modifier et Supprimer */
 #btnSave {
-    -fx-background-color: linear-gradient(to right, #F4C430, #FF8700);
+    -fx-background-color: linear-gradient(to right, #F4C430, #EEAA44);
 }
 
 #btnSave:hover {
-    -fx-background-color: #F4C430;
+    -fx-background-color: #EEAA44;
 }
 
 #btnIgnore {

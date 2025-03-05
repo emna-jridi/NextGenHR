@@ -36,15 +36,12 @@
 
             <!-- Description du Service -->
             <Label layoutX="38.0" layoutY="150.0" text="Description:" />
-            <!-- Icône pour la Description -->
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" layoutY="152.0">
                 <image>
                     <Image url="@images/description-icon.png" />
                 </image>
             </ImageView>
-
             <HBox spacing="10" />
-            <!-- Champ TextArea -->
             <TextArea fx:id="descriptionService" layoutX="180.0" layoutY="145.0" prefHeight="100" prefWidth="266.0" promptText="donner une description du service" />
 
 

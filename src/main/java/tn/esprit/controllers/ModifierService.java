@@ -137,7 +137,7 @@ public class ModifierService {
             // Appeler la méthode dans ListContrats pour afficher le formulaire AjouterContrat
             listServicesController.showAjouterServiceForm();
 
-            ((Stage) statusInactif.getScene().getWindow()).close();
+            ((Stage) nomServiceField.getScene().getWindow()).close();
 
         } catch (DateTimeParseException e) {
             System.out.println("Erreur : Format de date invalide. Utiliser yyyy-MM-dd !");

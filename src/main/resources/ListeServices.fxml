@@ -46,7 +46,6 @@
         <!-- Table des Services -->
         <TableView fx:id="tableView" layoutX="88.0" layoutY="194.0" prefHeight="300.0" prefWidth="870.0">
             <columns>
-                <!--<TableColumn fx:id="colId" prefWidth="75.0" text="ID Service" />-->
                 <TableColumn fx:id="colNom" prefWidth="130.0" text="Nom Service" />
                 <TableColumn fx:id="colDescription" prefWidth="215.0" text="Description" />
                 <TableColumn fx:id="colType" prefWidth="120.0" text="Type Service" />
@@ -59,7 +58,6 @@
 
         <!-- Bouttons Modifier et Supprimer -->
         <HBox layoutX="20.0" layoutY="380.0" spacing="10.0" />
-        <!--<Button fx:id="btnAjouter" layoutX="517.0" layoutY="511.0" onAction="#ajouterService" text="Ajouter" />-->
         <Button fx:id="btnSupprimer" layoutX="545.0" layoutY="511.0" onAction="#supprimerService" text="Supprimer">
         <graphic>
         <ImageView fx:id="deleteIcon" fitHeight="20.0" fitWidth="20.0">
