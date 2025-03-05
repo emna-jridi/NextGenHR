@@ -1,7 +1,6 @@
 package tn.esprit.services;
 
 import tn.esprit.interfaces.IServices;
-import tn.esprit.models.Contrat;
 import tn.esprit.models.Service;
 import tn.esprit.utils.MyDatabase;
 import java.sql.*;
@@ -36,7 +35,6 @@ public class ServiceService implements IServices<Service> {
             pstm.setDate(4, java.sql.Date.valueOf(service.getDateDebutService()));
             pstm.setDate(5, java.sql.Date.valueOf(service.getDateFinService()));
             pstm.setString(6, service.getStatusService());
-            //pstm.setInt(7, service.getIdContrat());
 
             pstm.executeUpdate();
 
@@ -209,69 +207,11 @@ public class ServiceService implements IServices<Service> {
 
 
 
-    // Tri des services par type de service
-    public List<Service> sortServicesByType() {
-
-        List<Service> services = new ArrayList<>();
-
-        String qry = "SELECT * FROM services ORDER BY TypeService ASC";
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
-
-            while (rs.next()) {
-                Service s = new Service();
-                s.setIdService(rs.getInt("IdService"));
-                s.setNomService(rs.getString("NomService"));
-                s.setDescriptionService(rs.getString("DescriptionService"));
-                s.setTypeService(rs.getString("TypeService"));
-                s.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
-                s.setDateFinService(rs.getDate("DateFinService").toLocalDate());
-                s.setStatusService(rs.getString("StatusService"));
-                //s.setIdContrat(rs.getInt("IdContrat"));
-
-                services.add(s);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du tri des services par type : " + e.getMessage());
-        }
-        return services;
-    }
 
 
 
 
 
-    // Filtrer les services actifs (non expirés)
-    public List<Service> filterActiveServices() {
-
-        List<Service> activeServices = new ArrayList<>();
-
-        String qry = "SELECT * FROM `services` WHERE `StatusService` = 'Actif'";
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
-
-            while (rs.next()) {
-                Service s = new Service();
-                s.setIdService(rs.getInt("IdService"));
-                s.setNomService(rs.getString("NomService"));
-                s.setDescriptionService(rs.getString("DescriptionService"));
-                s.setTypeService(rs.getString("TypeService"));
-                s.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
-                s.setDateFinService(rs.getDate("DateFinService").toLocalDate());
-                s.setStatusService(rs.getString("StatusService"));
-                //s.setIdContrat(rs.getInt("IdContrat"));
-
-                activeServices.add(s);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du filtrage des services actifs : " + e.getMessage());
-        }
-        return activeServices;
-    }
 
 
 
@@ -316,10 +256,6 @@ public class ServiceService implements IServices<Service> {
             return false;
         }
 
-        /*if (service.getIdContrat() <= 0) {
-            System.out.println("Erreur : L'id du contrat doit étre un nombre positif !");
-            return false;
-        }*/
         return true;
     }
 

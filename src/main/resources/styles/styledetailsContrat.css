@@ -2,13 +2,13 @@
 
 /* Fond de l'application avec un gradient */
 .root {
-    -fx-background-color: linear-gradient(to bottom, #2C3E50, #4CA1AF);
+    -fx-background-color: linear-gradient(to bottom, #06315a, #d59636);
     -fx-padding: 20px;
 }
 
 /* Style du titre */
 .title-label {
-    -fx-font-size: 40px;
+    -fx-font-size: 25px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-font-family: "Times New Roman", serif;
@@ -17,7 +17,7 @@
 /* Style du conteneur principal (Carte blanche avec ombre) */
 .vbox-container {
     -fx-background-color: #ffffff;
-    -fx-background-radius: 20;
+    -fx-background-radius: 23;
     -fx-padding: 20px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);
 }
@@ -25,9 +25,9 @@
 
 /* Style pour les labels principaux */
 .label-bold {
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-text-fill: #34495E;
+    -fx-text-fill: #06315a;
 }
 
 /* Style pour les labels de contenu */
@@ -36,5 +36,9 @@
     -fx-font-weight: normal;
     -fx-text-fill: #555555;
 }
+
+
+
+
 
 

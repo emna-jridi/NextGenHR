@@ -72,7 +72,7 @@
             <RadioButton fx:id="radioInactif" layoutX="327.0" layoutY="429.0" text="Inactif" />
 
             <!-- Bouton Ajouter -->
-            <Button fx:id="btnAjouter" layoutX="114.0" layoutY="489.0" onAction="#ajouterService" prefHeight="48.0" prefWidth="132.0" text="Ajouter">
+            <Button fx:id="btnAjouter" layoutX="114.0" layoutY="489.0" onAction="#ajouterService" prefHeight="48.0" prefWidth="125.0" text="Ajouter">
                 <graphic>
                     <ImageView fx:id="addIcon" fitHeight="20.0" fitWidth="20.0">
                         <image>
@@ -81,7 +81,7 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="btnClear" layoutX="225.0" layoutY="489.0" onAction="#clearFields" prefHeight="48.0" prefWidth="151.0" text="Réinitialiser">
+            <Button fx:id="btnClear" layoutX="245.0" layoutY="489.0" onAction="#clearFields" prefHeight="48.0" prefWidth="148.0" text="Réinitialiser">
                 <graphic>
                     <ImageView fx:id="clearIcon" fitHeight="20.0" fitWidth="20.0">
                         <image>

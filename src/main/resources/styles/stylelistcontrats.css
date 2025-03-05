@@ -48,81 +48,94 @@
     -fx-font-weight: bold;
 }
 
-/* TableView */
+/* 📌 Style principal de la TableView */
 .table-view {
-    -fx-background-color: transparent;
-    -fx-border-color: #003366;
-    -fx-border-width: 2px;
+    -fx-background-color: #F8F7F5;
+    -fx-border-color: #EEAA44;
+    -fx-border-width: 3px;
     -fx-border-radius: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
+//-fx-backdrop-filter: blur(10px);
 }
 
-/* Style des en-têtes de colonnes */
-.table-view .column-header {
-    -fx-background-color: #FFCC00;
-    -fx-text-fill: #003366;
-    -fx-font-weight: bold;
-    -fx-border-color: #003366;
-    -fx-border-width: 1px;
-    -fx-font-size: 14px;
-}
-
-/* Appliquer un border-radius aux en-têtes de colonnes */
+/* 🎭 Style des en-têtes de colonnes */
 .table-view .column-header-background {
-    -fx-background-radius: 15px 15px 0 0; /* Arrondi seulement en haut */
-    -fx-border-radius: 15px 15px 0 0; /* Même arrondi pour la bordure */
-    -fx-border-color: #003366;
-    -fx-border-width: 2px;
-    -fx-background-insets: 0, 0 0 1 0; /* Ajuste l'effet de superposition */
+    -fx-background-color: #06315a;
+    -fx-border-color: #EEAA44;
+    -fx-background-radius: 15px 15px 0 0;
+    -fx-border-radius: 15px 15px 0 0;
 }
 
-/* Appliquer un border-radius aux colonnes*/
 .table-view .column-header {
-    -fx-background-radius: 15px 15px 0 0;
-    -fx-border-radius: 15px 15px 0 0;
-}
-
-/* Ajustement pour éviter l'effet de superposition */
-.table-view .column-header .label {
-    -fx-background-radius: 15px 15px 0 0;
-    -fx-border-radius: 15px 15px 0 0;
-}
-
-
-
-/* Style des en-têtes de colonnes */
-.table-view .column-header-background .label {
+    -fx-background-color: transparent;
     -fx-text-fill: white;
-    -fx-font-size: 12px;
-    -fx-font-weight: normal;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+
+}
+
+/* Changer la couleur du texte des titres de colonnes */
+.table-view .column-header .label {
+    -fx-text-fill: #EEAA44; /* Doré */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial", sans-serif;
 }
 
 
-/* Style des cellules du TableView */
+
+
+/* 📌 Style des cellules */
 .table-row-cell {
-    -fx-background-color: white; /* Bleu marine avec transparence */
-    //-fx-text-fill: white;
-    -fx-border-color:  #003366;
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    -fx-border-color: #EEAA44;
     -fx-border-width: 0.5px;
     -fx-font-size: 14px;
+    -fx-text-fill: #EEAA44;
+    -fx-padding: 8px;
 }
 
 
 
-/* Effet de sélection */
+
+/* 🏆 Effet de sélection */
 .table-row-cell:selected {
-    -fx-background-color: #FFCC00;
-    -fx-text-fill: #003366;
+    -fx-background-color: #EEAA44;
+    -fx-text-fill: white;
     -fx-font-weight: bold;
-}
-
-/* Effet hover */
-.table-row-cell:hover {
-    -fx-background-color: #FFCC00;
-    -fx-text-fill: #003366;
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
-    -fx-transition: all 0.3s ease-in-out;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* 🚀 Effet de survol */
+.table-row-cell:hover {
+    -fx-background-color: #EEAA44;
+    -fx-text-fill: white;
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* Style de la barre de défilement horizontale (inférieure) */
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: #F1F1F1; /* Fond clair pour la barre */
+//-fx-border-color: #E3AF64; /* Bordure subtile de la barre */
+    -fx-border-width: 1px; /* Épaisseur de la bordure */
+    -fx-background-radius: 10px; /* Coins arrondis pour la barre */
+    -fx-padding: 0 5px; /* Espacement à l'intérieur de la barre */
+    -fx-pref-width: 70px; /* Largeur réduite de la barre de défilement horizontale */
+}
+
+.table-view .scroll-bar:vertical {
+    -fx-background-color: #F1F1F1; /* Fond clair pour la barre */
+//-fx-border-color: #E3AF64; /* Bordure subtile de la barre */
+    -fx-border-width: 1px; /* Épaisseur de la bordure */
+    -fx-background-radius: 10px; /* Coins arrondis pour la barre */
+    -fx-padding: 0 5px; /* Espacement à l'intérieur de la barre */
+    -fx-pref-height: 75px; /* Largeur réduite de la barre de défilement horizontale */
 }
 
 
@@ -145,7 +158,7 @@
 /* Effet hover */
 .button:hover {
     -fx-background-color: #003366;
-    -fx-text-fill: #FFCC00;
+    -fx-text-fill: white;
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }

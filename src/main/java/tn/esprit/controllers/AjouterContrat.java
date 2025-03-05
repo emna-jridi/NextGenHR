@@ -137,11 +137,9 @@ public class AjouterContrat {
 
 
 
+
         // Ajouter les valeurs de l'énumération dans la ComboBox
         comboBoxModePaiement.getItems().setAll(ModePaiement.values());
-        // Optionnel : définir une valeur par défaut
-       // comboBoxModePaiement.setValue(ModePaiement.CHEQUE);
-
 
     }
 
@@ -273,7 +271,6 @@ public class AjouterContrat {
 
         showAlert("Succès", "Le contrat a été ajouté avec succès.");
 
-        // Réinitialisation des champs du formulaire
         resetForm();
     }
 

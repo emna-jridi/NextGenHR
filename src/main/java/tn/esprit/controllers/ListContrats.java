@@ -11,7 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -59,8 +58,6 @@ public class ListContrats {
     @FXML
     private TableColumn<Contrat, Void> colDetails;
     @FXML
-    private Button btnSupprimer;
-    @FXML
     private TextField searchField;
     @FXML
     private AnchorPane anchorPaneForm;
@@ -89,6 +86,8 @@ public class ListContrats {
         colMontant.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMontantContrat()).asObject());
         colStatut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatusContrat()));
         colModePaiement.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getModeDePaiement().name()));
+
+
         // Créer une TableCell personnalisée pour la colonne Statut
         colStatut.setCellFactory(new Callback<TableColumn<Contrat, String>, TableCell<Contrat, String>>() {
             @Override
@@ -134,6 +133,7 @@ public class ListContrats {
             }
         });
 
+        //refresh the tableview
         refreshIcon.setOnMouseClicked(event -> loadContrats());
 
 
@@ -145,7 +145,7 @@ public class ListContrats {
             private final Button btnDetails = new Button("Voir");
 
             {
-                btnDetails.setStyle("-fx-background-color: linear-gradient(to right, #FFA500, #FF8700); -fx-text-fill: white; -fx-cursor: hand;");
+                btnDetails.setStyle("-fx-background-color: #EEAA44; -fx-text-fill: white; -fx-cursor: hand;");
                 btnDetails.setOnAction(event -> {
                     Contrat contrat = getTableView().getItems().get(getIndex());
                     afficherDetailsContrat(contrat);
@@ -165,12 +165,7 @@ public class ListContrats {
 
 
 
-        // Écouteur sur la sélection de la TableView
-        /*tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection == null) {
-                showAjouterContratForm();
-            }
-        });*/
+
 
     }
 
@@ -208,28 +203,7 @@ public class ListContrats {
     }
 
 
-    // Méthode pour gérer le clic sur une ligne de la TableView
-    /*@FXML
-    private void handleRowClick(MouseEvent event) {
-        Contrat selectedContrat = tableView.getSelectionModel().getSelectedItem();
-        if (selectedContrat != null) {
-            // Charger le formulaire ModifierContrat.fxml
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierContrat.fxml"));
-                AnchorPane modifierForm = loader.load();
 
-                // Passer les données du contrat sélectionné à ModifierContrat
-                ModifierContrat controller = loader.getController();
-                controller.setContrat(selectedContrat, this);
-
-                // Remplacer AjouterContrat.fxml par ModifierContrat.fxml
-                anchorPaneForm.getChildren().clear();
-                anchorPaneForm.getChildren().add(modifierForm);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
 
     // Cette méthode sera appelée lorsque la modification est réussie dans ModifierContrat
     public void showAjouterContratForm() {
@@ -247,7 +221,7 @@ public class ListContrats {
 
 
 
-
+//modifier contrat
     @FXML
     private void modifierContrat(ActionEvent event) {
         Contrat selectedContrat = tableView.getSelectionModel().getSelectedItem();
@@ -275,33 +249,8 @@ public class ListContrats {
     }
 
 
-    /*@FXML
-    private void modifierContrat(ActionEvent event) {
-        Contrat contratSelectionne = tableView.getSelectionModel().getSelectedItem();
 
-        if (contratSelectionne == null) {
-            showAlert("Aucun contrat sélectionné", "Veuillez sélectionner un contrat à modifier.", Alert.AlertType.WARNING);
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierContrat.fxml"));
-            Parent root = loader.load();
-
-            ModifierContrat controller = loader.getController();
-            controller.setContrat(contratSelectionne);
-
-            Stage stage = new Stage();
-            stage.setTitle("Modifier Contrat");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-
-            loadContrats();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
+//supprimer contrat
     @FXML
     private void supprimerContrat(ActionEvent event) {
         Contrat contratSelectionne = tableView.getSelectionModel().getSelectedItem();
@@ -322,28 +271,10 @@ public class ListContrats {
         }
     }
 
-    /*@FXML
-    private void ajouterContrat(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterContrat.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Ajouter un Contrat");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            AjouterContrat ajouterContratController = loader.getController();
-            ajouterContratController.setOnContratAdded(() -> loadContrats());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Erreur", "Erreur lors de l'ouverture de la page d'ajout.", Alert.AlertType.ERROR);
-        }
-    }*/
 
 
 
+//search contrat
     @FXML
     private void handleSearch(KeyEvent event) {
         String searchText = searchField.getText();
@@ -352,6 +283,8 @@ public class ListContrats {
     }
 
 
+
+//tri contrat
     @FXML
     private void handleTriSelection(ActionEvent event) {
         String selectedOption = comboTri.getSelectionModel().getSelectedItem();
@@ -360,10 +293,8 @@ public class ListContrats {
 
         switch (selectedOption) {
             case "All":
-                // Ne rien filtrer, on garde la liste complète
                 break;
             case "Contrats Actifs":
-                // Ici vous pouvez ajouter une logique pour filtrer les contrats actifs
                 contrats = contrats.stream()
                         .filter(contrat -> "Actif".equals(contrat.getStatusContrat()))
                         .collect(Collectors.toList());
@@ -384,42 +315,10 @@ public class ListContrats {
 
 
 
-    /*@FXML
-    private void filtrerContrats(ActionEvent event) {
-        List<Contrat> contrats = contratService.getAll();
-
-        if (chkFiltrerActifs.isSelected()) {
-            contrats = contrats.stream()
-                    .filter(contrat -> "Actif".equals(contrat.getStatusContrat()))
-                    .collect(Collectors.toList());
-        }
-
-        if (chkTriMontantAsc.isSelected()) {
-            contrats.sort((c1, c2) -> Integer.compare(c1.getMontantContrat(), c2.getMontantContrat()));
-        } else if (chkTriMontantDesc.isSelected()) {
-            contrats.sort((c1, c2) -> Integer.compare(c2.getMontantContrat(), c1.getMontantContrat()));
-        }
-
-        updateTableView(contrats);
-    }*/
 
 
-    /*@FXML
-    private void handleTriMontantAsc(ActionEvent event) {
-        if (chkTriMontantAsc.isSelected()) {
-            chkTriMontantDesc.setSelected(false);
-        }
-        filtrerContrats(null);
-    }*/
 
 
-    /*@FXML
-    private void handleTriMontantDesc(ActionEvent event) {
-        if (chkTriMontantDesc.isSelected()) {
-            chkTriMontantAsc.setSelected(false);
-        }
-        filtrerContrats(null);
-    }*/
 
 
     private void updateTableView(List<Contrat> contrats) {

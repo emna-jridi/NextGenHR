@@ -5,7 +5,7 @@
 
 /* Style des labels */
 .label {
-    -fx-text-fill: #F4C430; /* Jaune foncé */
+    -fx-text-fill: #EEAA44; /* Jaune foncé */
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
@@ -77,7 +77,7 @@
 
 /* Style du bouton du calendrier */
 .date-picker .arrow-button {
-    -fx-background-color: #F4C430; /* Jaune foncé */
+    -fx-background-color: #EEAA44; /* Jaune foncé */
     -fx-background-radius: 50%;
     -fx-border-radius: 50%;
     -fx-padding: 10px;
@@ -96,7 +96,7 @@
 
 /* Style des boutons radio */
 .radio-button {
-    -fx-text-fill: #F4C430;
+    -fx-text-fill: #EEAA44;
 }
 
 /* Style des boutons */
@@ -115,7 +115,7 @@
 /* Effet hover */
 .button:hover {
     -fx-background-color: #003366;
-    -fx-text-fill: #FFCC00;
+    -fx-text-fill: white;
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
@@ -155,7 +155,7 @@
 /* Ajout d'un style pour le panneau principal */
 .form-container {
     -fx-background-color: #06315a;
-    -fx-border-color: #F4C430;
+    -fx-border-color: #EEAA44;
     -fx-border-width: 3px;
     -fx-background-radius: 20px;
     -fx-border-radius: 20px;

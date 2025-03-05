@@ -50,7 +50,6 @@ public class ModifierService {
 
     @FXML
     private void handleCancel() {
-        // Appeler la méthode dans ListServices pour afficher le formulaire AjouterService
         listServicesController.showAjouterServiceForm();
         ((Stage) nomServiceField.getScene().getWindow()).close();
     }
@@ -64,11 +63,11 @@ public class ModifierService {
 
 
 
-
+//initialiser les champs avec données du service
     public void setService(Service service, ListServices listServicesController) {
         this.serviceToModify = service;
 
-        //idServiceField.setText(String.valueOf(service.getIdService()));
+
         nomServiceField.setText(service.getNomService());
         descriptionServiceField.setText(service.getDescriptionService());
         typeServiceField.setText(service.getTypeService());
@@ -83,6 +82,8 @@ public class ModifierService {
     }
 
 
+
+    //enregistrer les modifications
     @FXML
     private void handleSave() {
         try {
@@ -136,7 +137,7 @@ public class ModifierService {
             // Appeler la méthode dans ListContrats pour afficher le formulaire AjouterContrat
             listServicesController.showAjouterServiceForm();
 
-            ((Stage) nomServiceField.getScene().getWindow()).close();
+            ((Stage) statusInactif.getScene().getWindow()).close();
 
         } catch (DateTimeParseException e) {
             System.out.println("Erreur : Format de date invalide. Utiliser yyyy-MM-dd !");

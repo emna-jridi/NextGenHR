@@ -195,7 +195,7 @@ public class ServiceContrat implements IServices<Contrat> {
 
 
 
-
+//récupérer les services par contrat id
     public List<Service> getServicesByContratId(int contratId) {
         List<Service> services = new ArrayList<>();
         String serviceQry = "SELECT s.* FROM `services` s " +
@@ -305,137 +305,6 @@ public class ServiceContrat implements IServices<Contrat> {
 
 
 
-
-    /*//Tri des contrats par montant par ordre décroissant ou décroissant
-    public List<Contrat> sortByMontant(boolean asc) {
-
-        List<Contrat> contrats = new ArrayList<>();
-
-        String order = asc ? "ASC" : "DESC";
-
-        String qry = "SELECT * FROM `contrat` ORDER BY `montantContrat` " + order;
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
-
-            while (rs.next()) {
-                Contrat c = new Contrat();
-                c.setIdContrat(rs.getInt("idContrat"));
-                // Handling the enum conversion (assuming it's stored as String in the database)
-                String typeContratStr = rs.getString("typeContrat");
-                if (typeContratStr != null) {
-                    c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
-                }
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
-                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
-                c.setStatusContrat(rs.getString("statusContrat"));
-                c.setMontantContrat(rs.getInt("montantContrat"));
-                c.setNomClient(rs.getString("nomClient"));
-                c.setEmailClient(rs.getString("emailClient"));
-                //c.setIdService(rs.getInt("idService"));
-
-                contrats.add(c);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du tri : " + e.getMessage());
-        }
-        return contrats;
-    }*/
-
-
-
-
-
-
-    //Filtrer les contrats actifs (non expirés)
-    /*public List<Contrat> filterActiveContracts() {
-
-        List<Contrat> activeContracts = new ArrayList<>();
-
-        String qry = "SELECT * FROM `contrat` WHERE `statusContrat` = 'Actif'";
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
-
-            while (rs.next()) {
-                Contrat c = new Contrat();
-                c.setIdContrat(rs.getInt("idContrat"));
-                // Handle enum conversion for 'typeContrat'
-                String typeContratStr = rs.getString("typeContrat");
-                if (typeContratStr != null) {
-                    c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
-                }
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
-                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
-                c.setStatusContrat(rs.getString("statusContrat"));
-                c.setMontantContrat(rs.getInt("montantContrat"));
-                c.setNomClient(rs.getString("nomClient"));
-                c.setEmailClient(rs.getString("emailClient"));
-                //c.setIdService(rs.getInt("idService"));
-
-                activeContracts.add(c);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du filtrage des contrats actifs : " + e.getMessage());
-        }
-        return activeContracts;
-    }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //récupérer un contrat avec ses services (jointure)
-    /*public List<Service> getServicesByContrat(int idContrat) {
-        List<Service> services = new ArrayList<>();
-        String query = "SELECT s.idService, s.nomService, s.descriptionService, s.typeService, s.dateDebutService, s.dateFinService, s.statusService " +
-                "FROM services s " +
-                "INNER JOIN contrat c ON c.idContrat = s.idContrat " +
-                "WHERE c.idContrat = ?";
-
-        try {
-            PreparedStatement stmt = cnx.prepareStatement(query);
-            stmt.setInt(1, idContrat);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Service service = new Service();
-                service.setIdService(rs.getInt("idService"));
-                service.setNomService(rs.getString("nomService"));
-                service.setDescriptionService(rs.getString("descriptionService"));
-                service.setTypeService(rs.getString("typeService"));
-                service.setDateDebutService(rs.getDate("dateDebutService").toLocalDate());
-                service.setDateFinService(rs.getDate("dateFinService").toLocalDate());
-                service.setStatusService(rs.getString("statusService"));
-
-                services.add(service);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la récupération des services : " + e.getMessage());
-        }
-        return services;
-    }*/
 
 
 

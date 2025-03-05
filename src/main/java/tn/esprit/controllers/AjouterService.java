@@ -47,10 +47,7 @@ public class AjouterService {
         descriptionService.clear();
         radioActif.setSelected(true);
         radioInactif.setSelected(false);
-        /*// Réinitialiser les labels de validation
-        emailValidationLabel.setText("");
-        numTelValidationLabel.setText("");
-        montantValidationLabel.setText("");*/
+
     }
 
 
@@ -134,7 +131,7 @@ public class AjouterService {
 
 
 
-    private void closeWindow() {
+    /*private void closeWindow() {
         ((Stage) nomService.getScene().getWindow()).close();
-    }
+    }*/
 }

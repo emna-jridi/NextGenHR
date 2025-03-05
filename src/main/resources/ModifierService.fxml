@@ -94,7 +94,7 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="btnIgnore" layoutX="253.0" layoutY="477.0" onAction="#handleCancel" prefHeight="48.0" prefWidth="134.0" text="Annuler">
+            <Button fx:id="btnIgnore" layoutX="270.0" layoutY="477.0" onAction="#handleCancel" prefHeight="48.0" prefWidth="134.0" text="Annuler">
                 <graphic>
                     <ImageView fx:id="cancelIcon" fitHeight="20.0" fitWidth="20.0">
                         <image>

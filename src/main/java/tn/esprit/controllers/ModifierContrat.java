@@ -149,7 +149,6 @@ public class ModifierContrat {
 
     @FXML
     private void handleCancel() {
-        // Appeler la méthode dans ListContrats pour afficher le formulaire AjouterContrat
         listContratsController.showAjouterContratForm();
         ((Stage) nomClientField.getScene().getWindow()).close();
     }
@@ -163,6 +162,8 @@ public class ModifierContrat {
 
 
 
+
+    //initialiser les champs avec données du contrat
     public void setContrat(Contrat contrat, ListContrats listContratsController) {
         this.contratToModify = contrat;
         this.listContratsController = listContratsController;
@@ -207,7 +208,7 @@ public class ModifierContrat {
         // Sélectionner le mode de paiement actuel dans le ComboBox
         ModePaiement modePaiement = contrat.getModeDePaiement();
         if (modePaiement != null) {
-            comboBoxModePaiement.setValue(modePaiement); // Sélectionner la valeur du mode de paiement actuel
+            comboBoxModePaiement.setValue(modePaiement);
         }
 
 
@@ -313,6 +314,8 @@ public class ModifierContrat {
             System.out.println("Erreur : Le montant doit être un nombre valide !");
         }
     }
+
+
 
 
 
