@@ -1,5 +1,10 @@
 package tn.esprit.controllers;
 
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.client.util.DateTime;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -7,9 +12,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import tn.esprit.models.Teletravail;
+import tn.esprit.services.GoogleCalendarService;
 import tn.esprit.services.ServiceTeletravail;
 
+import java.io.IOException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class TeletravailRHController implements javafx.fxml.Initializable {
@@ -71,8 +81,7 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
         Teletravail demande = TT.getById(teletravailId);
         if (demande != null && "En attente".equals(demande.getStatutTT())) {
             String stats = TT.getEmployeeTTStats(demande.getIdEmploye());
-            String info = String.format("Employé: %s (%s) | Date Demande: %s | Début: %s | Fin: %s | Statut: %s | Raison: %s",
-                    demande.getIdTeletravail(), demande.getNomEmploye(), stats,
+            String info = String.format("Date Demande: %s | Début: %s | Fin: %s | Statut: %s | Raison: %s",
                     demande.getDateDemandeTT(), demande.getDateDebutTT(), demande.getDateFinTT(), demande.getStatutTT(), demande.getRaisonTT());
             affichageid.getItems().add(info);
         } else {
@@ -83,6 +92,7 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
     /**
      * Approuve la demande sélectionnée.
      */
+
     @FXML
     void ApprouverTT(ActionEvent event) {
         processTeletravailAction("Approuvé");
@@ -127,6 +137,7 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
     /**
      * Traite l'action de validation (approuver/refuser) d'une demande et envoie un email.
      */
+
     private void processTeletravailAction(String statut) {
         String selected = IDchoiceEmploye.getSelectionModel().getSelectedItem();
         if (selected == null) {
@@ -152,6 +163,34 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
 
                 // 🟢 Envoyer l'email
                 TT.traiterDemandeTT(selectedDemande.getIdTeletravail(), statut);
+
+                // Ajouter un événement Google Calendar si la demande est approuvée
+                if ("Approuvé".equals(statut)) {
+                    try {
+                        Calendar googleCalendarService = GoogleCalendarService.getCalendarService();
+
+                        // Convertir LocalDate en DateTime
+                        LocalDate startDate = selectedDemande.getDateDebutTT();
+                        LocalDate endDate = selectedDemande.getDateFinTT();
+
+                        Date startDateTime = Date.from(startDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                        Date endDateTime = Date.from(endDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+                        // Créer l'événement avec les données
+                        Event googleEvent = new Event()
+                                .setSummary("Télétravail approuvé: " + selectedDemande.getNomEmploye())
+                                .setDescription(selectedDemande.getRaisonTT())
+                                .setStart(new EventDateTime().setDateTime(new DateTime(startDateTime)))
+                                .setEnd(new EventDateTime().setDateTime(new DateTime(endDateTime)));
+
+                        // Ajouter l'événement au calendrier
+                        googleCalendarService.events().insert("primary", googleEvent).execute();
+                        showAlert("Succès", "La demande a été approuvée et l'événement a été ajouté au calendrier.");
+                    } catch (IOException | GeneralSecurityException e) {
+                        showAlert("Erreur", "Une erreur s'est produite lors de l'ajout de l'événement au calendrier.");
+                        e.printStackTrace();
+                    }
+                }
 
                 affichageid.getItems().removeIf(item -> item.contains("ID: " + teletravailId));
                 showAlert("Succès", "La demande a été " + statut.toLowerCase() + " et un email a été envoyé.");

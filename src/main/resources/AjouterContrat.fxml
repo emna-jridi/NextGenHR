@@ -2,7 +2,6 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
@@ -13,9 +12,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckComboBox?>
 
-<!--<?import org.controlsfx.control.CheckComboBox?>-->
-
+<?import javafx.scene.control.ComboBox?>
 <AnchorPane prefHeight="717.0" prefWidth="969.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterContrat">
 
    <stylesheets>
@@ -24,85 +23,118 @@
 
    <children>
 
-      <Pane layoutX="97.0" layoutY="34.0" prefHeight="633.0" prefWidth="782.0" styleClass="form-container">
+      <Pane layoutX="297.0" layoutY="42.0" prefHeight="625.0" prefWidth="478.0" styleClass="form-container">
+
+
          <!-- Titre -->
-         <Label alignment="CENTER" layoutX="283.0" layoutY="8.0" prefHeight="62.0" prefWidth="216.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Contrat">
+         <Label alignment="CENTER" layoutX="131.0" layoutY="14.0" prefHeight="62.0" prefWidth="216.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Contrat">
             <font>
                <Font size="36.0" />
             </font>
          </Label>
 
-         <!--type de contrat-->
-         <Label layoutX="89.0" layoutY="110.0" text="Type de Contrat:" />
-         <ComboBox fx:id="comboTypeContrat" layoutX="273.0" layoutY="99.0" prefHeight="20.0" prefWidth="266.0" promptText="Choisir le type de contrat">
-            <!-- Remplir ce ComboBox avec les valeurs de l'Enum TypeContrat dans le contrôleur -->
-         </ComboBox>
-
-
-         <!-- Date Début -->
-         <Label layoutX="120.0" layoutY="181.0" text="Date Début:" />
-         <DatePicker fx:id="dateDebutContrat" layoutX="273.0" layoutY="167.0" prefHeight="33.0" prefWidth="266.0" promptText="Choisir date de début de contrat" />
-
-         <!-- Date Fin -->
-         <Label layoutX="131.0" layoutY="236.0" text="Date Fin:" />
-         <DatePicker fx:id="dateFinContrat" layoutX="276.0" layoutY="222.0" prefHeight="33.0" prefWidth="266.0" promptText="Choisir date de fin de contrat" />
-
-         <!-- Montant du Contrat -->
-         <Label layoutX="129.0" layoutY="303.0" text="Montant:" />
-         <HBox layoutX="284.0" layoutY="231.0" spacing="10.0" />
-         <TextField fx:id="montantContrat" alignment="CENTER" layoutX="276.0" layoutY="297.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir montant du contrat" />
-
          <!-- Nom du Client -->
-         <Label layoutX="121.0" layoutY="351.0" text="Nom Client(e):" />
+         <Label layoutX="39.0" layoutY="109.0" text="Nom Client(e):" />
          <HBox layoutX="284.0" layoutY="270.0" spacing="10.0" />
-         <TextField fx:id="nomClient" alignment="CENTER" layoutX="273.0" layoutY="344.0" prefHeight="33.0" prefWidth="271.0" promptText="Saisir nom du client(e)" />
-
-         <!-- Email du Client -->
-         <Label layoutX="128.0" layoutY="399.0" text="Email Client(e):" />
-         <HBox layoutX="284.0" layoutY="313.0" spacing="10.0" />
-         <TextField fx:id="emailClient" alignment="CENTER" layoutX="273.0" layoutY="392.0" prefHeight="33.0" prefWidth="271.0" promptText="Saisir l'email du client(e)" />
-         <Label fx:id="emailValidationLabel" layoutX="273.0" layoutY="430.0" style="-fx-text-fill: red;" text="" />
-
-
-
-         <!-- Statut du Contrat (Actif/Inactif) -->
-         <Label layoutX="109.0" layoutY="451.0" text="Statut du Contrat:" />
-         <RadioButton fx:id="radioActif" layoutX="331.0" layoutY="452.0" selected="true" text="Actif" />
-         <RadioButton fx:id="radioInactif" layoutX="427.0" layoutY="452.0" text="Inactif" />
-
-
-         <!-- Liste des Services
-         <Label layoutX="130.0" layoutY="438.0" text="Services :" />
-         <CheckComboBox fx:id="checkComboBoxServices" layoutX="276.0" layoutY="402.0" prefHeight="33.0" prefWidth="266.0"     />-->
-
-
-
-         <!-- Bouton Ajouter -->
-         <Button layoutX="331.0" layoutY="527.0" onAction="#ajouter" prefHeight="48.0" prefWidth="150.0" text="Ajouter Contrat" />
-
-         <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="237.0" layoutY="398.0">
-            <image>
-               <Image url="@images/email_icon.png" />
-            </image>
-         </ImageView>
-
-         <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="237.0" layoutY="350.0">
+         <TextField fx:id="nomClient" alignment="CENTER" layoutX="188.0" layoutY="103.0" prefHeight="33.0" prefWidth="271.0" promptText="Saisir nom du client(e)" />
+         <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="156.0" layoutY="109.0">
             <image>
                <Image url="@images/user_icon.png" />
             </image>
          </ImageView>
 
-         <ImageView fitHeight="20.0" fitWidth="30.0" layoutX="234.0" layoutY="303.0">
+         <!-- Email du Client -->
+         <Label layoutX="37.0" layoutY="155.0" text="Email Client(e):" />
+         <HBox layoutX="284.0" layoutY="313.0" spacing="10.0" />
+         <TextField fx:id="emailClient" alignment="CENTER" layoutX="188.0" layoutY="149.0" prefHeight="33.0" prefWidth="271.0" promptText="Saisir l'email du client(e)" />
+         <Label fx:id="emailValidationLabel" layoutX="273.0" layoutY="175.0" style="-fx-text-fill: red;" text="" />
+         <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="156.0" layoutY="155.0">
+            <image>
+               <Image url="@images/email_icon.png" />
+            </image>
+         </ImageView>
+
+         <!-- Tel du Client -->
+         <TextField fx:id="numTelClient" alignment="CENTER" layoutX="188.0" layoutY="192.0" prefHeight="33.0" prefWidth="271.0" promptText="Saisir numéro de téléphone du client(e)" />
+         <Label layoutX="27.0" layoutY="198.0" text="Num Tel Client(e):" />
+         <Label fx:id="numTelValidationLabel" layoutX="170.0" layoutY="218.0" style="-fx-text-fill: red;" text="" />
+         <ImageView fitHeight="20.0" fitWidth="24.0" layoutX="158.0" layoutY="199.0">
+            <image>
+               <Image url="@images/phone.png" />
+            </image>
+         </ImageView>
+
+         <!-- Date Début -->
+         <Label layoutX="27.0" layoutY="240.0" text="Date Début du Contrat:" />
+         <DatePicker fx:id="dateDebutContrat" editable="false" layoutX="191.0" layoutY="232.0" prefHeight="33.0" prefWidth="266.0" promptText="Choisir date de début de contrat" />
+
+         <!-- Date Fin -->
+         <Label layoutX="37.0" layoutY="293.0" text="Date Fin du Contrat:" />
+         <DatePicker fx:id="dateFinContrat" editable="false" layoutX="191.0" layoutY="279.0" prefHeight="33.0" prefWidth="266.0" promptText="Choisir date de fin de contrat" />
+
+         <!-- Montant du Contrat -->
+         <Label layoutX="56.0" layoutY="342.0" text="Montant:" />
+         <HBox layoutX="284.0" layoutY="231.0" spacing="10.0" />
+         <TextField fx:id="montantContrat" alignment="CENTER" layoutX="191.0" layoutY="336.0" prefHeight="33.0" prefWidth="266.0" promptText="Saisir montant du contrat" />
+         <Label fx:id="montantValidationLabel" layoutX="170.0" layoutY="370.0" style="-fx-text-fill: red;" text="" />
+         <ImageView fitHeight="20.0" fitWidth="30.0" layoutX="152.0" layoutY="342.0">
             <image>
                <Image url="@images/montant_icon.png" />
             </image>
          </ImageView>
-         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="234.0" layoutY="105.0">
-            <image>
-               <Image url="@images/type_icon.png" />
-            </image>
-         </ImageView>
-         <Label layoutX="556.0" layoutY="399.0" text="Label" />
+
+
+         <!-- Statut du Contrat (Actif/Inactif) -->
+         <Label layoutX="44.0" layoutY="400.0" text="Statut du Contrat:" />
+         <RadioButton fx:id="radioActif" layoutX="250.0" layoutY="401.0" selected="true" text="Actif" />
+         <RadioButton fx:id="radioInactif" layoutX="352.0" layoutY="401.0" text="Inactif" />
+
+
+         <!-- Liste des Services-->
+         <Label layoutX="44.0" layoutY="430.0" text="Services :" />
+         <CheckComboBox fx:id="checkComboBoxServices" layoutX="200.0" layoutY="430.0" prefHeight="33.0" prefWidth="266.0"     />
+
+
+         <!-- Mode de Paiement -->
+         <Label layoutX="44.0" layoutY="475.0" text="Mode de Paiement :" />
+         <ComboBox fx:id="comboBoxModePaiement" layoutX="200.0" layoutY="475.0" prefHeight="33.0" prefWidth="266.0" />
+
+
+
+
+
+
+
+         <!-- Bouton Ajouter -->
+         <Button fx:id="btnAjouter" layoutX="128.0" layoutY="550.0" onAction="#ajouter" prefHeight="48.0" prefWidth="120.0" text="Ajouter">
+            <graphic>
+               <ImageView fx:id="addIcon" fitHeight="20.0" fitWidth="20.0">
+                  <image>
+                     <Image url="@images/add_icon.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
+
+         <!-- Bouton Clear -->
+         <Button fx:id="btnClear" layoutX="250.0" layoutY="550.0" onAction="#clearFields" prefHeight="48.0" prefWidth="145.0" text="Réinitialiser">
+            <graphic>
+               <ImageView fx:id="clearIcon" fitHeight="20.0" fitWidth="20.0">
+                  <image>
+                     <Image url="@images/reset_icon.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
+
+
+
+
+
+
+
+
+
       </Pane>
    </children>
 </AnchorPane>

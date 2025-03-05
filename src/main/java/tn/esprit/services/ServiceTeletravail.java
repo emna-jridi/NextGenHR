@@ -40,6 +40,8 @@ public class ServiceTeletravail {
             return false;
         }
 
+
+
         String sql = "INSERT INTO teletravail (IdEmploye, DateDemandeTT, DateDebutTT, DateFinTT, StatutTT, RaisonTT) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pst = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pst.setInt(1, teletravail.getIdEmploye());
@@ -63,6 +65,7 @@ public class ServiceTeletravail {
         }
         return false;
     }
+
 
     public boolean update(Teletravail teletravail) {
         String sql = "UPDATE teletravail SET IdEmploye = ?, DateDemandeTT = ?, DateDebutTT = ?, DateFinTT = ?, StatutTT = ?, RaisonTT = ? WHERE IdTeletravail = ?";
@@ -234,42 +237,42 @@ public class ServiceTeletravail {
         return "Inconnu";
     }
 
-        public void traiterDemandeTT(int idTeletravail, String statut) {
-            try {
-                // 1. Mettre à jour le statut dans la base de données
-                String updateQuery = "UPDATE teletravail SET StatutTT = ? WHERE IdTeletravail = ?";
-                PreparedStatement pst = connection.prepareStatement(updateQuery);
-                pst.setString(1, statut);
-                pst.setInt(2, idTeletravail);
-                pst.executeUpdate();
+    public void traiterDemandeTT(int idTeletravail, String statut) {
+        try {
+            // 1. Mettre à jour le statut dans la base de données
+            String updateQuery = "UPDATE teletravail SET StatutTT = ? WHERE IdTeletravail = ?";
+            PreparedStatement pst = connection.prepareStatement(updateQuery);
+            pst.setString(1, statut);
+            pst.setInt(2, idTeletravail);
+            pst.executeUpdate();
 
-                System.out.println("Statut mis à jour avec succès : " + statut);
+            System.out.println("Statut mis à jour avec succès : " + statut);
 
-                // 2. Récupérer l'email de l'employé concerné
-                String emailQuery = "SELECT e.EmailEmploye, e.NomEmploye, e.PrenomEmploye FROM employés e " +
-                        "JOIN teletravail t ON e.IdEmploye = t.IdEmploye WHERE t.IdTeletravail = ?";
-                PreparedStatement emailPst = connection.prepareStatement(emailQuery);
-                emailPst.setInt(1, idTeletravail);
-                ResultSet rs = emailPst.executeQuery();
+            // 2. Récupérer l'email de l'employé concerné
+            String emailQuery = "SELECT e.EmailEmploye, e.NomEmploye, e.PrenomEmploye FROM employés e " +
+                    "JOIN teletravail t ON e.IdEmploye = t.IdEmploye WHERE t.IdTeletravail = ?";
+            PreparedStatement emailPst = connection.prepareStatement(emailQuery);
+            emailPst.setInt(1, idTeletravail);
+            ResultSet rs = emailPst.executeQuery();
 
-                if (rs.next()) {
-                    String email = rs.getString("EmailEmploye");
-                    String nom = rs.getString("NomEmploye");
-                    String prenom = rs.getString("PrenomEmploye");
+            if (rs.next()) {
+                String email = rs.getString("EmailEmploye");
+                String nom = rs.getString("NomEmploye");
+                String prenom = rs.getString("PrenomEmploye");
 
-                    // 3. Envoyer l'email
-                    String subject = "Mise à jour de votre demande de télétravail";
-                    String body = "Bonjour " + prenom + " " + nom + ",\n\n" +
-                            "Votre demande de télétravail a été " + statut.toLowerCase() + ".\n\n" +
-                            "Cordialement,\nL'équipe RH.";
+                // 3. Envoyer l'email
+                String subject = "Mise à jour de votre demande de télétravail";
+                String body = "Bonjour " + prenom + " " + nom + ",\n\n" +
+                        "Votre demande de télétravail a été " + statut.toLowerCase() + ".\n\n" +
+                        "Cordialement,\nL'équipe RH.";
 
-                    MailServiceTT mailServiceTT = new MailServiceTT();
-                    mailServiceTT.sendEmail(email, subject, body);
+                MailServiceTT mailServiceTT = new MailServiceTT();
+                mailServiceTT.sendEmail(email, subject, body);
 
-                    System.out.println("Email envoyé à : " + email);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println("Email envoyé à : " + email);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+}

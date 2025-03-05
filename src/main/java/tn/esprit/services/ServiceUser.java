@@ -324,6 +324,4 @@ public class ServiceUser {
         user.setActive(rs.getBoolean("isActive"));
         return user;
     }
-
-
 }

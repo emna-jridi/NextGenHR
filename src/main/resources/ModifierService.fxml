@@ -5,6 +5,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,41 +22,39 @@
 
     <children>
         <!-- Cadre autour du formulaire -->
-        <Pane layoutX="103.0" layoutY="52.0" prefHeight="600.0" prefWidth="750.0" styleClass="form-container">
+        <Pane layoutX="297.0" layoutY="42.0" prefHeight="570.0" prefWidth="478.0" styleClass="form-container">
 
             <!-- Titre -->
-            <Label alignment="CENTER" layoutX="262.0" layoutY="14.0" prefHeight="66.0" prefWidth="227.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Modifier Service">
+            <Label alignment="CENTER" layoutX="142.0" layoutY="14.0" prefHeight="66.0" prefWidth="227.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Modifier Service">
                 <font>
                     <Font size="36.0" />
                 </font>
             </Label>
 
-            <!-- ID Service (Non éditable) -->
-            <Label layoutX="99.0" layoutY="106.0" text="ID Service:" />
-            <TextField fx:id="idServiceField" alignment="CENTER" editable="false" layoutX="267.0" layoutY="99.0" prefHeight="33.0" prefWidth="273.0" promptText="id service" />
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="225.0" layoutY="101.0">
-                <image>
-                    <Image url="@images/id_icon.png" />
-                </image>
-            </ImageView>
-
             <!-- Nom Service -->
-            <Label layoutX="92.0" layoutY="156.0" text="Nom Service:" />
-            <TextField fx:id="nomServiceField" alignment="CENTER" layoutX="267.0" layoutY="149.0" prefHeight="33.0" prefWidth="273.0" promptText="Saisir nom du service" />
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="225.0" layoutY="151.0">
+            <Label layoutX="34.0" layoutY="101.0" text="Nom Service:" />
+            <TextField fx:id="nomServiceField" alignment="CENTER" layoutX="177.0" layoutY="94.0" prefHeight="33.0" prefWidth="273.0" promptText="Saisir nom du service" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="136.0" layoutY="96.0">
                 <image>
                     <Image url="@images/service_icon.png" />
                 </image>
             </ImageView>
 
             <!-- Description -->
-            <Label layoutX="94.0" layoutY="217.0" text="Description:" />
-            <TextField fx:id="descriptionServiceField" alignment="CENTER" layoutX="267.0" layoutY="210.0" prefHeight="33.0" prefWidth="273.0" promptText="Saisir la description" />
+            <Label layoutX="37.0" layoutY="156.0" text="Description:" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" layoutY="152.0">
+                <image>
+                    <Image url="@images/description-icon.png" />
+                </image>
+            </ImageView>
+
+
+            <TextArea fx:id="descriptionServiceField" layoutX="180.0" layoutY="145.0" prefHeight="100" prefWidth="266.0" promptText="donner une description du service" />
 
             <!-- Type Service -->
-            <Label layoutX="116.0" layoutY="272.0" text="Type:" />
-            <TextField fx:id="typeServiceField" alignment="CENTER" layoutX="267.0" layoutY="265.0" prefHeight="33.0" prefWidth="273.0" promptText="Saisir le type" />
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="225.0" layoutY="267.0">
+            <Label layoutX="26.0" layoutY="272.0" text="Type Service:" />
+            <TextField fx:id="typeServiceField" alignment="CENTER" layoutX="173.0" layoutY="266.0" prefHeight="33.0" prefWidth="273.0" promptText="Saisir le type" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="127.0" layoutY="267.0">
                 <image>
                     <Image url="@images/type_icon.png" />
                 </image>
@@ -63,20 +62,40 @@
 
             
             <!-- Date Début -->
-            <Label layoutX="96.0" layoutY="324.0" text="Date Début:" />
-            <DatePicker fx:id="dateDebutField" layoutX="270.0" layoutY="310.0" prefHeight="33.0" prefWidth="266.0" promptText="date début du service" />
+            <Label layoutX="26.0" layoutY="324.0" text="Date Début du Service:" />
+            <DatePicker fx:id="dateDebutField" editable="false" layoutX="187.0" layoutY="310.0" prefHeight="33.0" prefWidth="266.0" promptText="date début du service" />
 
             <!-- Date Fin -->
-            <Label layoutX="105.0" layoutY="374.0" text="Date Fin:" />
-            <DatePicker fx:id="dateFinField" layoutX="270.0" layoutY="360.0" prefHeight="33.0" prefWidth="266.0" promptText="date fin du service" />
+            <Label layoutX="27.0" layoutY="374.0" text="Date Fin du Service:" />
+            <DatePicker fx:id="dateFinField" editable="false" layoutX="187.0" layoutY="360.0" prefHeight="33.0" prefWidth="266.0" promptText="date fin du service" />
 
             <!-- Statut du Service -->
-            <Label layoutX="113.0" layoutY="423.0" text="Statut:" />
-            <RadioButton fx:id="statusActif" layoutX="320.0" layoutY="424.0" selected="true" text="Actif" />
-            <RadioButton fx:id="statusInactif" layoutX="438.0" layoutY="424.0" text="Inactif" />
+            <Label layoutX="48.0" layoutY="423.0" text="Statut:" />
+            <RadioButton fx:id="statusActif" layoutX="233.0" layoutY="424.0" selected="true" text="Actif" />
+            <RadioButton fx:id="statusInactif" layoutX="320.0" layoutY="424.0" text="Inactif" />
 
             <!-- Bouton Enregistrer -->
-            <Button layoutX="300.0" layoutY="488.0" onAction="#handleSave" prefHeight="48.0" prefWidth="150.0" text="Enregistrer" />
+            <Button fx:id="btnSave" layoutX="127.0" layoutY="477.0" onAction="#handleSave" prefHeight="48.0" prefWidth="141.0" text="Enregistrer">
+                <graphic>
+                    <ImageView fx:id="saveIcon" fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@images/save_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="btnIgnore" layoutX="270.0" layoutY="477.0" onAction="#handleCancel" prefHeight="48.0" prefWidth="134.0" text="Annuler">
+                <graphic>
+                    <ImageView fx:id="cancelIcon" fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@images/cancel.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+
         </Pane>
+
+
     </children>
 </AnchorPane>

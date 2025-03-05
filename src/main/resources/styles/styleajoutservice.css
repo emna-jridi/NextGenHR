@@ -5,7 +5,7 @@
 
 /* Style des labels */
 .label {
-    -fx-text-fill: #FFCC00; /* Jaune foncé */
+    -fx-text-fill: #EEAA44; /* Jaune foncé */
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
@@ -13,9 +13,9 @@
 /* Style des champs de texte */
 .text-field {
     -fx-background-color: white;
-    -fx-border-color: #003366;
+    -fx-border-color: #06315a;
     -fx-border-width: 1px;
-    -fx-text-fill: #003366;
+    -fx-text-fill: #06315a;
     -fx-font-size: 14px;
     -fx-padding: 5px;
 
@@ -27,9 +27,9 @@
 /* Style des TextArea avec bordure arrondie */
 .text-area {
     -fx-background-color: white;
-    -fx-border-color: #003366;
+    -fx-border-color: #06315a;
     -fx-border-width: 1px;
-    -fx-text-fill: #003366;
+    -fx-text-fill: #06315a;
     -fx-font-size: 14px;
     -fx-padding: 5px;
 
@@ -63,10 +63,10 @@
 
 /* Style des DatePicker */
 .date-picker {
-    -fx-background-color: #003366;
-    -fx-border-color: #003366;
+    -fx-background-color: #06315a;
+    -fx-border-color: #06315a;
     -fx-border-width: 1px;
-    -fx-text-fill: #003366;
+    -fx-text-fill: #06315a;
     -fx-font-size: 14px;
     -fx-padding: 5px;
 
@@ -77,7 +77,7 @@
 
 /* Style du bouton du calendrier */
 .date-picker .arrow-button {
-    -fx-background-color: #FFCC00; /* Jaune foncé */
+    -fx-background-color: #EEAA44; /* Jaune foncé */
     -fx-background-radius: 50%;
     -fx-border-radius: 50%;
     -fx-padding: 10px;
@@ -91,49 +91,71 @@
 
 /* Effet hover du bouton du calendrier */
 .date-picker .arrow-button:hover {
-    -fx-background-color: #003366;
+    -fx-background-color: #06315a;
 }
 
 /* Style des boutons radio */
 .radio-button {
-    -fx-text-fill: #FFCC00;
+    -fx-text-fill: #EEAA44;
 }
 
-/* Style du bouton principal */
+/* Style des boutons */
 .button {
-    -fx-background-color: #FFCC00;
+    -fx-background-color: linear-gradient(to right, #FFCC00, #EEAA44);
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-border-color: #003366;
-    -fx-border-width: 1px;
-    -fx-padding: 10px 20px;
-
-    /* Bordure arrondie */
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-
-    /* Effet d'ombre */
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+    -fx-padding: 12px 25px;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 3);
+    -fx-transition: all 0.3s ease-in-out;
 }
 
-/* Effet hover du bouton */
+/* Effet hover */
 .button:hover {
     -fx-background-color: #003366;
-    -fx-text-fill: #FFCC00;
-    -fx-effect: dropshadow(three-pass-box, rgba(255, 204, 0, 0.7), 5, 0, 0, 2);
+    -fx-text-fill: white;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 /* Effet lorsque le bouton est pressé */
 .button:pressed {
     -fx-background-color: #002244;
     -fx-text-fill: white;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
 }
+
+
+
+
+/* Style des boutons Modifier et Supprimer */
+#btnAjouter {
+    -fx-background-color: linear-gradient(to right, #F4C430, #EEAA44);
+}
+
+#btnAjouter:hover {
+    -fx-background-color: #EEAA44;
+}
+
+#btnClear {
+    -fx-background-color: linear-gradient(to right, #5cb85c, #4cae4c); /* Vert clair */
+}
+
+#btnClear:hover {
+    -fx-background-color: #4cae4c; /* Un vert légèrement plus foncé pour l'effet de survol */
+}
+
+
+
+
 
 /* Ajout d'un style pour le panneau principal */
 .form-container {
-    -fx-background-color: #003366;
-    -fx-border-color: #FFCC00;
+    -fx-background-color: #06315a;
+    -fx-border-color: #EEAA44;
     -fx-border-width: 3px;
     -fx-background-radius: 20px;
     -fx-border-radius: 20px;

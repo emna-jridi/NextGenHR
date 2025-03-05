@@ -35,7 +35,6 @@ public class ServiceService implements IService<Service> {
             pstm.setDate(4, java.sql.Date.valueOf(service.getDateDebutService()));
             pstm.setDate(5, java.sql.Date.valueOf(service.getDateFinService()));
             pstm.setString(6, service.getStatusService());
-            //pstm.setInt(7, service.getIdContrat());
 
             pstm.executeUpdate();
 
@@ -122,24 +121,27 @@ public class ServiceService implements IService<Service> {
 
     //supprimer service//
     public void delete(int idService) {
-
-        /*if (getById(service.getIdService()) == null) {
-            System.out.println("Erreur : Le service n'existe pas !");
-            return;
-        }*/
-
-        String qry = "DELETE FROM services WHERE IdService = ?";
+        // Supprimer d'abord la relation dans contrat_services
+        String deleteContractServiceQry = "DELETE FROM contrat_services WHERE service_id = ?";
 
         try {
+            // Supprimer la relation dans contrat_services
+            PreparedStatement deleteContractServiceStmt = cnx.prepareStatement(deleteContractServiceQry);
+            deleteContractServiceStmt.setInt(1, idService);
+            deleteContractServiceStmt.executeUpdate();
 
-            PreparedStatement pstm = cnx.prepareStatement(qry);
+            // Puis supprimer le service de la table services
+            String deleteServiceQry = "DELETE FROM services WHERE IdService = ?";
+            PreparedStatement pstm = cnx.prepareStatement(deleteServiceQry);
             pstm.setInt(1, idService);
             pstm.executeUpdate();
-            System.out.println("Service supprimé avec succés !");
+
+            System.out.println("Service et relation avec contrat supprimés avec succès !");
         } catch (SQLException e) {
             System.out.println("Erreur lors de la suppression du service : " + e.getMessage());
         }
     }
+
 
 
 
@@ -211,69 +213,11 @@ public class ServiceService implements IService<Service> {
 
 
 
-    // Tri des services par type de service
-    public List<Service> sortServicesByType() {
-
-        List<Service> services = new ArrayList<>();
-
-        String qry = "SELECT * FROM services ORDER BY TypeService ASC";
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
-
-            while (rs.next()) {
-                Service s = new Service();
-                s.setIdService(rs.getInt("IdService"));
-                s.setNomService(rs.getString("NomService"));
-                s.setDescriptionService(rs.getString("DescriptionService"));
-                s.setTypeService(rs.getString("TypeService"));
-                s.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
-                s.setDateFinService(rs.getDate("DateFinService").toLocalDate());
-                s.setStatusService(rs.getString("StatusService"));
-                //s.setIdContrat(rs.getInt("IdContrat"));
-
-                services.add(s);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du tri des services par type : " + e.getMessage());
-        }
-        return services;
-    }
 
 
 
 
 
-    // Filtrer les services actifs (non expirés)
-    public List<Service> filterActiveServices() {
-
-        List<Service> activeServices = new ArrayList<>();
-
-        String qry = "SELECT * FROM `services` WHERE `StatusService` = 'Actif'";
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
-
-            while (rs.next()) {
-                Service s = new Service();
-                s.setIdService(rs.getInt("IdService"));
-                s.setNomService(rs.getString("NomService"));
-                s.setDescriptionService(rs.getString("DescriptionService"));
-                s.setTypeService(rs.getString("TypeService"));
-                s.setDateDebutService(rs.getDate("DateDebutService").toLocalDate());
-                s.setDateFinService(rs.getDate("DateFinService").toLocalDate());
-                s.setStatusService(rs.getString("StatusService"));
-                //s.setIdContrat(rs.getInt("IdContrat"));
-
-                activeServices.add(s);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du filtrage des services actifs : " + e.getMessage());
-        }
-        return activeServices;
-    }
 
 
 
@@ -318,10 +262,6 @@ public class ServiceService implements IService<Service> {
             return false;
         }
 
-        /*if (service.getIdContrat() <= 0) {
-            System.out.println("Erreur : L'id du contrat doit étre un nombre positif !");
-            return false;
-        }*/
         return true;
     }
 

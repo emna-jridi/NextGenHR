@@ -11,12 +11,11 @@ import java.time.format.DateTimeParseException;
 
 public class ModifierService {
 
-    @FXML
-    private TextField idServiceField;
+
     @FXML
     private TextField nomServiceField;
     @FXML
-    private TextField descriptionServiceField;
+    private TextArea descriptionServiceField;
     @FXML
     private TextField typeServiceField;
     @FXML
@@ -29,6 +28,7 @@ public class ModifierService {
     private RadioButton statusInactif;
 
     private final ServiceService serviceService;
+    private ListServices listServicesController;
     private Service serviceToModify;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private ToggleGroup statusGroup;
@@ -46,10 +46,28 @@ public class ModifierService {
     }
 
 
-    public void setService(Service service) {
+
+
+    @FXML
+    private void handleCancel() {
+        listServicesController.showAjouterServiceForm();
+        ((Stage) nomServiceField.getScene().getWindow()).close();
+    }
+
+
+
+
+    public void setListServicesController(ListServices controller) {
+        this.listServicesController = controller;
+    }
+
+
+
+//initialiser les champs avec données du service
+    public void setService(Service service, ListServices listServicesController) {
         this.serviceToModify = service;
 
-        idServiceField.setText(String.valueOf(service.getIdService()));
+
         nomServiceField.setText(service.getNomService());
         descriptionServiceField.setText(service.getDescriptionService());
         typeServiceField.setText(service.getTypeService());
@@ -64,6 +82,8 @@ public class ModifierService {
     }
 
 
+
+    //enregistrer les modifications
     @FXML
     private void handleSave() {
         try {
@@ -113,7 +133,9 @@ public class ModifierService {
             serviceToModify.setStatusService(statusService);
 
             serviceService.update(serviceToModify);
-            System.out.println("Service mis à jour avec succès !");
+            showAlert("Succès", "Le service a été mise à jour avec succès.");
+            // Appeler la méthode dans ListContrats pour afficher le formulaire AjouterContrat
+            listServicesController.showAjouterServiceForm();
 
             ((Stage) nomServiceField.getScene().getWindow()).close();
 

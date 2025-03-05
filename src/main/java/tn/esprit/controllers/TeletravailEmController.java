@@ -24,6 +24,7 @@ public class TeletravailEmController implements Initializable {
     @FXML private DatePicker Id_date_debut;
 
     private ServiceTeletravail TTService;
+    private int employeeId = 3;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -275,8 +276,8 @@ public class TeletravailEmController implements Initializable {
 
     // Retourne un format texte de l'objet Teletravail pour l'affichage dans la ListView
     private String formatTeletravail(Teletravail tt) {
-        return "ID: " + tt.getIdTeletravail() + " | " + tt.getRaisonTT() + " (" +
-                tt.getDateDebutTT() + " - " + tt.getDateFinTT() + ")" + "|" + tt.getStatutTT();
+        return "Raison : " + tt.getRaisonTT() + " (" +
+                tt.getDateDebutTT() + " - " + tt.getDateFinTT() + ") " + "Statut : " + tt.getStatutTT();
     }
 
     @FXML

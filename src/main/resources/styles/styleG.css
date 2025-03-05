@@ -1,0 +1,391 @@
+/* GLOBAL STYLE CSS - NextGenHR Application
+ * Basé sur les couleurs et le design de l'interface fournie
+ */
+
+/* --- Variables de couleurs --- */
+* {
+    -fx-primary-color: #233d8e;          /* Bleu foncé - couleur principale */
+    -fx-secondary-color: #ffc107;        /* Jaune - couleur des boutons d'action */
+    -fx-light-blue: #e6eef7;             /* Bleu très clair - fond des entêtes de tableaux */
+    -fx-background-color: #f5f7fa;       /* Gris très clair - fond général */
+    -fx-white: #ffffff;                  /* Blanc - fond des cartes et éléments */
+    -fx-success-color: #4caf50;          /* Vert - pour boutons d'export/succès */
+    -fx-danger-color: #D9534F;           /* Rouge - pour boutons d'annulation/suppression */
+    -fx-text-dark: #333333;              /* Texte foncé */
+    -fx-text-medium: #666666;            /* Texte moyen */
+    -fx-text-light: #999999;             /* Texte clair */
+    -fx-border-color: #dddddd;           /* Couleur de bordure standard */
+}
+
+/* --- Styles de base --- */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-background-color: -fx-background-color;
+}
+
+Label {
+    -fx-text-fill: -fx-text-dark;
+}
+
+/* --- Éléments de Navigation --- */
+.nav-bar {
+    -fx-background-color: -fx-white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 2);
+    -fx-padding: 0 20 0 20;
+}
+
+.nav-item {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-dark;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+}
+
+.nav-item:hover {
+    -fx-text-fill: -fx-secondary-color;
+}
+
+.nav-item-active {
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
+
+/* --- Fil d'Ariane (Breadcrumb) --- */
+.breadcrumb {
+    -fx-padding: 10 0 10 0;
+}
+
+.breadcrumb-item {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-medium;
+}
+
+.breadcrumb-item-active {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+}
+
+/* --- Titres de section --- */
+.section-header {
+    -fx-padding: 10 0 10 0;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+}
+
+/* --- Cartes d'information --- */
+.card {
+    -fx-background-color: -fx-white;
+    -fx-background-radius: 5;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 5);
+}
+
+/* Carte spécifique bleu foncé (comme les congés) */
+.primary-card {
+    -fx-background-color: -fx-primary-color;
+    -fx-background-radius: 5;
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 5);
+}
+
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+}
+
+.primary-card .card-title {
+    -fx-text-fill: -fx-white;
+}
+
+.card-number {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary-color;
+    -fx-background-color: -fx-white;
+    -fx-background-radius: 50%;
+    -fx-min-width: 80px;
+    -fx-min-height: 80px;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+}
+
+.card-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-white;
+    -fx-padding: 5 0 5 0;
+}
+
+/* --- Boutons --- */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 3;
+    -fx-padding: 8 15 8 15;
+}
+
+.primary-button {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: -fx-white;
+    -fx-font-weight: bold;
+}
+
+.primary-button:hover {
+    -fx-background-color: derive(-fx-primary-color, -10%);
+}
+
+.secondary-button {
+    -fx-background-color: -fx-secondary-color;
+    -fx-text-fill: -fx-text-dark;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+}
+
+.secondary-button:hover {
+    -fx-background-color: derive(-fx-secondary-color, -10%);
+}
+
+.success-button {
+    -fx-background-color: -fx-success-color;
+    -fx-text-fill: -fx-white;
+    -fx-font-weight: bold;
+}
+
+.success-button:hover {
+    -fx-background-color: derive(-fx-success-color, -10%);
+}
+
+.danger-button {
+    -fx-background-color: -fx-danger-color;
+    -fx-text-fill: -fx-white;
+    -fx-font-weight: bold;
+}
+
+.danger-button:hover {
+    -fx-background-color: derive(-fx-danger-color, -10%);
+}
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.icon-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+}
+
+.icon-button-bordered {
+    -fx-background-color: -fx-white;
+    -fx-border-color: -fx-border-color;
+    -fx-border-radius: 3;
+}
+
+/* --- Tableaux --- */
+.table-view {
+    -fx-background-color: -fx-white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 2);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -fx-light-blue;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 35;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10px;
+}
+
+.table-row-cell {
+    -fx-background-color: -fx-white;
+    -fx-border-color: transparent transparent -fx-light-blue transparent;
+    -fx-padding: 2px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: derive(-fx-light-blue, 50%);
+}
+
+.table-row-cell:selected {
+    -fx-background-color: derive(-fx-primary-color, 80%);
+}
+
+/* --- Champs de saisie --- */
+.text-field, .password-field, .text-area, .combo-box {
+    -fx-background-color: -fx-white;
+    -fx-border-color: -fx-border-color;
+    -fx-border-radius: 3;
+    -fx-padding: 8 12 8 12;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused, .combo-box:focused {
+    -fx-border-color: -fx-primary-color;
+    -fx-effect: dropshadow(three-pass-box, rgba(35, 61, 142, 0.2), 5, 0, 0, 0);
+}
+
+/* --- Menu latéral --- */
+.side-menu {
+    -fx-background-color: -fx-primary-color;
+    -fx-padding: 20px;
+}
+
+.side-menu-button {
+    -fx-background-color: -fx-light-blue;
+    -fx-text-fill: -fx-text-dark;
+    -fx-font-size: 14px;
+    -fx-border-color: -fx-white;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-padding: 10 15 10 15;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.side-menu-button:hover {
+    -fx-background-color: derive(-fx-light-blue, -5%);
+}
+
+.side-menu-button-active {
+    -fx-background-color: -fx-secondary-color;
+    -fx-text-fill: -fx-text-dark;
+}
+
+/* --- Barre supérieure --- */
+.top-bar {
+    -fx-background-color: -fx-primary-color;
+    -fx-padding: 10 20 10 20;
+}
+
+.top-bar-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-white;
+}
+
+/* --- Conteneurs spécifiques --- */
+.form-container {
+    -fx-spacing: 15;
+    -fx-padding: 20;
+}
+
+.form-row {
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+.form-label {
+    -fx-min-width: 120;
+    -fx-font-weight: bold;
+}
+
+/* --- Indicateurs d'état --- */
+.status-indicator {
+    -fx-background-radius: 10;
+    -fx-padding: 5 10 5 10;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.status-approved {
+    -fx-background-color: derive(-fx-success-color, 80%);
+    -fx-text-fill: derive(-fx-success-color, -30%);
+}
+
+.status-pending {
+    -fx-background-color: derive(-fx-secondary-color, 80%);
+    -fx-text-fill: derive(-fx-secondary-color, -30%);
+}
+
+.status-rejected {
+    -fx-background-color: derive(-fx-danger-color, 80%);
+    -fx-text-fill: derive(-fx-danger-color, -30%);
+}
+
+/* --- Profil utilisateur --- */
+.profile-container {
+    -fx-background-color: -fx-secondary-color;
+    -fx-background-radius: 30;
+    -fx-padding: 5 10 5 10;
+}
+
+.profile-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-dark;
+    -fx-font-weight: bold;
+}
+
+/* --- Séparateurs --- */
+.separator {
+    -fx-background-color: -fx-border-color;
+}
+
+/* --- Pagination --- */
+.pagination {
+    -fx-border-color: transparent;
+}
+
+.pagination .page {
+    -fx-background-color: -fx-white;
+}
+
+.pagination .pagination-control .button {
+    -fx-background-color: -fx-light-blue;
+    -fx-border-color: -fx-border-color;
+}
+
+/* --- Dialog/Popup --- */
+.dialog-pane {
+    -fx-background-color: -fx-white;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: -fx-light-blue;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-dark;
+}
+
+/* --- Modifications pour l'accessibilité --- */
+.large-text {
+    -fx-font-size: 16px;
+}
+
+.emphasized {
+    -fx-font-weight: bold;
+}
+
+/* --- Animation de transitions --- */
+.animated {
+    -fx-transition-duration: 0.3s;
+}
+
+/* --- Pour les écrans de chargement --- */
+.loading-indicator {
+    -fx-spacing: 15;
+    -fx-alignment: center;
+}
+
+.progress-indicator {
+    -fx-progress-color: -fx-primary-color;
+}
+
+/* --- Media queries pour différentes tailles d'écran --- */
+.responsive-container {
+    -fx-padding: 10;
+}

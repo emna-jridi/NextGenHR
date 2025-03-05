@@ -17,7 +17,7 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         System.out.println("Démarrage de l'application...");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeContrats.fxml"));
         try {
             Parent root = loader.load();
             System.out.println("FXML chargé avec succès.");

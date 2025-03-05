@@ -2,7 +2,8 @@ package tn.esprit.services;
 
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Contrat;
-import tn.esprit.models.TypeContrat;
+import tn.esprit.models.ModePaiement;
+import tn.esprit.models.Service;
 import tn.esprit.utils.MyDatabase;
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,20 +29,35 @@ public class ServiceContrat implements IService<Contrat> {
             return false;
         }
 
-        String qry = "INSERT INTO `contrat`(`typeContrat`, `dateDebutContrat`, `dateFinContrat`, `statusContrat`, `montantContrat`, `nomClient`, `emailClient`) VALUES (?,?,?,?,?,?,?)";
-
+        String qry = "INSERT INTO `contrat`( `dateDebutContrat`, `dateFinContrat`, `statusContrat`, `montantContrat`, `nomClient`, `emailClient`, `telephoneClient`, `modePaiement`) VALUES (?,?,?,?,?,?,?,?)";
         try {
-            PreparedStatement pstm = cnx.prepareStatement(qry);
-            //conversion de l'énumération typeContrat en une chaîne.
-            pstm.setString(1, contrat.getTypeContrat().toString());
-            pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
-            pstm.setDate(3, java.sql.Date.valueOf(contrat.getDateFinContrat()));
-            pstm.setString(4, contrat.getStatusContrat());
-            pstm.setInt(5, contrat.getMontantContrat());
-            pstm.setString(6, contrat.getNomClient());
-            pstm.setString(7, contrat.getEmailClient());
+            PreparedStatement pstm = cnx.prepareStatement(qry, Statement.RETURN_GENERATED_KEYS);
+            pstm.setDate(1, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
+            pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateFinContrat()));
+            pstm.setString(3, contrat.getStatusContrat());
+            pstm.setInt(4, contrat.getMontantContrat());
+            pstm.setString(5, contrat.getNomClient());
+            pstm.setString(6, contrat.getEmailClient());
+            pstm.setString(7, contrat.getTelephoneClient());
+            pstm.setString(8, contrat.getModeDePaiement().name());
 
             pstm.executeUpdate();
+
+            // Obtenir l'ID du contrat généré
+            ResultSet rs = pstm.getGeneratedKeys();
+            int contratId = 0;
+            if (rs.next()) {
+                contratId = rs.getInt(1);
+            }
+
+            // Ajouter les services associés au contrat dans la table de jointure
+            for (Service service : contrat.getServices()) {
+                String insertServiceQry = "INSERT INTO `contrat_services` (`contrat_id`, `service_id`) VALUES (?, ?)";
+                PreparedStatement ps = cnx.prepareStatement(insertServiceQry);
+                ps.setInt(1, contratId);
+                ps.setInt(2, service.getIdService());
+                ps.executeUpdate();
+            }
 
             System.out.println("Contrat ajouté avec succès !");
         } catch (SQLException e) {
@@ -51,44 +67,12 @@ public class ServiceContrat implements IService<Contrat> {
     }
 
 
-    //Afficher les contrats existants//
+
+    //Afficher les contrats existants et ses services//
     @Override
     public List<Contrat> getAll() {
         List<Contrat> contrats = new ArrayList<>();
         String qry = "SELECT * FROM `contrat`";
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry); //contient les résultats de la requête
-
-            while (rs.next()) {
-                Contrat c = new Contrat();
-                c.setIdContrat(rs.getInt("idContrat"));
-                // Conversion de la chaîne en TypeContrat
-                String typeContratStr = rs.getString("typeContrat");
-                c.setTypeContrat(TypeContrat.valueOf(typeContratStr));
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
-                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
-                c.setStatusContrat(rs.getString("statusContrat"));
-                c.setMontantContrat(rs.getInt("montantContrat"));
-                c.setNomClient(rs.getString("nomClient"));
-                c.setEmailClient(rs.getString("emailClient"));
-
-                contrats.add(c);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la récupération des contrats : " + e.getMessage());
-        }
-
-        return contrats;
-    }
-
-
-//Afficher les contrats avec ces services
-    /*@Override
-    public List<Contrat> getAll() {
-        List<Contrat> contrats = new ArrayList<>();
-        String qry = "SELECT * FROM contrat";
 
         try {
             Statement stm = cnx.createStatement();
@@ -97,16 +81,25 @@ public class ServiceContrat implements IService<Contrat> {
             while (rs.next()) {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
-                c.setTypeContrat(rs.getString("typeContrat"));
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat"));
-                c.setDateFinContrat(rs.getDate("dateFinContrat"));
+                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
+                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
                 c.setMontantContrat(rs.getInt("montantContrat"));
                 c.setNomClient(rs.getString("nomClient"));
                 c.setEmailClient(rs.getString("emailClient"));
+                c.setTelephoneClient(rs.getString("telephoneClient"));
+
+                // Conversion du mode de paiement (String → Enum)
+                String modePaiementStr = rs.getString("modePaiement");
+                if (modePaiementStr != null) {
+                    c.setModeDePaiement(ModePaiement.valueOf(modePaiementStr));
+                }
+
 
                 // Récupérer les services associés à ce contrat
-                String serviceQry = "SELECT * FROM services WHERE idContrat = ?";
+                String serviceQry = "SELECT s.* FROM `services` s " +
+                        "JOIN `contrat_services` cs ON s.idService = cs.service_id " +
+                        "WHERE cs.contrat_id = ?";
                 PreparedStatement pstm = cnx.prepareStatement(serviceQry);
                 pstm.setInt(1, c.getIdContrat());
                 ResultSet serviceRs = pstm.executeQuery();
@@ -119,7 +112,6 @@ public class ServiceContrat implements IService<Contrat> {
                     service.setDescriptionService(serviceRs.getString("descriptionService"));
                     services.add(service);
                 }
-
                 c.setServices(services);
                 contrats.add(c);
             }
@@ -128,7 +120,9 @@ public class ServiceContrat implements IService<Contrat> {
         }
 
         return contrats;
-    }*/
+    }
+
+
 
 
 
@@ -136,29 +130,38 @@ public class ServiceContrat implements IService<Contrat> {
     //Mettre à jour un contrat//
     @Override
     public boolean update(Contrat contrat) {
-
-        /*if (!validateContrat(contrat)) {
-            return;
-        }*/
-
-        String qry = "UPDATE `contrat` SET `typeContrat` = ?, `dateDebutContrat` = ?, `dateFinContrat` = ?, `statusContrat` = ?, `montantContrat` = ?, `nomClient` = ?, `emailClient` = ? WHERE `idContrat` = ?";
+        String qry = "UPDATE `contrat` SET `dateDebutContrat` = ?, `dateFinContrat` = ?, `statusContrat` = ?, `montantContrat` = ?, `nomClient` = ?, `emailClient` = ?, `telephoneClient` = ?, `modePaiement` = ? WHERE `idContrat` = ?";
         try {
-
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setString(1, contrat.getTypeContrat().name());
-            pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
-            pstm.setDate(3, java.sql.Date.valueOf(contrat.getDateFinContrat()));
-            pstm.setString(4, contrat.getStatusContrat());
-            pstm.setInt(5, contrat.getMontantContrat());
-            pstm.setString(6, contrat.getNomClient());
-            pstm.setString(7, contrat.getEmailClient());
-            //pstm.setInt(8, contrat.getIdService());
-            pstm.setInt(8, contrat.getIdContrat());
+            pstm.setDate(1, java.sql.Date.valueOf(contrat.getDateDebutContrat()));
+            pstm.setDate(2, java.sql.Date.valueOf(contrat.getDateFinContrat()));
+            pstm.setString(3, contrat.getStatusContrat());
+            pstm.setInt(4, contrat.getMontantContrat());
+            pstm.setString(5, contrat.getNomClient());
+            pstm.setString(6, contrat.getEmailClient());
+            pstm.setString(7, contrat.getTelephoneClient());
+            // Ajouter le mode de paiement (Enum → String)
+            pstm.setString(8, contrat.getModeDePaiement().name());
+            pstm.setInt(9, contrat.getIdContrat());
 
             pstm.executeUpdate();
 
-            System.out.println("Contrat mis à jour avec succès !");
+            // Mettre à jour les services associés
+            String deleteServicesQry = "DELETE FROM `contrat_services` WHERE `contrat_id` = ?";
+            PreparedStatement deleteStmt = cnx.prepareStatement(deleteServicesQry);
+            deleteStmt.setInt(1, contrat.getIdContrat());
+            deleteStmt.executeUpdate();
 
+            // Ajouter les nouveaux services
+            for (Service service : contrat.getServices()) {
+                String insertServiceQry = "INSERT INTO `contrat_services` (`contrat_id`, `service_id`) VALUES (?, ?)";
+                PreparedStatement insertStmt = cnx.prepareStatement(insertServiceQry);
+                insertStmt.setInt(1, contrat.getIdContrat());
+                insertStmt.setInt(2, service.getIdService());
+                insertStmt.executeUpdate();
+            }
+
+            System.out.println("Contrat et services mis à jour avec succès !");
         } catch (SQLException e) {
             System.out.println("Erreur lors de la mise à jour du contrat : " + e.getMessage());
         }
@@ -173,27 +176,56 @@ public class ServiceContrat implements IService<Contrat> {
 
     //supprimer contrat//
     public void delete(int idContrat) {
-
-        /*if (getById(contrat.getIdContrat()) == null) {
-            System.out.println("Erreur : Le contrat n'existe pas !");
-            return;
-        }*/
-
-        String qry = "DELETE FROM `contrat` WHERE `idContrat` = ?";
+        // 1. Supprimer d'abord les services associés à ce contrat dans la table de jointure
+        String deleteServicesQry = "DELETE FROM `contrat_services` WHERE `contrat_id` = ?";
 
         try {
+            // Supprimer les services associés au contrat
+            PreparedStatement deleteStmt = cnx.prepareStatement(deleteServicesQry);
+            deleteStmt.setInt(1, idContrat);
+            deleteStmt.executeUpdate();
 
-            PreparedStatement pstm = cnx.prepareStatement(qry);
+            // 2. Ensuite, supprimer le contrat de la table `contrat`
+            String deleteContratQry = "DELETE FROM `contrat` WHERE `idContrat` = ?";
+            PreparedStatement pstm = cnx.prepareStatement(deleteContratQry);
             pstm.setInt(1, idContrat);
-
             pstm.executeUpdate();
 
-            System.out.println("Contrat supprimé avec succès !");
-
+            System.out.println("Contrat et services associés supprimés avec succès !");
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la suppression du contrat : " + e.getMessage());
+            System.out.println("Erreur lors de la suppression du contrat et de ses services : " + e.getMessage());
         }
     }
+
+
+
+//récupérer les services par contrat id
+    public List<Service> getServicesByContratId(int contratId) {
+        List<Service> services = new ArrayList<>();
+        String serviceQry = "SELECT s.* FROM `services` s " +
+                "JOIN `contrat_services` cs ON s.idService = cs.service_id " +
+                "WHERE cs.contrat_id = ?";
+
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(serviceQry);
+            pstm.setInt(1, contratId);
+            ResultSet serviceRs = pstm.executeQuery();
+
+            while (serviceRs.next()) {
+                Service service = new Service();
+                service.setIdService(serviceRs.getInt("idService"));
+                service.setNomService(serviceRs.getString("nomService"));
+                service.setDescriptionService(serviceRs.getString("descriptionService"));
+                services.add(service);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des services : " + e.getMessage());
+        }
+
+        return services;
+    }
+
+
 
 
 
@@ -211,18 +243,18 @@ public class ServiceContrat implements IService<Contrat> {
             if (rs.next()) {
                 Contrat contrat = new Contrat();
                 contrat.setIdContrat(rs.getInt("idContrat"));
-                // Handling the enum conversion (assuming it's stored as String in the database)
-                String typeContratStr = rs.getString("typeContrat");
-                if (typeContratStr != null) {
-                    contrat.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
-                }
                 contrat.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
                 contrat.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 contrat.setStatusContrat(rs.getString("statusContrat"));
                 contrat.setMontantContrat(rs.getInt("montantContrat"));
                 contrat.setNomClient(rs.getString("nomClient"));
                 contrat.setEmailClient(rs.getString("emailClient"));
-                //contrat.setIdService(rs.getInt("idService"));
+                contrat.setTelephoneClient(rs.getString("telephoneClient"));
+                // Récupérer le mode de paiement (Enum)
+                String modePaiementStr = rs.getString("modePaiement");
+                if (modePaiementStr != null) {
+                    contrat.setModeDePaiement(ModePaiement.valueOf(modePaiementStr));
+                }
 
                 return contrat;
             }
@@ -253,18 +285,18 @@ public class ServiceContrat implements IService<Contrat> {
             while (rs.next()) {
                 Contrat c = new Contrat();
                 c.setIdContrat(rs.getInt("idContrat"));
-                // Handling the enum conversion (assuming it's stored as String in the database)
-                String typeContratStr = rs.getString("typeContrat");
-                if (typeContratStr != null) {
-                    c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
-                }
                 c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
                 c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
                 c.setStatusContrat(rs.getString("statusContrat"));
                 c.setMontantContrat(rs.getInt("montantContrat"));
                 c.setNomClient(rs.getString("nomClient"));
                 c.setEmailClient(rs.getString("emailClient"));
-                //c.setIdService(rs.getInt("idService"));
+                c.setTelephoneClient(rs.getString("telephoneClient"));
+                // Récupérer le mode de paiement (Enum)
+                String modePaiementStr = rs.getString("modePaiement");
+                if (modePaiementStr != null) {
+                    c.setModeDePaiement(ModePaiement.valueOf(modePaiementStr));
+                }
 
                 contrats.add(c);
             }
@@ -278,146 +310,12 @@ public class ServiceContrat implements IService<Contrat> {
 
 
 
-    /*//Tri des contrats par montant par ordre décroissant ou décroissant
-    public List<Contrat> sortByMontant(boolean asc) {
-
-        List<Contrat> contrats = new ArrayList<>();
-
-        String order = asc ? "ASC" : "DESC";
-
-        String qry = "SELECT * FROM `contrat` ORDER BY `montantContrat` " + order;
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
-
-            while (rs.next()) {
-                Contrat c = new Contrat();
-                c.setIdContrat(rs.getInt("idContrat"));
-                // Handling the enum conversion (assuming it's stored as String in the database)
-                String typeContratStr = rs.getString("typeContrat");
-                if (typeContratStr != null) {
-                    c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
-                }
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
-                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
-                c.setStatusContrat(rs.getString("statusContrat"));
-                c.setMontantContrat(rs.getInt("montantContrat"));
-                c.setNomClient(rs.getString("nomClient"));
-                c.setEmailClient(rs.getString("emailClient"));
-                //c.setIdService(rs.getInt("idService"));
-
-                contrats.add(c);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du tri : " + e.getMessage());
-        }
-        return contrats;
-    }*/
-
-
-
-
-
-
-    //Filtrer les contrats actifs (non expirés)
-    /*public List<Contrat> filterActiveContracts() {
-
-        List<Contrat> activeContracts = new ArrayList<>();
-
-        String qry = "SELECT * FROM `contrat` WHERE `statusContrat` = 'Actif'";
-
-        try {
-            Statement stm = cnx.createStatement();
-            ResultSet rs = stm.executeQuery(qry);
-
-            while (rs.next()) {
-                Contrat c = new Contrat();
-                c.setIdContrat(rs.getInt("idContrat"));
-                // Handle enum conversion for 'typeContrat'
-                String typeContratStr = rs.getString("typeContrat");
-                if (typeContratStr != null) {
-                    c.setTypeContrat(TypeContrat.valueOf(typeContratStr)); // Convert to enum
-                }
-                c.setDateDebutContrat(rs.getDate("dateDebutContrat").toLocalDate());
-                c.setDateFinContrat(rs.getDate("dateFinContrat").toLocalDate());
-                c.setStatusContrat(rs.getString("statusContrat"));
-                c.setMontantContrat(rs.getInt("montantContrat"));
-                c.setNomClient(rs.getString("nomClient"));
-                c.setEmailClient(rs.getString("emailClient"));
-                //c.setIdService(rs.getInt("idService"));
-
-                activeContracts.add(c);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du filtrage des contrats actifs : " + e.getMessage());
-        }
-        return activeContracts;
-    }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //récupérer un contrat avec ses services (jointure)
-    /*public List<Service> getServicesByContrat(int idContrat) {
-        List<Service> services = new ArrayList<>();
-        String query = "SELECT s.idService, s.nomService, s.descriptionService, s.typeService, s.dateDebutService, s.dateFinService, s.statusService " +
-                "FROM services s " +
-                "INNER JOIN contrat c ON c.idContrat = s.idContrat " +
-                "WHERE c.idContrat = ?";
-
-        try {
-            PreparedStatement stmt = cnx.prepareStatement(query);
-            stmt.setInt(1, idContrat);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Service service = new Service();
-                service.setIdService(rs.getInt("idService"));
-                service.setNomService(rs.getString("nomService"));
-                service.setDescriptionService(rs.getString("descriptionService"));
-                service.setTypeService(rs.getString("typeService"));
-                service.setDateDebutService(rs.getDate("dateDebutService").toLocalDate());
-                service.setDateFinService(rs.getDate("dateFinService").toLocalDate());
-                service.setStatusService(rs.getString("statusService"));
-
-                services.add(service);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la récupération des services : " + e.getMessage());
-        }
-        return services;
-    }*/
-
 
 
 
 
     private boolean validateContrat(Contrat contrat) {
-        if (contrat.getTypeContrat() == null ) {
-            System.out.println("Erreur : Le type de contrat est obligatoire !");
-            return false;
-        }
+
         if (contrat.getDateDebutContrat() == null || contrat.getDateFinContrat() == null) {
             System.out.println("Erreur : Les dates de début et de fin du contrat sont obligatoires !");
             return false;

@@ -7,12 +7,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Ellipse;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -20,25 +26,21 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import javafx.stage.Stage;
-import tn.esprit.models.Contrat;
-import tn.esprit.models.ContratToText;
-import tn.esprit.models.PDFShiftService;
+import tn.esprit.models.*;
 import tn.esprit.services.ServiceContrat;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javafx.scene.paint.Color;
+
+
 
 public class ListContrats {
 
     @FXML
     private TableView<Contrat> tableView;
-    @FXML
-    private TableColumn<Contrat, Integer> colId;
-    @FXML
-    private TableColumn<Contrat, String> colType;
     @FXML
     private TableColumn<Contrat, String> colDateDebut;
     @FXML
@@ -52,38 +54,121 @@ public class ListContrats {
     @FXML
     private TableColumn<Contrat, String> colEmailClient;
     @FXML
-    private Button btnModifier;
+    private TableColumn<Contrat, String> colNumTelClient;
     @FXML
-    private Button btnSupprimer;
-    @FXML
-    private Button btnGenererPDF;
+    private TableColumn<Contrat, Void> colDetails;
     @FXML
     private TextField searchField;
     @FXML
-    private CheckBox chkFiltrerActifs;
+    private AnchorPane anchorPaneForm;
     @FXML
-    private CheckBox chkTriMontantAsc;
+    private ComboBox<String> comboTri;
     @FXML
-    private CheckBox chkTriMontantDesc;
+    private ImageView refreshIcon;
+    @FXML
+    private TableColumn<Contrat, String> colModePaiement;
+
+
 
     private final ServiceContrat contratService = new ServiceContrat();
     private ObservableList<Contrat> contratList;
 
+
+
+
     @FXML
     public void initialize() {
-
-        //colId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIdContrat()).asObject());
-        colType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeContrat().name()));
+        colNomClient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomClient()));
+        colEmailClient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmailClient()));
+        colNumTelClient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTelephoneClient()));
         colDateDebut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateDebutContrat().toString()));
         colDateFin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateFinContrat().toString()));
         colMontant.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMontantContrat()).asObject());
-        colNomClient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomClient()));
-        colEmailClient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmailClient()));
         colStatut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatusContrat()));
+        colModePaiement.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getModeDePaiement().name()));
+
+
+        // Créer une TableCell personnalisée pour la colonne Statut
+        colStatut.setCellFactory(new Callback<TableColumn<Contrat, String>, TableCell<Contrat, String>>() {
+            @Override
+            public TableCell<Contrat, String> call(TableColumn<Contrat, String> param) {
+                return new TableCell<Contrat, String>() {
+                    @Override
+                    protected void updateItem(String status, boolean empty) {
+                        super.updateItem(status, empty);
+
+                        if (empty || status == null) {
+                            setGraphic(null);  // Ne rien afficher si la cellule est vide
+                        } else {
+                            // Créer un StackPane pour superposer l'ellipse et le texte
+                            StackPane stackPane = new StackPane();
+                            Ellipse ellipse = new Ellipse(25, 15);
+                            // Mettre à jour la couleur de l'ellipse en fonction du statut
+                            if (status.equals("Actif")) {
+                                ellipse.setFill(Color.rgb(144, 238, 144));
+                            } else if (status.equals("Inactif")) {
+                                ellipse.setFill(Color.rgb(255, 160, 122));
+                            } else {
+                                ellipse.setFill(Color.GRAY);
+                            }
+                            // Créer un Label pour afficher le texte à l'intérieur de l'ellipse
+                            Label label = new Label(status);
+                            if (status.equals("Actif")) {
+                                label.setTextFill(Color.rgb(0, 128, 0));
+                            } else if (status.equals("Inactif")) {
+                                label.setTextFill(Color.rgb(139, 0, 0));
+                            } else {
+                                label.setTextFill(Color.BLACK);
+                            }
+                            label.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+                            // Ajouter l'ellipse et le texte au StackPane
+                            stackPane.getChildren().addAll(ellipse, label);
+                            StackPane.setAlignment(label, Pos.CENTER);
+                            // Mettre le StackPane dans la cellule
+                            setGraphic(stackPane);
+                        }
+                    }
+                };
+            }
+        });
+
+
+//bouton details contrat
+        colDetails.setCellFactory(param -> new TableCell<Contrat, Void>() {
+            private final Button btnDetails = new Button("Voir");
+
+            {
+                btnDetails.setStyle("-fx-background-color: #EEAA44; -fx-text-fill: white; -fx-cursor: hand;");
+                btnDetails.setOnAction(event -> {
+                    Contrat contrat = getTableView().getItems().get(getIndex());
+                    afficherDetailsContrat(contrat);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnDetails);
+                }
+            }
+        });
+
+
+      //refresh the tableview
+        refreshIcon.setOnMouseClicked(event -> loadContrats());
+
 
         loadContrats();
+
+
     }
 
+
+
+//mettre les contrats dans tableview
     private void loadContrats() {
         List<Contrat> contrats = contratService.getAll();
         for (Contrat contrat : contrats) {
@@ -95,33 +180,74 @@ public class ListContrats {
         tableView.setItems(contratList);
     }
 
+
+//afficher details contrat
+    private void afficherDetailsContrat(Contrat contrat) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/detailsContrat.fxml"));
+            Parent root = loader.load();
+
+            DetailsContrat controller = loader.getController();
+            controller.setContrat(contrat);
+
+            Stage stage = new Stage();
+            stage.setTitle("Détails du Contrat");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    // Cette méthode sera appelée lorsque la modification est réussie dans ModifierContrat
+    public void showAjouterContratForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterContrat.fxml"));
+            AnchorPane ajouterForm = loader.load();
+
+            // Remplacer ModifierContrat.fxml par AjouterContrat.fxml
+            anchorPaneForm.getChildren().clear();
+            anchorPaneForm.getChildren().add(ajouterForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+//modifier contrat
     @FXML
     private void modifierContrat(ActionEvent event) {
-        Contrat contratSelectionne = tableView.getSelectionModel().getSelectedItem();
+        Contrat selectedContrat = tableView.getSelectionModel().getSelectedItem();
 
-        if (contratSelectionne == null) {
+        if (selectedContrat == null) {
             showAlert("Aucun contrat sélectionné", "Veuillez sélectionner un contrat à modifier.", Alert.AlertType.WARNING);
             return;
         }
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierContrat.fxml"));
-            Parent root = loader.load();
+            AnchorPane modifierForm = loader.load();
 
+            // Récupérer le contrôleur du formulaire de modification
             ModifierContrat controller = loader.getController();
-            controller.setContrat(contratSelectionne);
+            controller.setContrat(selectedContrat, this);
+            controller.setListContratsController(this);
 
-            Stage stage = new Stage();
-            stage.setTitle("Modifier Contrat");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-
-            loadContrats();
+            // Afficher le formulaire dans l'AnchorPane prévu
+            anchorPaneForm.getChildren().clear();
+            anchorPaneForm.getChildren().add(modifierForm);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
+
+//supprimer contrat
     @FXML
     private void supprimerContrat(ActionEvent event) {
         Contrat contratSelectionne = tableView.getSelectionModel().getSelectedItem();
@@ -142,26 +268,10 @@ public class ListContrats {
         }
     }
 
-    @FXML
-    private void ajouterContrat(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterContrat.fxml"));
-            Parent root = loader.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Ajouter un Contrat");
-            stage.setScene(new Scene(root));
-            stage.show();
 
-            AjouterContrat ajouterContratController = loader.getController();
-            ajouterContratController.setOnContratAdded(() -> loadContrats());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Erreur", "Erreur lors de l'ouverture de la page d'ajout.", Alert.AlertType.ERROR);
-        }
-    }
-
+//search contrat
     @FXML
     private void handleSearch(KeyEvent event) {
         String searchText = searchField.getText();
@@ -169,46 +279,59 @@ public class ListContrats {
         updateTableView(filteredContrats);
     }
 
+
+
+//tri contrats
     @FXML
-    private void filtrerContrats(ActionEvent event) {
+    private void handleTriSelection(ActionEvent event) {
+        String selectedOption = comboTri.getSelectionModel().getSelectedItem();
+
         List<Contrat> contrats = contratService.getAll();
 
-        if (chkFiltrerActifs.isSelected()) {
-            contrats = contrats.stream()
-                    .filter(contrat -> "Actif".equals(contrat.getStatusContrat()))
-                    .collect(Collectors.toList());
+        switch (selectedOption) {
+            case "All":
+                break;
+            case "Contrats Actifs":
+                contrats = contrats.stream()
+                        .filter(contrat -> "Actif".equals(contrat.getStatusContrat()))
+                        .collect(Collectors.toList());
+                break;
+            case "Tri par Montant Ascendant":
+                contrats.sort((c1, c2) -> Integer.compare(c1.getMontantContrat(), c2.getMontantContrat()));
+                break;
+            case "Tri par Montant Descendant":
+                contrats.sort((c1, c2) -> Integer.compare(c2.getMontantContrat(), c1.getMontantContrat()));
+                break;
+            default:
+                break;
         }
 
-        if (chkTriMontantAsc.isSelected()) {
-            contrats.sort((c1, c2) -> Integer.compare(c1.getMontantContrat(), c2.getMontantContrat()));
-        } else if (chkTriMontantDesc.isSelected()) {
-            contrats.sort((c1, c2) -> Integer.compare(c2.getMontantContrat(), c1.getMontantContrat()));
-        }
-
+        // Mettre à jour la TableView après tri
         updateTableView(contrats);
     }
 
 
-    @FXML
-    private void handleTriMontantAsc(ActionEvent event) {
-        if (chkTriMontantAsc.isSelected()) {
-            chkTriMontantDesc.setSelected(false);
-        }
-        filtrerContrats(null);
-    }
 
 
-    @FXML
-    private void handleTriMontantDesc(ActionEvent event) {
-        if (chkTriMontantDesc.isSelected()) {
-            chkTriMontantAsc.setSelected(false);
-        }
-        filtrerContrats(null);
-    }
+
+
+
 
 
     private void updateTableView(List<Contrat> contrats) {
         ObservableList<Contrat> observableContrats = FXCollections.observableArrayList(contrats);
+        tableView.setItems(observableContrats);
+    }
+
+
+
+
+    @FXML
+    private void refreshTable() {
+        // Récupère de nouvelles données pour la table, par exemple depuis une base de données ou une autre source
+        ObservableList<Contrat> observableContrats = FXCollections.observableArrayList();
+
+        // Mettre à jour la TableView
         tableView.setItems(observableContrats);
     }
 
@@ -241,7 +364,7 @@ public class ListContrats {
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         Row headerRow = sheet.createRow(0);
-        String[] columns = {"ID Contrat", "Type Contrat", "Date Début", "Date Fin", "Montant", "Nom Client", "Email Client", "Statut"};
+        String[] columns = {"ID Contrat", "Nom Client(e)", "Email Client(e)", "NumTel Client(e)", "Date Début", "Date Fin", "Montant", "Statut", "Mode Paiement", "Services"};
         for (int i = 0; i < columns.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columns[i]);
@@ -260,13 +383,22 @@ public class ListContrats {
             Row row = sheet.createRow(rowNum++);
 
             row.createCell(0).setCellValue(contrat.getIdContrat());
-            row.createCell(1).setCellValue(contrat.getTypeContrat().toString());
-            row.createCell(2).setCellValue(contrat.getDateDebutContrat().toString());
-            row.createCell(3).setCellValue(contrat.getDateFinContrat().toString());
-            row.createCell(4).setCellValue(contrat.getMontantContrat());
-            row.createCell(5).setCellValue(contrat.getNomClient());
-            row.createCell(6).setCellValue(contrat.getEmailClient());
+            row.createCell(1).setCellValue(contrat.getNomClient());
+            row.createCell(2).setCellValue(contrat.getEmailClient());
+            row.createCell(3).setCellValue(contrat.getTelephoneClient());
+            row.createCell(4).setCellValue(contrat.getDateDebutContrat().toString());
+            row.createCell(5).setCellValue(contrat.getDateFinContrat().toString());
+            row.createCell(6).setCellValue(contrat.getMontantContrat());
             row.createCell(7).setCellValue(contrat.getStatusContrat());
+            row.createCell(8).setCellValue(contrat.getModeDePaiement().toString());
+
+            // Get services for each contract and join them into a comma-separated string
+            List<Service> services = contrat.getServices();
+            String serviceNames = services.stream()
+                    .map(Service::getNomService)
+                    .collect(Collectors.joining(", "));
+            row.createCell(9).setCellValue(serviceNames);
+
 
             for (int i = 0; i < columns.length; i++) {
                 row.getCell(i).setCellStyle(dataStyle);
@@ -299,11 +431,11 @@ public class ListContrats {
 
 //générer contrat PDF via api
     @FXML
-    private void genererContratPDF(ActionEvent event) {
+    private void genererContratPDF(MouseEvent event) {
         // Récupérer le contrat sélectionné
         Contrat contratSelectionne = tableView.getSelectionModel().getSelectedItem();
         if (contratSelectionne == null) {
-            showAlert("Aucun contrat sélectionné", "Veuillez sélectionner un contrat pour générer le PDF.", Alert.AlertType.WARNING);
+            showAlert("Aucun contrat sélectionné", "Veuillez sélectionner un contrat pour le  générer en PDF.", Alert.AlertType.WARNING);
             return;
         }
 

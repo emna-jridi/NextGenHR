@@ -1,8 +1,8 @@
 package tn.esprit.models;
 
 import java.time.LocalDate;
-import java.util.Date;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Service {
@@ -14,12 +14,12 @@ public class Service {
     private LocalDate dateDebutService;
     private LocalDate dateFinService;
     private String statusService;
-    private Contrat contrat;
-    //private int idContrat;
+    private List<Contrat> contrats;
 
 
     //Constructeurs
     public Service() {
+        this.contrats = new ArrayList<>();
     }
 
     public Service(int idService, String nomService, String descriptionService, String typeService, LocalDate dateDebutService, LocalDate dateFinService, String statusService) {
@@ -30,7 +30,7 @@ public class Service {
         this.dateDebutService = dateDebutService;
         this.dateFinService = dateFinService;
         this.statusService = statusService;
-        //this.idContrat = idContrat;
+        this.contrats = new ArrayList<>();
     }
 
     public Service(String nomService, String descriptionService, String typeService, LocalDate dateDebutService, LocalDate dateFinService, String statusService) {
@@ -40,7 +40,7 @@ public class Service {
         this.dateDebutService = dateDebutService;
         this.dateFinService = dateFinService;
         this.statusService = statusService;
-        //this.idContrat = idContrat;
+        this.contrats = new ArrayList<>();
     }
 
 
@@ -103,13 +103,10 @@ public class Service {
     }
 
 
-    public Contrat getContrat() {
-        return contrat;
-    }
+    public List<Contrat> getContrats() { return contrats; }
+    public void setContrats(List<Contrat> contrats) { this.contrats = contrats; }
 
-    public void setContrat(Contrat contrat) {
-        this.contrat = contrat;
-    }
+
 
 
 
@@ -126,7 +123,7 @@ public class Service {
                 ", dateDebutService=" + dateDebutService +
                 ", dateFinService=" + dateFinService +
                 ", statusService='" + statusService + '\'' +
-                //", idContrat=" + idContrat +
+                ", contrats=" + contrats +
                 '}';
     }
 }
