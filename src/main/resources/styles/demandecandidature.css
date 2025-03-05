@@ -1,0 +1,44 @@
+/* Définition des couleurs principales */
+.root {
+    -fx-background-color: #F5F5DC;
+}
+
+.button {
+    -fx-background-color: #06315a;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #003366;
+}
+
+.label {
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+.text-field, .text-area {
+    -fx-background-color: white;
+    -fx-border-color: lightgray;
+    -fx-border-radius: 3px;
+    -fx-padding: 5px;
+}
+
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: lightgray;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: lightgray;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #06315a;
+    -fx-text-fill: white;
+}

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="647.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.MesCandidaturesController">
+<AnchorPane fx:id="contentPane" prefHeight="647.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.MesCandidaturesController">
    <children>
       <TableView fx:id="tableacceptées" layoutX="13.0" layoutY="155.0" prefHeight="306.0" prefWidth="887.0">
          <columns>
@@ -21,5 +21,6 @@
          </columns>
       </TableView>
       <Button layoutX="384.0" layoutY="511.0" mnemonicParsing="false" onAction="#supprimermacandidature" text="Supprimer votre candidature" />
+      <Button layoutX="33.0" layoutY="30.0" mnemonicParsing="false" onAction="#pageprécédente" text="Page précédente" />
    </children>
 </AnchorPane>

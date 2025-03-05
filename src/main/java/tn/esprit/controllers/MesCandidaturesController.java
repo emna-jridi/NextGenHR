@@ -1,17 +1,23 @@
 package tn.esprit.controllers;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import tn.esprit.models.Candidature;
 import tn.esprit.models.SessionManager;
 import tn.esprit.models.Statut;
 import tn.esprit.models.User;
 import tn.esprit.services.ServiceCandidature;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +49,9 @@ public class MesCandidaturesController {
 
     @FXML
     private TableColumn<Candidature, String> Téléphone;
+
+    @FXML
+    private AnchorPane contentPane;
 
     @FXML
     private TableView<Candidature> tableacceptées;
@@ -140,5 +149,27 @@ public class MesCandidaturesController {
         alert.showAndWait();
     }
 
+    private void switchView(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent pane = loader.load();
+
+            // Ajout d'une animation de transition
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), pane);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+            fadeIn.play();
+
+            contentPane.getChildren().setAll(pane);
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement de " + fxmlPath);
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    void pageprécédente(ActionEvent event) {
+        switchView("/DemandeCandidature.fxml");
+
+    }
 }
 

@@ -1,0 +1,115 @@
+/* Appliquer un fond général à l'ensemble de la page */
+#contentPane {
+    -fx-background-color: #F5F5DC; /* blanc cassé */
+    -fx-padding: 20px;
+    -fx-font-family: "Arial", sans-serif; /* police claire et moderne */
+}
+
+/* Appliquer des styles aux boutons */
+.button {
+    -fx-background-color: #003366; /* bleu marine */
+    -fx-text-fill: #F5F5DC; /* blanc cassé */
+    -fx-font-size: 14px;
+    -fx-padding: 12px 25px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #F5F5DC; /* bordure en blanc cassé */
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0, 0, 1); /* effet d'ombre subtile */
+}
+
+.button:hover {
+    -fx-background-color: #FFD700; /* jaune foncé au survol */
+    -fx-text-fill: #003366; /* texte bleu marine */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0, 0, 5); /* ombre plus marquée au survol */
+}
+
+/* Appliquer des styles aux labels */
+.label {
+    -fx-text-fill: #003366; /* texte bleu marine */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
+
+/* Style des CheckBox */
+.check-box {
+    -fx-text-fill: #003366; /* texte bleu marine */
+    -fx-font-size: 14px;
+}
+
+/* Style du ChoiceBox */
+.choice-box {
+    -fx-background-color: #003366; /* bleu marine */
+    -fx-text-fill: #F5F5DC; /* blanc cassé */
+    -fx-border-color: #003366; /* bordure bleu marine */
+    -fx-border-radius: 8px;
+    -fx-padding: 5px 10px;
+}
+
+/* Style de la ListView */
+#listcandidats {
+    -fx-background-color: #F5F5DC; /* blanc cassé */
+    -fx-border-color: #003366; /* bordure bleu marine */
+    -fx-border-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0, 0, 1); /* ombre subtile */
+}
+
+/* Style des éléments dans la ListView */
+#listcandidats .list-cell {
+    -fx-background-color: #FFFFFF; /* blanc pour chaque élément */
+    -fx-text-fill: #003366; /* texte bleu marine */
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+}
+
+#listcandidats .list-cell:hover {
+    -fx-background-color: #FFD700; /* jaune foncé au survol */
+    -fx-text-fill: #003366; /* texte bleu marine */
+}
+
+/* Style de la sélection dans la ListView */
+#listcandidats .list-cell:selected {
+    -fx-background-color: #003366; /* bleu marine */
+    -fx-text-fill: #FFD700; /* texte jaune foncé */
+}
+
+/* Style des labels d'alerte */
+#alertemail, #labeltelephone {
+    -fx-text-fill: #FF6347; /* rouge tomate pour attirer l'attention */
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* Style du CheckBox pour trier */
+#tricandidature {
+    -fx-text-fill: #003366; /* texte bleu marine */
+}
+
+/* Style pour le fond du contenu */
+#contentPane {
+    -fx-background-color: #F5F5DC; /* blanc cassé */
+}
+
+/* Modifier les couleurs des boutons et la mise en forme */
+#exportToPDF {
+    -fx-background-color: #FFD700; /* jaune foncé */
+    -fx-text-fill: #003366; /* texte bleu marine */
+    -fx-font-weight: bold;
+}
+
+#exportToPDF:hover {
+    -fx-background-color: #003366; /* bleu marine */
+    -fx-text-fill: #FFD700; /* texte jaune foncé */
+}
+
+/* Style de la dernière ligne de boutons */
+#archivecandidature {
+    -fx-background-color: #003366; /* bleu marine */
+    -fx-text-fill: #F5F5DC; /* blanc cassé */
+    -fx-font-weight: bold;
+}

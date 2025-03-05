@@ -95,7 +95,7 @@ public class CandidaturesarchivéesController {
         List<Candidature> disqualifiéesList = serviceCandidature.getByStatut(tn.esprit.models.Statut.disqualifiée);
 
         System.out.println("Acceptées list size: " + acceptéesList.size());
-        System.out.println("Disqualifiées list size: " + disqualifiéesList.size());
+        System.out.println("Disqualifiées list size: " + disqualifiéesList.size());  //testit biha fel console
 
 
         ObservableList<Candidature> acceptéesObservable = FXCollections.observableArrayList(acceptéesList);
@@ -108,7 +108,7 @@ public class CandidaturesarchivéesController {
         CVaccep.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCvUrl()));
         Lettreaccep.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLettreMotivation()));
         Statutaccep.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatut().name()));
-
+        Offreaccep.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOffreemploi().getTitre()));
 
 
         nom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNom()));
@@ -119,7 +119,7 @@ public class CandidaturesarchivéesController {
         cv.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCvUrl()));
         lettre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLettreMotivation()));
         Statut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatut().name()));
-
+        Offre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOffreemploi().getTitre()));
         tableacceptées.setItems(acceptéesObservable);
         tabledisqualifiées.setItems(disqualifiéesObservable);
     }

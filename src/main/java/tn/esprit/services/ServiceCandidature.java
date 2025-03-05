@@ -331,7 +331,7 @@ public class ServiceCandidature{
             System.out.println("Erreur lors de la mise à jour de la candidature : " + e.getMessage());
         }
     }
-    public List<Candidature> getByStatut(Statut statut) {
+    /*public List<Candidature> getByStatut(Statut statut) {
         String qry = "SELECT * FROM candidature WHERE statut = ?";
         List<Candidature> candidatures = new ArrayList<>();
 
@@ -359,7 +359,49 @@ public class ServiceCandidature{
         }
 
         return candidatures;
+    }*/
+    public List<Candidature> getByStatut(Statut statut) {
+        String qry = "SELECT * FROM candidature c JOIN offreemploi o ON c.offreId = o.id WHERE c.statut = ?";
+        List<Candidature> candidatures = new ArrayList<>();
+
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, statut.name()); // Convertir l'énumération en chaîne
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                Candidature candidature = new Candidature();
+                candidature.setId(rs.getInt("id"));
+                candidature.setNom(rs.getString("nom"));
+                candidature.setPrenom(rs.getString("prenom"));
+                candidature.setEmail(rs.getString("email"));
+                candidature.setTelephone(rs.getString("telephone"));
+                candidature.setStatut(Statut.valueOf(rs.getString("statut")));
+                candidature.setCvUrl(rs.getString("cvUrl"));
+                candidature.setLettreMotivation(rs.getString("lettreMotivation"));
+                candidature.setDateCandidature(rs.getTimestamp("dateCandidature").toLocalDateTime());
+
+                // Récupération des informations de l'offre associée
+                Offreemploi offre = new Offreemploi();
+                offre.setId(rs.getInt("offreId"));
+                offre.setTitre(rs.getString("titre"));
+                offre.setDescription(rs.getString("description"));
+                offre.setCompetences(rs.getString("competences"));
+                offre.setExperiencerequise(experience.valueOf(rs.getString("experiencerequise")));
+                offre.setNiveaulangues(Niveaulangues.valueOf(rs.getString("niveaulangues")));
+                offre.setTypecontrat(TypeContrat.valueOf(rs.getString("typecontrat")));
+                offre.setNiveauEtudes(Niveauetudes.valueOf(rs.getString("niveauEtudes")));
+
+                candidature.setOffreemploi(offre); // Associer l'offre à la candidature
+                candidatures.add(candidature);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des candidatures par statut : " + e.getMessage());
+        }
+
+        return candidatures;
     }
+
 
 
 

@@ -235,208 +235,96 @@ public class CandidatureController {
         }
     }
 
-
-
-
-
-  /* @FXML
+    @FXML
     void exportToPDF(ActionEvent event) {
         Candidature selectedCandidature = listcandidats.getSelectionModel().getSelectedItem();
         if (selectedCandidature == null) {
-            showAlert(Alert.AlertType.ERROR, "Erreur d'export", "Aucune Offre sélectionnée");
+            showAlert(Alert.AlertType.ERROR, "Erreur d'export", "Aucune candidature sélectionnée");
             return;
         }
 
+        String exportType = getExportType();
+
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-        File file = fileChooser.showSaveDialog(new Stage());
 
-        if (file != null) {
-            try (PDDocument document = new PDDocument()) {
-                PDPage page = new PDPage();
-                document.addPage(page);
+        if (exportType.equals("Candidature")) {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+            File file = fileChooser.showSaveDialog(new Stage());
 
-                PDPageContentStream contentStream = new PDPageContentStream(document, page);
-                contentStream.beginText();
+            if (file != null) {
+                try (PDDocument document = new PDDocument()) {
+                    PDPage page = new PDPage();
+                    document.addPage(page);
 
-                // Titre avec couleur
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
-                contentStream.setNonStrokingColor(0, 51, 102);  // Couleur bleu foncé
-                contentStream.newLineAtOffset(100, 750);
-                contentStream.showText("Candidature - " + selectedCandidature.getNom() + " " + selectedCandidature.getPrenom());
-                contentStream.newLineAtOffset(0, -30);  // Espace pour plus de lisibilité
+                    PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                    contentStream.setNonStrokingColor(0, 51, 102);
+                    contentStream.newLineAtOffset(100, 750);
+                    contentStream.showText("Candidature - " + selectedCandidature.getNom() + " " + selectedCandidature.getPrenom());
+                    contentStream.newLineAtOffset(0, -30);
 
-                // Informations personnelles en couleur
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
-                contentStream.setNonStrokingColor(0, 102, 204);  // Couleur bleue
-                contentStream.showText("Informations personnelles");
-                contentStream.newLineAtOffset(0, -20);
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.setNonStrokingColor(0, 0, 0);
+                    contentStream.showText("Nom: " + selectedCandidature.getNom());
+                    contentStream.newLineAtOffset(0, -15);
+                    contentStream.showText("Prénom: " + selectedCandidature.getPrenom());
+                    contentStream.newLineAtOffset(0, -15);
+                    contentStream.showText("Email: " + selectedCandidature.getEmail());
+                    contentStream.newLineAtOffset(0, -15);
+                    contentStream.showText("Téléphone: " + selectedCandidature.getTelephone());
+                    contentStream.newLineAtOffset(0, -15);
+                    contentStream.showText("Statut: " + selectedCandidature.getStatut());
+                    contentStream.newLineAtOffset(0, -15);
+                    contentStream.endText();
+                    contentStream.close();
 
-                contentStream.setFont(PDType1Font.HELVETICA, 12);
-                contentStream.setNonStrokingColor(0, 0, 0);  // Noir pour le texte
-                contentStream.showText("Nom: " + selectedCandidature.getNom());
-                contentStream.newLineAtOffset(0, -15);
+                    document.save(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de créer le PDF");
+                }
+            }
+        } else if (exportType.equals("CV")) {
+            String cvPath = selectedCandidature.getCvUrl();
+            if (cvPath == null || cvPath.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Erreur d'export", "Aucun CV trouvé pour cette candidature");
+                return;
+            }
 
-                contentStream.showText("Prénom: " + selectedCandidature.getPrenom());
-                contentStream.newLineAtOffset(0, -15);
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+            File destinationFile = fileChooser.showSaveDialog(new Stage());
 
-                contentStream.showText("Email: " + selectedCandidature.getEmail());
-                contentStream.newLineAtOffset(0, -15);
+            if (destinationFile != null) {
+                try {
+                    Files.copy(Paths.get(cvPath), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", "CV exporté avec succès !");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'exporter le CV");
+                }
+            }
+        } else if (exportType.equals("Lettre de motivation")) {
+            String lettrePath = selectedCandidature.getLettreMotivation();
+            if (lettrePath == null || lettrePath.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Erreur d'export", "Aucune lettre de motivation trouvée");
+                return;
+            }
 
-                contentStream.showText("Téléphone: " + selectedCandidature.getTelephone());
-                contentStream.newLineAtOffset(0, -15);
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+            File destinationFile = fileChooser.showSaveDialog(new Stage());
 
-                contentStream.showText("CV: " + selectedCandidature.getCvUrl());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Lettre de motivation: " + selectedCandidature.getLettreMotivation());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Statut: " + selectedCandidature.getStatut());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Date de candidature: " + selectedCandidature.getDateCandidature());
-                contentStream.newLineAtOffset(0, -15);
-
-                // Informations sur l'offre d'emploi avec un léger changement de couleur
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
-                contentStream.setNonStrokingColor(0, 102, 204);  // Couleur bleue
-                contentStream.showText("Offre d'emploi");
-                contentStream.newLineAtOffset(0, -25);
-
-                contentStream.setFont(PDType1Font.HELVETICA, 12);
-                contentStream.setNonStrokingColor(0, 0, 0);  // Noir pour le texte
-                contentStream.showText("Titre de l'offre: " + selectedCandidature.getOffreemploi().getTitre());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Description: " + selectedCandidature.getOffreemploi().getDescription());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Compétences requises: " + selectedCandidature.getOffreemploi().getCompetences());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Expérience requise: " + selectedCandidature.getOffreemploi().getExperiencerequise());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Niveau d'études: " + selectedCandidature.getOffreemploi().getNiveauEtudes());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Niveau de langue: " + selectedCandidature.getOffreemploi().getNiveaulangues());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Type de contrat: " + selectedCandidature.getOffreemploi().getTypecontrat());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Localisation: " + selectedCandidature.getOffreemploi().getLocalisation());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Date de création: " + selectedCandidature.getOffreemploi().getDateCreation().toString());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.showText("Date d'expiration: " + selectedCandidature.getOffreemploi().getDateExpiration().toString());
-                contentStream.newLineAtOffset(0, -15);
-
-                contentStream.endText();
-                contentStream.close();
-
-                document.save(file);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Erreur lors de la création du PDF.");
+            if (destinationFile != null) {
+                try {
+                    Files.copy(Paths.get(lettrePath), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Lettre de motivation exportée avec succès !");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'exporter la lettre de motivation");
+                }
             }
         }
-    }*/
-  @FXML
-  void exportToPDF(ActionEvent event) {
-      Candidature selectedCandidature = listcandidats.getSelectionModel().getSelectedItem();
-      if (selectedCandidature == null) {
-          showAlert(Alert.AlertType.ERROR, "Erreur d'export", "Aucune candidature sélectionnée");
-          return;
-      }
-
-      String exportType = getExportType();
-
-      FileChooser fileChooser = new FileChooser();
-
-      if (exportType.equals("Candidature")) {
-          fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-          File file = fileChooser.showSaveDialog(new Stage());
-
-          if (file != null) {
-              try (PDDocument document = new PDDocument()) {
-                  PDPage page = new PDPage();
-                  document.addPage(page);
-
-                  PDPageContentStream contentStream = new PDPageContentStream(document, page);
-                  contentStream.beginText();
-                  contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
-                  contentStream.setNonStrokingColor(0, 51, 102);
-                  contentStream.newLineAtOffset(100, 750);
-                  contentStream.showText("Candidature - " + selectedCandidature.getNom() + " " + selectedCandidature.getPrenom());
-                  contentStream.newLineAtOffset(0, -30);
-
-                  contentStream.setFont(PDType1Font.HELVETICA, 12);
-                  contentStream.setNonStrokingColor(0, 0, 0);
-                  contentStream.showText("Nom: " + selectedCandidature.getNom());
-                  contentStream.newLineAtOffset(0, -15);
-                  contentStream.showText("Prénom: " + selectedCandidature.getPrenom());
-                  contentStream.newLineAtOffset(0, -15);
-                  contentStream.showText("Email: " + selectedCandidature.getEmail());
-                  contentStream.newLineAtOffset(0, -15);
-                  contentStream.showText("Téléphone: " + selectedCandidature.getTelephone());
-                  contentStream.newLineAtOffset(0, -15);
-                  contentStream.showText("Statut: " + selectedCandidature.getStatut());
-                  contentStream.newLineAtOffset(0, -15);
-                  contentStream.endText();
-                  contentStream.close();
-
-                  document.save(file);
-              } catch (IOException e) {
-                  e.printStackTrace();
-                  showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de créer le PDF");
-              }
-          }
-      } else if (exportType.equals("CV")) {
-          String cvPath = selectedCandidature.getCvUrl();
-          if (cvPath == null || cvPath.isEmpty()) {
-              showAlert(Alert.AlertType.ERROR, "Erreur d'export", "Aucun CV trouvé pour cette candidature");
-              return;
-          }
-
-          fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-          File destinationFile = fileChooser.showSaveDialog(new Stage());
-
-          if (destinationFile != null) {
-              try {
-                  Files.copy(Paths.get(cvPath), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                  showAlert(Alert.AlertType.INFORMATION, "Succès", "CV exporté avec succès !");
-              } catch (IOException e) {
-                  e.printStackTrace();
-                  showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'exporter le CV");
-              }
-          }
-      } else if (exportType.equals("Lettre de motivation")) {
-          String lettrePath = selectedCandidature.getLettreMotivation();
-          if (lettrePath == null || lettrePath.isEmpty()) {
-              showAlert(Alert.AlertType.ERROR, "Erreur d'export", "Aucune lettre de motivation trouvée");
-              return;
-          }
-
-          fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-          File destinationFile = fileChooser.showSaveDialog(new Stage());
-
-          if (destinationFile != null) {
-              try {
-                  Files.copy(Paths.get(lettrePath), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                  showAlert(Alert.AlertType.INFORMATION, "Succès", "Lettre de motivation exportée avec succès !");
-              } catch (IOException e) {
-                  e.printStackTrace();
-                  showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'exporter la lettre de motivation");
-              }
-          }
-      }
-  }
+    }
 
 
     private void exportCandidatureDetails(PDPageContentStream contentStream, Candidature selectedCandidature) throws IOException {
@@ -544,7 +432,7 @@ public class CandidatureController {
             e.printStackTrace();
         }
     }
-    }
+}
 
 
 
