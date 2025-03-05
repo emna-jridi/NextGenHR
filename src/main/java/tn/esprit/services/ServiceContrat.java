@@ -59,7 +59,7 @@ public class ServiceContrat implements IServices<Contrat> {
                 ps.executeUpdate();
             }
 
-            System.out.println("Contrat et services associés ajoutés avec succès !");
+            System.out.println("Contrat ajouté avec succès !");
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout du contrat : " + e.getMessage());
         }

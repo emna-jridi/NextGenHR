@@ -126,6 +126,10 @@ public class Contrat {
     public void setModeDePaiement(ModePaiement modeDePaiement) {
         this.modeDePaiement = modeDePaiement;  // Setter pour définir le mode de paiement
     }
+
+
+
+
     //méthode toString
     @Override
     public String toString() {

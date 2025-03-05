@@ -109,10 +109,10 @@ public class ModifierContrat {
         montantField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.isEmpty()) {
                 montantValidationLabel.setText("");
-            } else if (!newValue.matches("\\d+")) { // Vérifie que ce sont uniquement des chiffres
+            } else if (!newValue.matches("\\d+")) {
                 montantValidationLabel.setText("Le montant doit contenir des chiffres.");
                 montantValidationLabel.setStyle("-fx-text-fill: #dc5b5b;");
-            } else if (Integer.parseInt(newValue) <= 0) { // Vérifie que le montant est strictement positif
+            } else if (Integer.parseInt(newValue) <= 0) {
                 montantValidationLabel.setText("Le montant doit être > à 0.");
                 montantValidationLabel.setStyle("-fx-text-fill: #dc5b5b;");
             } else {
@@ -296,7 +296,7 @@ public class ModifierContrat {
                     }
                 }
 
-// Mettre à jour le contrat avec les nouveaux services
+          // Mettre à jour le contrat avec les nouveaux services
             contratToModify.setServices(selectedServices);
 
             contratService.update(contratToModify);
@@ -326,7 +326,7 @@ public class ModifierContrat {
             // Retourner l'ID du premier service trouvé
             return services.get(0).getIdService();
         }
-        return -1; // Retourner -1 si aucun service n'est trouvé
+        return -1;
     }
 
 

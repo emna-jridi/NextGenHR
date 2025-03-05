@@ -102,26 +102,25 @@ public class ListContrats {
                         } else {
                             // Créer un StackPane pour superposer l'ellipse et le texte
                             StackPane stackPane = new StackPane();
-                            // Créer une ellipse au lieu d'un cercle pour élargir la forme
-                            Ellipse ellipse = new Ellipse(25, 15); // (largeur, hauteur)
+                            Ellipse ellipse = new Ellipse(25, 15);
                             // Mettre à jour la couleur de l'ellipse en fonction du statut
                             if (status.equals("Actif")) {
-                                ellipse.setFill(Color.rgb(144, 238, 144));  // Vert clair pour "Actif"
+                                ellipse.setFill(Color.rgb(144, 238, 144));
                             } else if (status.equals("Inactif")) {
-                                ellipse.setFill(Color.rgb(255, 160, 122));  // Rouge clair pour "Inactif"
+                                ellipse.setFill(Color.rgb(255, 160, 122));
                             } else {
-                                ellipse.setFill(Color.GRAY);  // Gris pour les autres statuts
+                                ellipse.setFill(Color.GRAY);
                             }
                             // Créer un Label pour afficher le texte à l'intérieur de l'ellipse
                             Label label = new Label(status);
                             if (status.equals("Actif")) {
-                                label.setTextFill(Color.rgb(0, 128, 0));  // Texte vert foncé pour "Actif"
+                                label.setTextFill(Color.rgb(0, 128, 0));
                             } else if (status.equals("Inactif")) {
-                                label.setTextFill(Color.rgb(139, 0, 0));  // Texte rouge foncé pour "Inactif"
+                                label.setTextFill(Color.rgb(139, 0, 0));
                             } else {
-                                label.setTextFill(Color.BLACK);  // Texte noir pour les autres statuts
+                                label.setTextFill(Color.BLACK);
                             }
-                            label.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;"); // Style du texte
+                            label.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
                             // Ajouter l'ellipse et le texte au StackPane
                             stackPane.getChildren().addAll(ellipse, label);
                             StackPane.setAlignment(label, Pos.CENTER);
@@ -132,12 +131,6 @@ public class ListContrats {
                 };
             }
         });
-
-        //refresh the tableview
-        refreshIcon.setOnMouseClicked(event -> loadContrats());
-
-
-        loadContrats();
 
 
 //bouton details contrat
@@ -164,14 +157,18 @@ public class ListContrats {
         });
 
 
+      //refresh the tableview
+        refreshIcon.setOnMouseClicked(event -> loadContrats());
 
+
+        loadContrats();
 
 
     }
 
 
 
-
+//mettre les contrats dans tableview
     private void loadContrats() {
         List<Contrat> contrats = contratService.getAll();
         for (Contrat contrat : contrats) {
@@ -238,7 +235,7 @@ public class ListContrats {
             // Récupérer le contrôleur du formulaire de modification
             ModifierContrat controller = loader.getController();
             controller.setContrat(selectedContrat, this);
-            controller.setListContratsController(this); // Passer le contrôleur parent
+            controller.setListContratsController(this);
 
             // Afficher le formulaire dans l'AnchorPane prévu
             anchorPaneForm.getChildren().clear();
@@ -284,7 +281,7 @@ public class ListContrats {
 
 
 
-//tri contrat
+//tri contrats
     @FXML
     private void handleTriSelection(ActionEvent event) {
         String selectedOption = comboTri.getSelectionModel().getSelectedItem();
@@ -332,7 +329,7 @@ public class ListContrats {
     @FXML
     private void refreshTable() {
         // Récupère de nouvelles données pour la table, par exemple depuis une base de données ou une autre source
-        ObservableList<Contrat> observableContrats = FXCollections.observableArrayList(); // À remplacer par les données actuelles
+        ObservableList<Contrat> observableContrats = FXCollections.observableArrayList();
 
         // Mettre à jour la TableView
         tableView.setItems(observableContrats);

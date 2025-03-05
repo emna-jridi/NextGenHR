@@ -18,7 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import tn.esprit.models.Contrat;
 import tn.esprit.models.Service;
 import tn.esprit.services.ServiceService;
 import java.io.IOException;
@@ -89,8 +88,7 @@ public class ListServices {
                             // Créer un StackPane pour superposer l'ellipse et le texte
                             StackPane stackPane = new StackPane();
 
-                            // Créer une ellipse au lieu d'un cercle pour élargir la forme
-                            Ellipse ellipse = new Ellipse(25, 15); // (largeur, hauteur)
+                            Ellipse ellipse = new Ellipse(25, 15);
 
 
                             if (status.equals("Actif")) {
@@ -125,11 +123,6 @@ public class ListServices {
             }
         });
 
-        //refresh the tableview
-        refreshIcon.setOnMouseClicked(event -> loadServices());
-        loadServices();
-
-
 
 
         //bouton details contrat
@@ -156,7 +149,9 @@ public class ListServices {
         });
 
 
-
+        //refresh the tableview
+        refreshIcon.setOnMouseClicked(event -> loadServices());
+        loadServices();
 
     }
 

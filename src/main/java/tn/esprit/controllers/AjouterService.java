@@ -109,8 +109,9 @@ public class AjouterService {
     }
 
 
+
+    // Réinitialisation des champs aprés l'ajout de service
     private void resetForm() {
-        // Réinitialisation des TextField
         nomService.clear();
         descriptionService.clear();
         typeService.clear();
@@ -120,6 +121,8 @@ public class AjouterService {
         radioInactif.setSelected(false);
 
     }
+
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -131,7 +134,4 @@ public class AjouterService {
 
 
 
-    /*private void closeWindow() {
-        ((Stage) nomService.getScene().getWindow()).close();
-    }*/
 }
