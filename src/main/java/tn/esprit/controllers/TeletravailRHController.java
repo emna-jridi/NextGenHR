@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.*;
 
 public class TeletravailRHController implements javafx.fxml.Initializable {
@@ -38,9 +40,6 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
         updateChoiceBox();
     }
 
-    /**
-     * Met à jour le ComboBox avec les employés ayant des demandes de télétravail "En attente".
-     */
     private void updateChoiceBox() {
         List<Teletravail> teletravails = TT.getAll();
         IDchoiceEmploye.getItems().clear();
@@ -55,13 +54,9 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
                 }
             }
         }
-
         IDchoiceEmploye.getItems().addAll(employeeEntries);
     }
 
-    /**
-     * Affiche les demandes de télétravail pour l'employé sélectionné.
-     */
     @FXML
     void AfficherTTbyName(ActionEvent event) {
         String selected = IDchoiceEmploye.getSelectionModel().getSelectedItem();
@@ -89,26 +84,16 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
         }
     }
 
-    /**
-     * Approuve la demande sélectionnée.
-     */
-
     @FXML
     void ApprouverTT(ActionEvent event) {
         processTeletravailAction("Approuvé");
     }
 
-    /**
-     * Refuse la demande sélectionnée.
-     */
     @FXML
     void RefuserTT(ActionEvent event) {
         processTeletravailAction("Refusé");
     }
 
-    /**
-     * Supprime la demande sélectionnée.
-     */
     @FXML
     void SupprimerTT(ActionEvent event) {
         String selected = IDchoiceEmploye.getSelectionModel().getSelectedItem();
@@ -134,10 +119,6 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
         updateChoiceBox();
     }
 
-    /**
-     * Traite l'action de validation (approuver/refuser) d'une demande et envoie un email.
-     */
-
     private void processTeletravailAction(String statut) {
         String selected = IDchoiceEmploye.getSelectionModel().getSelectedItem();
         if (selected == null) {
@@ -161,33 +142,29 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
                     TT.incrementNbTTRefuse(selectedDemande.getIdEmploye());
                 }
 
-                // 🟢 Envoyer l'email
                 TT.traiterDemandeTT(selectedDemande.getIdTeletravail(), statut);
 
-                // Ajouter un événement Google Calendar si la demande est approuvée
+                // Intégration avec Google Calendar lorsque la demande est approuvée
                 if ("Approuvé".equals(statut)) {
                     try {
-                        Calendar googleCalendarService = GoogleCalendarService.getCalendarService();
+                        GoogleCalendarService calendarService = new GoogleCalendarService();
 
-                        // Convertir LocalDate en DateTime
                         LocalDate startDate = selectedDemande.getDateDebutTT();
                         LocalDate endDate = selectedDemande.getDateFinTT();
 
-                        Date startDateTime = Date.from(startDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-                        Date endDateTime = Date.from(endDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                        // Création d'un événement Google Calendar
+                        calendarService.createEvent(
+                                "Télétravail approuvé: " + selectedDemande.getNomEmploye(),
+                                selectedDemande.getRaisonTT(),
+                                startDate.atStartOfDay().toInstant(ZoneOffset.UTC),
+                                endDate.atStartOfDay().toInstant(ZoneOffset.UTC)
+                        );
 
-                        // Créer l'événement avec les données
-                        Event googleEvent = new Event()
-                                .setSummary("Télétravail approuvé: " + selectedDemande.getNomEmploye())
-                                .setDescription(selectedDemande.getRaisonTT())
-                                .setStart(new EventDateTime().setDateTime(new DateTime(startDateTime)))
-                                .setEnd(new EventDateTime().setDateTime(new DateTime(endDateTime)));
-
-                        // Ajouter l'événement au calendrier
-                        googleCalendarService.events().insert("primary", googleEvent).execute();
                         showAlert("Succès", "La demande a été approuvée et l'événement a été ajouté au calendrier.");
+                        System.out.println("Événement créé avec succès.");
+
                     } catch (IOException | GeneralSecurityException e) {
-                        showAlert("Erreur", "Une erreur s'est produite lors de l'ajout de l'événement au calendrier.");
+                        showAlert("Erreur", "Une erreur s'est produite lors de l'ajout de l'événement au calendrier : " + e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -203,9 +180,7 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
         }
     }
 
-    /**
-     * Extrait l'identifiant du télétravail à partir de la chaîne de texte sélectionnée.
-     */
+
     private int extractTeletravailId(String selected) {
         try {
             String[] parts = selected.split(" - ");
@@ -215,9 +190,6 @@ public class TeletravailRHController implements javafx.fxml.Initializable {
         }
     }
 
-    /**
-     * Affiche une alerte d'information.
-     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
